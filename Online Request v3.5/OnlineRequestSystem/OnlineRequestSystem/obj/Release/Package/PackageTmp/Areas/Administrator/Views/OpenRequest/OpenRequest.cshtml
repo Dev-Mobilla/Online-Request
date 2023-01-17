@@ -1,0 +1,129 @@
+﻿
+<br />
+<style>
+    .table-wrapper {
+        overflow-x: scroll;
+        overflow-y: visible;
+        width: 1270px;
+        position: relative;
+        /*margin-left: 120px;*/
+    }
+</style>
+<div class="jumbotron col-md-12" style="width:1300px;margin-left:-5.5%;">
+    <br />
+    <span class="form-inline">
+        <input id="util-reqno" class="form-control" placeholder="Request Number" style="width:100%;" />
+        <select class="form-control" id="util-zone">
+            <option>VISAYAS</option>
+            <option>MINDANAO</option>
+            <option>VISMIN</option>
+            <option>LUZON</option>
+        </select>
+        <button id="util-search" class="btn btn-danger">Seach</button>
+    </span>
+    <hr />
+    <div class="table-wrapper">
+        <table class="table table-bordered table-hover" id="openReq">
+            <thead style="font-size:12px;">
+                <tr>
+                    <th>ID</th>
+                    <th>OR number</th>
+                    <th>Request Date</th>
+                    <th>Creator</th>
+                    <th>Type</th>
+                    <th>Bcode</th>
+                    <th>Area</th>
+                    <th>AreaCode</th>
+                    <th>DivCode</th>
+                    <th>Region</th>
+                    <th>Zone</th>
+                    <th>Status</th>
+                    <th>syscreated</th>
+                    <th>syscreator</th>
+                    <th>forPresident</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:12px;width: 1270px" id="tbodyId"></tbody>
+        </table>
+    </div>
+</div>
+<div class="jumbotron col-md-12" style="width:1300px;margin-left:-5.5%;">
+    <div class="row">
+        <div class="col-md-7">
+            <br />
+            <label>Query</label>
+            <textarea id="util-open-query" cols="8" rows="5" class="form-control" style="resize: none; max-width: inherit;"></textarea>
+            <br />
+            <button class="btn btn-warning" id="util-open-execute">Execute</button>
+        </div>
+        <div class="col-md-5">
+            <br />
+            <label>Results</label>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('#util-search').on('click', function () {
+            var reqno = $('#util-reqno').val();
+            var zone = $('#util-zone').find(':selected').text();
+            $.ajax({
+                type: "POST",
+                url: Url + '/Administrator/OpenRequest/SearchReqNumber',
+                data: { reqno: reqno, zone: zone },
+                success: function (result) {
+                    if (result.status) {
+                        $('#tbodyId').empty();
+                        var xLength = result.data.length;
+                        $('#openReq tbody').append('<tr></tr>')
+                        for (var i = 0; i < xLength; i++) {
+                            $('#openReq tbody').append('<tr> ' +
+                            '<td>' + result.data[i].id + '</td>' +
+                            '<td>' + result.data[i].reqNumber + '</td>' +
+                            '<td>' + result.data[i].reqDate + '</td>' +
+                            '<td>' + result.data[i].reqCreator + '</td>' +
+                            '<td>' + result.data[i].TypeID + '</td>' +
+                            '<td>' + result.data[i].BranchCode + '</td>' +
+                            '<td>' + result.data[i].Area + '</td>' +
+                            '<td>' + result.data[i].AreaCode + '</td>' +
+                            '<td>' + result.data[i].DivCode + '</td>' +
+                            '<td>' + result.data[i].Region + '</td>' +
+                            '<td>' + result.data[i].ZoneCode + '</td>' +
+                            '<td>' + result.data[i].Status + '</td>' +
+                            '<td>' + result.data[i].SysCreated + '</td>' +
+                            '<td>' + result.data[i].SysCreator + '</td>' +
+                            '<td>' + result.data[i].ForPresident + '</td>' +
+                            '</tr>');
+                        }
+                    } else {
+                        $('#tbodyId').empty();
+                    }
+                },
+                error: function () {
+                    alert("Unable to process request.");
+                },
+            });
+        })
+
+        $('#util-open-execute').on('click', function () {
+            var query = $('#util-open-query').val();
+            $.ajax({
+                type: "POST",
+                url: Url + '/Administrator/OpenRequest/OpenExecuteQue',
+                data: { query: query },
+                success: function (result) {
+                    if (result.status) {
+                        alert(result.msg);
+                    } else {
+                        alert(result.msg);
+                    }
+                },
+                error: function () {
+                    alert("Unable to process request.");
+                },
+            });
+        });
+
+    </script>
+}

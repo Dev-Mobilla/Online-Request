@@ -1,0 +1,87 @@
+﻿@model OnlineRequestSystem.Models.RequestTypeInfo
+
+@using (Ajax.BeginForm("AddRequestType", "MMD", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }))
+{
+    <div id="_AddRequestType" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content jumbotron">
+                <div class="modal-header ORSHeading orHeader">
+                    <button type="button" class="close" data-dismiss="modal"></button>
+                    <b><span>CREATE NEW REQUEST TYPE</span></b>
+                </div>
+                <div class="modal-body">
+                    <b>Request type Name:</b>
+                    @Html.TextBoxFor(x => x.RequestType, new { @class = "form-control", @required = "required", @placeholder = "Enter Request type name" }) @Html.ValidationMessageFor(x => x.RequestType)
+                    <br />
+                    <b>Approval:</b>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            Area Manager
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isAMApproval, new { @class = "AM", style = "height:20px;width:40px;" })
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Regional Manager
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isRMApproval, new { @class = "RM", style = "height:20px;width:40px;", @checked = "checked" })
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Vice President
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isGMApproval, new { @class = "GM", style = "height:20px;width:40px;" })
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Division Manager
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isDivManApproval, new { style = "height:20px;width:40px;", id = "forDiv1" })
+                            </div>
+                        </li>
+                        <li class="list-group-item" id="Div1">
+                            <i>Division 1</i>
+                            <div class="pull-right">
+                                @Html.DropDownListFor(m => m.DivCode1, Model.ListOfDivision, "Select Division", new { @class = "ForDP", @required = "required", @id = "DPdiv1" })
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Division Manager 2
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isDivManApproval2, new { style = "height:20px;width:40px;", id = "forDiv2" })
+                            </div>
+                        </li>
+                        <li class="list-group-item" id="Div2">
+                            <i>Division 2 </i>
+                            <div class="pull-right">
+                                @Html.DropDownListFor(m => m.DivCode2, Model.ListOfDivision, "Select Division", new { @class = "ForDP", @required = "required", @id = "DPdiv2" })
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            Division Manager 3
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isDivManApproval3, new { style = "height:20px;width:40px;", id = "forDiv3" })
+                            </div>
+                        </li>
+                        <li class="list-group-item" id="Div3">
+                            <i>Division 3</i>
+                            <div class="pull-right">
+                                @Html.DropDownListFor(m => m.DivCode3, Model.ListOfDivision, "Select Division", new { @class = "ForDP", @required = "required", @id = "DPdiv3" })
+                            </div>
+                        </li>
+                        <li class="list-group-item" id="Pres">
+                            President
+                            <div class="pull-right">
+                                @Html.CheckBoxFor(x => x.isPresidentApproval, new { style = "height:20px;width:40px;" })
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="sub" class="qabutton btn btn-sm btn-danger orHeader">Create new type</button>
+                    <button class="qabutton btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

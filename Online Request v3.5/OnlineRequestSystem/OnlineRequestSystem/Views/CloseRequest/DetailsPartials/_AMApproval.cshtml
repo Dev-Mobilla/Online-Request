@@ -1,0 +1,98 @@
+﻿@model OnlineRequestSystem.Models.CloseRequest
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+@if (Model.reqStatus != "DISAPPROVED")
+{
+    <div class="col-md-12">
+        @if (Model.isAMApproval == 1)
+        {
+            <div class="col-md-6">
+                @if (mySession.s_job_title == "AREA MANAGER")
+                {
+                    if (Model.Sts_AM_isApproved == "1")
+                    {
+                        <label>Area Manager Approval&nbsp;&nbsp;<span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approver: </span> @Model.E_AMName
+                        <br />
+                        <span>Date Approved: </span> @Model.E_AMDate
+                        @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly", @title = "Testing ra" })
+                    }
+                    else
+                    {
+                                                <label>Area Manager Approval&nbsp;&nbsp;<span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approver: </span> @Model.E_AMName
+                        <br />
+                        <span>Date Approved: </span> @Model.E_AMDate
+                        @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly", @title = "Testing ra" })
+                    }
+                }
+                else
+                {
+                    if (Model.Sts_AM_isApproved == "1")
+                    {
+                        <label>Area Manager Approval&nbsp;&nbsp;<span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_AMName
+                        <br />
+                        <span>Approved Date: </span> @Model.E_AMDate
+                        @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Sts_AM_isApproved, new { @Value = Model.Sts_AM_isApproved, @style = "display:none;" })
+                        <label>Area Manager Approval</label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_AMName
+                        <br />
+                        <span>Approved Date: </span> @Model.E_AMDate
+                        @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+
+                }
+                <hr style="border-bottom:1px solid #808080" />
+            </div>
+        }
+    </div>
+}
+else
+{
+    if (Model.isAMApproval == 1)
+    {
+        <div class="col-md-12">
+            <div class="col-md-6">
+                @if (Model.Sts_AM_isApproved == "1")
+                {
+                    <label>Area Manager Approval&nbsp;&nbsp;<span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                    <br />
+                    <span>Approved by: </span> @Model.E_AMName
+                    <br />
+                    <span>Approved Date: </span> @Model.E_AMDate
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                else if (Model.Remarks == Model.E_AMRemarks)
+                {
+                    @Html.TextBoxFor(m => m.Sts_AM_isApproved, new { @Value = Model.Sts_AM_isApproved, @style = "display:none;" })
+                    <label>Area Manager Approval <span style="color:red;" class="glyphicon glyphicon-remove"></span></label>
+                    <br />
+                    <span>Disapproved by: </span> @Model.ClosedBy
+                    <br />
+                    <span>Disapproved Date: </span> @Model.ClosedDate
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                else
+                {
+                    <label>Area Manager Approval</label>
+                    <br />
+                    <span>Approved by: </span>
+                    <br />
+                    <span>Approved Date: </span>
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                <hr style="border-bottom:1px solid #808080" />
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Request</title>
+    <link rel="icon" href="~/Content/images/Diamante.png">
+    @Styles.Render("~/Content/css")
+    <meta name="description" content="Mlhuillier - Online Request System is a web-based system where MMD requests are automated via web portal." />
+    <script type="text/javascript">
+        var Url = '@Request.ApplicationPath';
+        if (Url == '/OnlineRequestSystem') {
+            Url = '/OnlineRequestSystem/';
+        } else {
+            Url = "";
+        }
+    </script>
+</head>
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top headBoxshadow">
+        <div style="padding:0 50px 0 50px;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav" >
+                    <li>
+                        @Html.ActionLink("Open Request", "OpenRequest", "OpenRequest", new { Area = "Administrator" }, null)
+                    </li>
+                    @*<li>
+                        @Html.ActionLink("Escalation", "Escalation", "Escalation", new { area = "Administrator" }, null)
+                    </li>*@
+                    <li>
+                        @Html.ActionLink("Request Items", "RequestItems", "RequestItems", new { area = "Administrator" }, null)
+                    </li>
+                    <li>
+                        @Html.ActionLink("Approver Status", "ApproverStatus", "ApproverStatus", new { area = "Administrator" }, null)
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                @Html.ActionLink("Exit", "Logout", "Userlogin", new { area = "" }, null)
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <footer data-role="footer" data-position="fixed" class="navbar-fixed-bottom" style="z-index: -1;">
+            <div style="font-size:10px;height:15px;">
+                <center><p>M.LHUILLIER FINANCIAL SERVICES, INC.</p></center>
+            </div>
+        </footer>
+    </div>
+
+    @{ Html.RenderPartial("~/Views/Shared/_Loader.cshtml");}
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/modernizr")
+    @*<script src="~/Scripts/SourceNotAllowed.js"></script>*@
+    @RenderSection("scripts", required: false)
+    @RenderSection("tableCss", required: false)
+    <script src="~/Scripts/Loaders/loaders.js"></script>
+</body>
+</html>

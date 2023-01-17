@@ -1,0 +1,169 @@
+﻿@model OnlineRequestSystem.Models.OpenReqInfo
+@{
+    ViewBag.Title = "ViewOpenRequest";
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+<div style="padding-top:7px;"></div>
+<table class="table-hover table_data" id="MMDOpenRequest" cellspacing="0">
+    <thead>
+        <tr>
+            <th><center>Select</center></th>
+            <th class="col-sm-1"><center>Date</center></th>
+            <th class="col-sm-2"><center>Request no.</center></th>
+            <th class="col-sm-3"><center>Types</center></th>
+            <th class="col-sm-2">Branch/Division</th>
+            <th class="col-sm-2">Author</th>
+            <th class="col-sm-3">Region</th>
+        </tr>
+    </thead>
+    <tbody style="font-size:12px;">
+        @if (Model._OpenInfo != null)
+        {
+            foreach (var item in Model._OpenInfo)
+            {
+                if (item.reqStatus == "OPEN")
+                {
+                    if (item.forPresident == "0")
+                    {
+                        if (item.isDivRequest == "0") // -- Display Branch Requests
+                        {
+                            if (item.result_AM == 1 && item.result_RM == 1 && item.result_Div1 == 1 && item.result_Div2 == 1 && item.result_Div3 == 1 &&
+                                item.result_GM == 1 && item.result_Pres == 1)
+                            {
+                                <tr class="cellspacer">
+                                    <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                    <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                    <td style="padding-left:20px;">@item.reqNumber</td>
+                                    <td style="padding-left:25px;">@item.TypeName</td>
+                                    <td style="padding-left:10px;">@item.BranchName</td>
+                                    <td>@item.reqCreator</td>
+                                    <td>
+                                        @item.Region
+                                        <span style="display:none;">@item.BranchCode</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        // -- Display Division Requests - FOR MMD department approver
+                        else if (mySession.s_isDepartmentApprover == 1 && item.isApprovedDM == 0 && item.DeptCode == mySession.s_costcenter)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:25px;">@item.TypeName</td>
+                                <td style="padding-left:10px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                        // -- Display Division Requests - FOR MMD division MANAGER approver
+                        else if (mySession.s_isDivisionApprover == 1 && item.isApprovedLocalDiv == 0 && item.isApprovedDM == 1 && item.DeptCode == mySession.s_costcenter)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:25px;">@item.TypeName</td>
+                                <td style="padding-left:10px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                        // -- Display request that MMD is a division approver in Div1
+                        else if (item.isApprovedDM == 1 && item.isApprovedLocalDiv == 1 && item.DivCode1 == mySession.s_DivisionID && item.isApprovedDiv1 == 0)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:25px;">@item.TypeName</td>
+                                <td style="padding-left:10px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                        // -- Display request that MMD is a division approver in Div2
+                        else if (item.isApprovedDM == 1 && item.isApprovedLocalDiv == 1 && item.DivCode2 == mySession.s_DivisionID && item.isApprovedDiv2 == 0 && item.isApprovedDiv1 == 1)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:25px;">@item.TypeName</td>
+                                <td style="padding-left:10px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                        // -- Display request that MMD is a division approver in Div3
+                        else if (item.isApprovedDM == 1 && item.isApprovedLocalDiv == 1 && item.DivCode3 == mySession.s_DivisionID && item.isApprovedDiv3 == 0 && item.isApprovedDiv2 == 1)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:25px;">@item.TypeName</td>
+                                <td style="padding-left:10px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            if (item.isApprovedLocalDiv == 1 && item.result_DM == 1 && item.result_Div1 == 1 && item.result_Div2 == 1 && item.result_Div3 == 1 || mySession.s_fullname == item.reqCreator)
+                            {
+                                <tr class="cellspacer">
+                                    <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                    <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                    <td style="padding-left:20px;">@item.reqNumber</td>
+                                    <td style="padding-left:25px;">@item.TypeName</td>
+                                    <td style="padding-left:10px;">@item.BranchName</td>
+                                    <td>@item.reqCreator</td>
+                                    <td>
+                                        @item.Region
+                                        <span style="display:none;">@item.BranchCode</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    // -- Display division managers request with approval of the President.
+                    else
+                    {
+                        if (item.isApprovedLocalDiv == 1 && item.result_DM == 1 && item.result_Div1 == 1 && item.result_Div2 == 1 && item.result_Div3 == 1 && item.isApprovedPres == 1 || mySession.s_fullname == item.reqCreator)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:25px;">@item.TypeName</td>
+                                <td style="padding-left:10px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+        }
+    </tbody>
+</table>
