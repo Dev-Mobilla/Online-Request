@@ -1,0 +1,260 @@
+﻿@model OnlineRequestSystem.Models.RequestTypeInfo
+@{
+    ViewBag.Title = "RequestType";
+    string ColorGreen = "style=" + "color:#ef4814;";
+}
+
+<br />
+<div class="col-md-12" style="width:1300px;margin-left:-6%;">
+    <div class="panel panel jumbotron boxShadow">
+        <div class="panel-heading ORSHeading orHeader">
+            <b><span>REQUEST TYPE</span></b>
+            <span>
+                @Html.ActionLink("+ Create Request type", "#", null, new { @data_toggle = "modal", @data_target = "#_AddRequestType", @class = "pull-right", @style = "color:white;" })
+            </span>
+        </div>
+        <div>
+            <div>
+                <br />
+                <table class="table-hover table-borderless col-md-12" id="RequestTable" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="cellspacer ">
+                            <th><center>Select</center></th>
+                            <th class="col-md-3"><center>Type</center></th>
+                            <th class="col-md-1"><center>AM Approval</center></th>
+                            <th class="col-md-1"><center>RM Approval</center></th>
+                            <th class="col-md-1"><center>VP Approval</center></th>
+                            <th class="col-md-2"><center>Division <br />Approval</center></th>
+                            <th class="col-md-2"><center>Division <br /> Approval 2</center></th>
+                            <th class="col-md-2"><center>Division <br /> Approval 3</center></th>
+                            <th class="col-md-1"><center>President</center></th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size:12px;">
+                        @foreach (var item in Model._RTInfo)
+                        {
+                            <tr class="cellspacer">
+                                <td>
+                                    <button type="button" class="qabutton Update btn btn-sm btn-danger" data-toggle="modal" data-value="@item.IDforUpdate" data-target="#_UpdateModal">Update</button>
+                                </td>
+                                <td class="col-md-3" style="padding-left:25px;">@item.RequestType</td>
+                                <td>
+                                    <center>
+                                        @if (item.isAMApproval == 1)
+                                        {
+                                            <span @ColorGreen class="glyphicon glyphicon-check"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        @if (item.isRMApproval == 1)
+                                        {
+                                            <span @ColorGreen class="glyphicon glyphicon-check"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        @if (item.isGMApproval == 1)
+                                        {
+                                            <span @ColorGreen class="glyphicon glyphicon-check"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                </td>
+
+                                <td>
+                                    <center>
+                                        @if (item.isDivManApproval == 1)
+                                        {
+
+                                            <span @ColorGreen class="glyphicon glyphicon-check" title="@item.DivName1.ToUpper()">
+                                            </span> @item.DivName1
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        @if (item.isDivManApproval2 == 1)
+                                        {
+                                            <span @ColorGreen class="glyphicon glyphicon-check" title="@item.DivName2.ToUpper()"></span>
+                                            @item.DivName2
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        @if (item.isDivManApproval3 == 1)
+                                        {
+                                            <span @ColorGreen class="glyphicon glyphicon-check" title="@item.DivName3.ToUpper()"></span>
+                                            @item.DivName3
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                </td>
+
+                                <td>
+                                    <center>
+                                        @if (item.isPresidentApproval == 1)
+                                        {
+                                            <span @ColorGreen class="glyphicon glyphicon-check"></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="glyphicon glyphicon-unchecked"></span>
+                                        }
+                                    </center>
+                                    <span style="display:none;" id="u1_@item.IDforUpdate">@item.IDforUpdate</span>
+                                    <span style="display:none;" id="u2_@item.IDforUpdate">@item.RequestType</span>
+                                    <span style="display:none;" id="u3_@item.IDforUpdate">@item.isAMApproval</span>
+                                    <span style="display:none;" id="u4_@item.IDforUpdate">@item.isRMApproval</span>
+                                    <span style="display:none;" id="u5_@item.IDforUpdate">@item.isGMApproval</span>
+                                    <span style="display:none;" id="u6_@item.IDforUpdate">@item.isDivManApproval</span>
+                                    <span style="display:none;" id="u7_@item.IDforUpdate">@item.isPresidentApproval</span>
+                                    <span style="display:none;" id="u8_@item.IDforUpdate">@item.isDivManApproval2</span>
+                                    <span style="display:none;" id="u9_@item.IDforUpdate">@item.isDivManApproval3</span>
+                                    <span style="display:none;" id="u10_@item.IDforUpdate">@item.DivName1</span>
+                                    <span style="display:none;" id="u11_@item.IDforUpdate">@item.DivName2</span>
+                                    <span style="display:none;" id="u12_@item.IDforUpdate">@item.DivName3</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Ajax.BeginForm("UpdateReqtype", "MMD", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }, new { @class = "form-horizontal" }))
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div id="_UpdateModal" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content jumbotron">
+                <div class="modal-header ORSHeading orHeader">
+                    <b><span>REQUEST TYPE UPDATE</span></b>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body">
+                        <b>Request Type Name:</b>
+                        @Html.TextBoxFor(x => x.RequestType, new { @class = "form-control", @required = "required" }) @Html.ValidationMessageFor(x => x.RequestType)
+                        <br />
+                        <b>Approval:</b>
+                        <ul class="list-group ">
+                            <li class="list-group-item">
+                                Area Manager
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isAMApproval, new { @class = "AM", style = "height:20px;width:40px;" })
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                Regional Manager
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isRMApproval, new { @class = "RM", style = "height:20px;width:40px;", @checked = "checked" })
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                Vice President
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isGMApproval, new { @class = "GM", style = "height:20px;width:40px;" })
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                Division Manager
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isDivManApproval, new { style = "height:20px;width:40px;", @id = "upCheckDiv1" })
+                                </div>
+                            </li>
+                            <li class="list-group-item" id="upDiv1">
+                                <i>Division 1</i>
+                                <div class="pull-right">
+                                    @Html.DropDownListFor(m => m.DivCode1, Model.ListOfDivision, "Select Division", new { @class = "ForDP", @required = "required", @id = "upDPdiv1" })
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                Division Manager 2
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isDivManApproval2, new { style = "height:20px;width:40px;", @id = "upCheckDiv2" })
+                                </div>
+                            </li>
+                            <li class="list-group-item" id="upDiv2">
+                                <i>Division 2 </i>
+                                <div class="pull-right">
+                                    @Html.DropDownListFor(m => m.DivCode2, Model.ListOfDivision, "Select Division", new { @class = "ForDP", @required = "required", @id = "upDPdiv2" })
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                Division Manager 3
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isDivManApproval3, new { style = "height:20px;width:40px;", @id = "upCheckDiv3" })
+                                </div>
+                            </li>
+                            <li class="list-group-item" id="upDiv3">
+                                <i>Division 3</i>
+                                <div class="pull-right">
+                                    @Html.DropDownListFor(m => m.DivCode3, Model.ListOfDivision, "Select Division", new { @class = "ForDP", @required = "required", @id = "upDPdiv3" })
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                President
+                                <div class="pull-right">
+                                    @Html.CheckBoxFor(x => x.isPresidentApproval, new { style = "height:20px;width:40px;" })
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <input name="id4update" hidden id="IDforUpdate" type="text" />
+                <div class="modal-footer">
+                    <button type="submit" id="sub" class="qabutton btn btn-sm btn-danger orHeader">Update</button>
+                    <button class="qabutton btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@Html.Partial("_AddRequestType")
+
+@section tableCss{
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/HDScripts/AddReqType.js"></script>
+    <script src="~/Scripts/table/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/table/dataTables.min.js"></script>
+    <script src="~/Scripts/bootbox.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#RequestTable').DataTable({
+                "order": [[0, "desc"]],
+                "bSort": false
+            });
+        });
+    </script>
+}

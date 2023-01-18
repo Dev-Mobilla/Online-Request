@@ -1,0 +1,152 @@
+﻿@model OnlineRequestSystem.Models.OpenReqInfo
+@{
+    ViewBag.Title = "ViewOpenRequest";
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+
+}
+<br />
+
+<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%;">
+    <div class="panel-heading ORSHeading">
+        <b class="orHeader">@Session["DivName"] REQUESTS</b>
+    </div>
+
+    <div style="padding-top:7px;"></div>
+    <table class="table-hover" id="DivisionOpenReq">
+        <thead>
+            <tr>
+                <th><center>Select</center></th>
+                <th class="col-sm-1"><center>Date</center></th>
+                <th class="col-sm-2"><center>Request no.</center></th>
+                <th class="col-sm-2"><center>Types</center></th>
+                <th style="width:6%">Count</th>
+                <th class="col-sm-1">Description</th>
+                <th class="col-sm-2">Branch/Division</th>
+                <th class="col-sm-2">Author</th>
+                <th class="col-sm-2">Region</th>
+            </tr>
+        </thead>
+        <tbody style="font-size:12px;">
+            @if (Model._OpenInfo != null)
+            {
+                foreach (var item in Model._OpenInfo)
+                {
+                    if (Model.approver == "dept")
+                    {
+                        <tr class="cellspacer">
+                            <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                            <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                            <td style="padding-left:20px;">@item.reqNumber</td>
+                            <td style="padding-left:15px;">@item.TypeName</td>
+                            <td style="padding-left:20px;">@item.TotalItems</td>
+                            <td style="padding-left:20px;">@item.itemDescription</td>
+                            <td style="padding-left:20px;">@item.BranchName</td>
+                            <td>@item.reqCreator</td>
+                            <td>
+                                @item.Region
+                                <span style="display:none;">@item.BranchCode</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        if (item.isApprovedLocalDiv == 0)
+                        {
+                            <tr class="cellspacer">
+                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                <td style="padding-left:20px;">@item.reqNumber</td>
+                                <td style="padding-left:15px;">@item.TypeName</td>
+                                <td style="padding-left:20px;">@item.TotalItems</td>
+                                <td style="padding-left:20px;">@item.itemDescription</td>
+                                <td style="padding-left:20px;">@item.BranchName</td>
+                                <td>@item.reqCreator</td>
+                                <td>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </td>
+                            </tr>
+                        }
+                        else if (item.isApprovedLocalDiv == 1)
+                        {
+                            if (item.DivCode1 == mySession.s_DivisionID && item.isApprovedDiv1 == 0)
+                            {
+                                <tr class="cellspacer">
+                                    <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                                    <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                    <td style="padding-left:20px;">@item.reqNumber</td>
+                                    <td style="padding-left:15px;">@item.TypeName</td>
+                                    <td style="padding-left:20px;">@item.TotalItems</td>
+                                    <td style="padding-left:20px;">@item.itemDescription</td>
+                                    <td style="padding-left:20px;">@item.BranchName</td>
+                                    <td>@item.reqCreator</td>
+                                    <td>
+                                        @item.Region
+                                        <span style="display:none;">@item.BranchCode</span>
+                                    </td>
+                                </tr>
+                            }
+                            else if (item.DivCode2 == mySession.s_DivisionID && item.isApprovedDiv2 == 0)
+                            {
+                                <tr class="cellspacer">
+                                    <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                                    <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                    <td style="padding-left:20px;">@item.reqNumber</td>
+                                    <td style="padding-left:15px;">@item.TypeName</td>
+                                    <td style="padding-left:20px;">@item.TotalItems</td>
+                                    <td style="padding-left:20px;">@item.itemDescription</td>
+                                    <td style="padding-left:20px;">@item.BranchName</td>
+                                    <td>@item.reqCreator</td>
+                                    <td>
+                                        @item.Region
+                                        <span style="display:none;">@item.BranchCode</span>
+                                    </td>
+                                </tr>
+                            }
+                            else if (item.DivCode3 == mySession.s_DivisionID && item.isApprovedDiv3 == 0)
+                            {
+                                <tr class="cellspacer">
+                                    <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                                    <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                                    <td style="padding-left:20px;">@item.reqNumber</td>
+                                    <td style="padding-left:15px;">@item.TypeName</td>
+                                    <td style="padding-left:20px;">@item.TotalItems</td>
+                                    <td style="padding-left:20px;">@item.itemDescription</td>
+                                    <td style="padding-left:20px;">@item.BranchName</td>
+                                    <td>@item.reqCreator</td>
+                                    <td>
+                                        @item.Region
+                                        <span style="display:none;">@item.BranchCode</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section tableCss{
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/openrequestlibraries")
+
+    @Scripts.Render("~/bundles/openrequests")
+    <script>
+        $('.chkBox').each(function () {
+            this.checked = false;
+        });
+        var clssCount = $('.chkBox').length;
+        $(document).ready(function () {
+            $(".checkAll").click(function () {
+                $('.chkBox:checkbox').not(this).prop('checked', this.checked);
+            });
+        });
+    </script>
+}

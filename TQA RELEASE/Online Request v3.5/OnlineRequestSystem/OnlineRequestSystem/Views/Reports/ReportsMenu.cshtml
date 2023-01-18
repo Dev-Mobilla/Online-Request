@@ -1,0 +1,154 @@
+﻿@model OnlineRequestSystem.Models.ReportViewModel
+@{
+    ViewBag.Title = "ReportsMenu";
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+
+<br />
+@using (Html.BeginForm(Model.BeginFormMethod, "Reports", null, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="panel panel jumbotron boxShadow">
+            <div class="panel-heading ORSHeading">
+                <b class="orHeader"><span>@Model.reportType.ToUpper() REPORT </span></b>
+            </div>
+            <div class="panel">
+                <center>
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs" style="color:black;">
+                            <li class="active"><a href="#Branch" data-toggle="tab" id="Tabb">Branch</a></li>
+                            <li><a href="#Division" data-toggle="tab" id="Tabb">Division</a></li>
+                            <li><a href="#Area" data-toggle="tab" id="Tabb">Per Area</a></li>
+                            <li><a href="#Region" data-toggle="tab" id="Tabb">Per Region</a></li>
+                        </ul>
+                    </div>
+                </center>
+                <div class="panel-body">
+                    <label>Select Type of Requests</label>
+                    <select name="Category" class="form-control">
+                        <option value="Open">Open Requests</option>
+                        <option value="Close">Closed Requests</option>
+                    </select>
+                    <br />
+                    <input type="text" name="type" value="@Model.reportType" hidden />
+                    @if (Model.reportType == "daily")
+                    {
+                        <div class="form-inline">
+                            <span>From: </span>
+                            <input name="dailyFrom" type="text" class="form-control" id="pickdateFrom" placeholder="mm-dd-yyyy" style="width:110px" required autocomplete="off" />
+
+                            <span>To: </span>
+                            <input name="dailyTo" type="text" class="form-control" id="pickdateTo" placeholder="mm-dd-yyyy" style="width:110px" required autocomplete="off" />
+                        </div>
+                    }
+                    else if (Model.reportType == "monthly")
+                    {
+                        <style>
+                            .ui-datepicker-calendar {
+                                display: none;
+                            }
+                        </style>
+                        <span>Select Month</span>
+                        <br />
+                        <input name="monthlyDate" id="startDate" class="date-picker form-control" placeholder="Click to select month" required autocomplete="off" />
+                    }
+                    <br />
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="Branch">
+                            <label>   Select Branch</label>
+                            @Html.DropDownListFor(m => m.branch, Model.ListBranches, "-", new { @class = "form-control Dp", @id = "SelectedBranch" , @name = "dppp"})
+                            <div>
+                                <br />
+                                <center>
+                                    <button id="submitBranch" class="btn btn-sm btn-danger" type="submit" name="Selected" value="Branch" onclick="return BranchValidate()"><i class="fa fa-download"></i>&nbsp;&nbsp;Generate&nbsp;</button>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Division">
+                            <label>Select Division</label>
+                            @Html.DropDownListFor(m => m.division, Model.ListDivision, "-", new { @class = "form-control Dp", @id = "SelectedDivision", @name = "dppp" })
+                            <div>
+                                <br />
+                                <center>
+                                    <button id="submitDivision" class="btn btn-sm btn-danger" type="submit" name="Selected" value="Division" onclick="return DivisionValidate()"><i class="fa fa-download"></i>&nbsp;&nbsp;Generate&nbsp;</button>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Area">
+                            <label>Select Area</label>
+                            @Html.DropDownListFor(m => m.area, Model.ListArea, "-", new { @class = "form-control Dp", @id = "SelectedArea", @name = "dppp" })
+                            <div>
+                                <br />
+                                <center>
+                                    <button id="submitArea" class="btn btn-sm btn-danger" type="submit" name="Selected" value="Area" onclick="return AreaValidate()"><i class="fa fa-download"></i>&nbsp;&nbsp;Generate&nbsp;</button>
+                                </center>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Region">
+                            <label> Select Region</label>
+                            @Html.DropDownListFor(m => m.region, Model.ListRegions, "-", new { @class = "form-control Dp", @id = "SelectedRegion", @name = "dppp" })
+                            <div>
+                                <br />
+                                <center>
+                                    <button id="submitRegion" class="btn btn-sm btn-danger" type="submit" name="Selected" value="Region" onclick="return RegionValidate()"><i class="fa fa-download"></i>&nbsp;&nbsp;Generate&nbsp;</button>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.TextBoxFor(m => m.NoDataFound, new { @style = "display:none;", @id = "Err" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3"></div>
+}
+@section tableCss{
+    <link rel="stylesheet" href="~/Content/bootstrap-datepicker.min.css" />
+}
+
+@section scripts{
+    <script src="~/Scripts/Reports/ReportMenu.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Resp = $('#Err').val();
+            if (Resp == "NoData") {
+                $('#loginmodalword').html('No Data found.');
+                $('#loginmodal').modal('show');
+            }
+        });
+        function BranchValidate() {
+            x = document.getElementById("SelectedBranch").value;
+            if (x == "" || x == null) {
+                $('#loginmodalword').html('Please Select Branch.');
+                $('#loginmodal').modal('show');
+                return false;
+            }
+        };
+        function DivisionValidate() {
+            x = document.getElementById("SelectedDivision").value;
+            if (x == "" || x == null) {
+                $('#loginmodalword').html('Please Select Division.');
+                $('#loginmodal').modal('show');
+                return false;
+            }
+        };
+        function AreaValidate() {
+            x = document.getElementById("SelectedArea").value;
+            if (x == "" || x == null) {
+                $('#loginmodalword').html('Please Select Area.');
+                $('#loginmodal').modal('show');
+                return false;
+            }
+        };
+        function RegionValidate() {
+            x = document.getElementById("SelectedRegion").value;
+            if (x == "" || x == null) {
+                $('#loginmodalword').html('Please Select Region.');
+                $('#loginmodal').modal('show');
+                return false;
+            }
+        };
+    </script>
+}

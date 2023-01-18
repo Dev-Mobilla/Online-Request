@@ -1,0 +1,101 @@
+﻿@model OnlineRequestSystem.Models.OpenReqInfo
+
+@{
+    ViewBag.Title = "viewMMDStatus";
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+    var forProcessPO = ViewBag.forProcessPO;
+}
+<br />
+<div class="jumbotron boxShadow" style="width:1300px;margin-left:-6%;">
+    <div class="panel-heading ORSHeading">
+        <b class="orHeader">@ViewBag.Msg</b>
+        @using (Html.BeginForm("viewMMDStatus", "MMD", FormMethod.Post, new { @class = "pull-right" }))
+        {
+            if ((new[] { "0001MMD", "0002MMD", }).Contains(mySession.s_costcenter))
+            {
+                <span>
+                    <button style="color:black;" onclick="load()" type="submit" name="selected" value="PROCESSED PO">Processed PO</button>
+                    <button style="color:black;" onclick="load()" type="submit" name="selected" value="RECEIVED FROM SUPPLIER">Received From Supplier</button>
+                    <button style="color:black;" onclick="load()" type="submit" name="selected" value="IN TRANSIT-SDC">In Transit - SDC</button>
+                </span>
+            }
+        }
+    </div>
+    <div>
+        <div style="padding-top:7px;"></div>
+        <table id="MMDprocesses" class="table-hover table_data">
+            <thead>
+                <tr>
+                    <th><center>Select</center></th>
+                    <th class="col-sm-1"><center>Date</center></th>
+                    <th class="col-sm-2"><center>Request no.</center></th>
+                    <th class="col-sm-3"><center>Types</center></th>
+                    <th class="col-sm-2">Branch/Division</th>
+                    <th class="col-sm-2">Author</th>
+                    <th class="col-sm-2">Region</th>
+                </tr>
+            </thead>
+            <tbody style="font-size:12px;">
+                @foreach (var item in Model._OpenInfo)
+                {
+                    if (forProcessPO != null)
+                    {
+                        <tr class="cellspacer">
+                            <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                            <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                            <td style="padding-left:20px;">@item.reqNumber</td>
+                            <td style="padding-left:25px;">@item.TypeName</td>
+                            <td style="padding-left:10px;">@item.BranchName</td>
+                            <td>@item.reqCreator</td>
+                            <td>
+                                @item.Region
+                                <span style="display:none;">@item.BranchCode</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="cellspacer">
+                            <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                            <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                            <td style="padding-left:20px;">@item.reqNumber</td>
+                            <td style="padding-left:25px;">@item.TypeName</td>
+                            <td style="padding-left:10px;">@item.BranchName</td>
+                            <td>@item.reqCreator</td>
+                            <td>
+                                @item.Region
+                                <span style="display:none;">@item.BranchCode</span>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section tableCss{
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/Scripts/table/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/table/dataTables.min.js"></script>
+    <script>
+        $('#MMDprocesses').DataTable({
+            "order": [[0, "desc"]], "bSort": false, stateSave: true
+        });
+
+        $(".table_link").on("click", function () {
+            $('#MMDprocesses').DataTable().state.clear();
+        });
+
+        function load() {
+            var dialog = bootbox.dialog({
+                message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp; Please wait..</p>',
+                closeButton: false
+            });
+        }
+    </script>
+}

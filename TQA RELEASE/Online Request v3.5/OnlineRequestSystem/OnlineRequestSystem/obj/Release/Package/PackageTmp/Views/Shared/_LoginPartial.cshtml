@@ -1,0 +1,25 @@
+﻿@using OnlineRequestSystem.Models;
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        @{
+            var model = (ORSession)Session["UserSession"];
+            if (model == null)
+            {
+                Response.Redirect("/Userlogin/Login");
+            }
+            else
+            {
+                var nn = model.s_fullname;
+                <a href="#" style="color:black;"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;@nn.ToString()</a>
+            }
+        }
+    </li>
+
+    <li>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+               @Html.ActionLink("Logout", "#", null, new { @data_toggle = "modal", @data_target = "#_Logout", @style = "color:black;" })
+            </li>
+        </ul>
+    </li>
+</ul>

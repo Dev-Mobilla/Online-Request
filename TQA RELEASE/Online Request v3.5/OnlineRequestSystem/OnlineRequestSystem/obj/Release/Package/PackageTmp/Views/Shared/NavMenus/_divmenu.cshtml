@@ -1,0 +1,19 @@
+﻿<li class="menu-item dropdown">
+    <a href="#" style="color:black;" class="dropdown-toggle" data-toggle="dropdown">
+        Open Requests&nbsp;<b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a onclick="loadClick('Normal')" href="@Url.Action("Div_BranchRequests", "OpenRequest")"> Branch Requests</a>
+        </li>
+        <li>
+            <a onclick="loadClick('Normal')" href="@Url.Action("Div_HORequests", "OpenRequest")"> Head Office Requests</a>
+        </li>
+        <li>
+            <a onclick="loadClick('Normal')" href="@Url.Action("LocalRequests", "OpenRequest")"> @Session["DivName"] Requests</a>
+        </li>
+        <li>
+            <a onclick="loadClick('Normal')" href="@Url.Action("MyRequests", "OpenRequest")"> My Requests</a>
+        </li>
+    </ul>
+</li>
