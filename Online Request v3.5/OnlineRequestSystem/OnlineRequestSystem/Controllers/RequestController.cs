@@ -531,7 +531,18 @@ namespace OnlineRequestSystem.Controllers
 
         private ActionResult CashRequestRedirect(dynamic approvers, string encryptedUser, ORSession mySession)
         {
-            return Redirect("http://127.0.0.1:8080/#/home?fullname=" +
+//             return Redirect("http://127.0.0.1:8080/#/home?fullname=" +
+//                mySession.s_fullname.ToString() + "&" + "userId=" + mySession.s_usr_id.ToString() + "&" + "resId=" + mySession.s_res_id.ToString() +
+//                 "&" + "jobTitle=" + mySession.s_job_title.ToString() +
+//                 "&" + "task=" + mySession.s_task.ToString() + "&" + "zonecode=" + mySession.s_zonecode.ToString() +
+//                "&" + "bedrnm=" + mySession.s_bedrnm.ToString() + "&" + "area=" + mySession.s_area.ToString() +
+//                 "&" + "region=" + mySession.s_region.ToString() + "&" + "areaCode=" + mySession.s_areaCode + "&" + "amName=" + approvers.AmName.ToString() +
+//                 "&" + "rmName=" + approvers.RmName.ToString() + "&" + "ramName=" + approvers.RamName.ToString() + "&" + "asstName=" + approvers.GmoGenAsstName.ToString() +
+//                 "&" + "vpoName=" + approvers.GmoGenName.ToString() + "&" + "token=" + encryptedUser
+
+//            );
+
+            return Redirect("http://10.4.8.168:3000/#/home?fullname=" +
                mySession.s_fullname.ToString() + "&" + "userId=" + mySession.s_usr_id.ToString() + "&" + "resId=" + mySession.s_res_id.ToString() +
                 "&" + "jobTitle=" + mySession.s_job_title.ToString() +
                 "&" + "task=" + mySession.s_task.ToString() + "&" + "zonecode=" + mySession.s_zonecode.ToString() +
@@ -540,18 +551,7 @@ namespace OnlineRequestSystem.Controllers
                 "&" + "rmName=" + approvers.RmName.ToString() + "&" + "ramName=" + approvers.RamName.ToString() + "&" + "asstName=" + approvers.GmoGenAsstName.ToString() +
                 "&" + "vpoName=" + approvers.GmoGenName.ToString() + "&" + "token=" + encryptedUser
 
-           );
-
-            //return Redirect("http://10.4.8.168:3000/#/home?fullname=" +
-            //    mySession.s_fullname.ToString() + "&" + "userId=" + mySession.s_usr_id.ToString() + "&" + "resId=" + mySession.s_res_id.ToString() +
-            //     "&" + "jobTitle=" + mySession.s_job_title.ToString() +
-            //     "&" + "task=" + mySession.s_task.ToString() + "&" + "zonecode=" + mySession.s_zonecode.ToString() +
-            //    "&" + "bedrnm=" + mySession.s_bedrnm.ToString() + "&" + "area=" + mySession.s_area.ToString() +
-            //     "&" + "region=" + mySession.s_region.ToString() + "&" + "areaCode=" + mySession.s_areaCode + "&" + "amName=" + approvers.AmName.ToString() +
-            //     "&" + "rmName=" + approvers.RmName.ToString() + "&" + "ramName=" + approvers.RamName.ToString() + "&" + "asstName=" + approvers.GmoGenAsstName.ToString() +
-            //     "&" + "vpoName=" + approvers.GmoGenName.ToString() + "&" + "token=" + encryptedUser
-
-            //);
+            );
         }
 
 
