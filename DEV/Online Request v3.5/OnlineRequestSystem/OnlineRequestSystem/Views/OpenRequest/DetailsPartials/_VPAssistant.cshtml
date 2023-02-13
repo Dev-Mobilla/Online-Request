@@ -24,7 +24,7 @@
                     @Html.TextBoxFor(m => m.E_VPAssistantName, new { @Value = mySession.s_fullname, @style = "display:none;" })
                     @Html.TextBoxFor(m => m.Sts_VPAssistant_isApproved, new { @Value = "1", @style = "display:none;" })
                     <label>VP Assistant Approval<b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_VPAssistantRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @placeholder = "Please Provide Remarks.." })
+                    @Html.TextAreaFor(m => m.E_VPAssistantRemarks, new { @class = "form-control", @rows = "3", @required = "required", @style = "resize:none;max-width:inherit;", @placeholder = "Please Provide Remarks.." })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_VPAssistantDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })

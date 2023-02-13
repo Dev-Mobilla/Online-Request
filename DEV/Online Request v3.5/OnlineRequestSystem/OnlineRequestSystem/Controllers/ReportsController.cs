@@ -403,7 +403,7 @@ namespace OnlineRequestSystem.Controllers
                         cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
                         cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
-                    else
+                    else if (Category == "Open")
                     {
                         if (Selected == "Branch")
                         {
@@ -427,6 +427,19 @@ namespace OnlineRequestSystem.Controllers
                         }
                         cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
                         cmd.Parameters.AddWithValue("@DateTo", DateTo);
+                    }
+                    else if (Category == "Approved")
+                    {
+
+                    }
+
+                    else if (Category == "Pending")
+                    {
+
+                    }
+                    else
+                    {
+
                     }
 
                     cmd.CommandText = query;

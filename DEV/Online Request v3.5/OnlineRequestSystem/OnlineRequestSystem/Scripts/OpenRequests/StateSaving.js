@@ -1,7 +1,4 @@
-﻿$('#MMDOpenRequest').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
-});
-$('#BMorOthers').DataTable({
+﻿$('#BMorOthers').DataTable({
     "order": [[0, "desc"]], "bSort": false, stateSave: true
 });
 $('#AMOpen').DataTable({

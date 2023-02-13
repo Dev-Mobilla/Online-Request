@@ -16,42 +16,56 @@
         </div>
     </div>
     <div style="padding-top:7px;"></div>
+    <input type="text" id="search_date_range" />
     <table class="table-hover" id="MMDOpenRequest">
         <thead>
             <tr>
                 <th><center>Select</center></th>
-                <th class="col-sm-1"><center>Date</center></th>
+                <th class="col-sm-1"><center style="width:130%">Date Created</center></th>
                 <th class="col-sm-2"><center>Request no.</center></th>
                 <th class="col-sm-2"><center>Types</center></th>
-                <th style="width:6%">Count</th>
-                <th class="col-sm-1">Description</th>
-                <th class="col-sm-2">Branch/Division</th>
-                <th class="col-sm-2">Author</th>
-                <th class="col-sm-3">Region</th>
-            </tr>
+                <th style="width:6%"><center>Count</center></th>
+                <th class="col-sm-1"><center>Price</center></th>
+                <th class="col-sm-1" style="width:10%"><center>Description</center></th>
+                <th class="col-sm-2"><center>Branch/Division</center></th>
+                <th class="col-sm-2"><center>Author</center></th>
+                <th class="col-sm-3"><center>Region</center></th>
+                <th class="col-sm-1"><center>Post</center></th>
         </thead>
         <tbody style="font-size:12px;">
             @if (Model._OpenInfo != null)
             {
                 foreach (var item in Model._OpenInfo)
                 {
-                    <tr class="cellspacer">
-                        <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></td>
-                        <td style="padding-left:20px;"><center>@item.reqDate</center></td>
-                        <td style="padding-left:20px;">@item.reqNumber</td>
-                        <td style="padding-left:15px;" title="@item.TypeName">@item.TypeName</td>
-                        <td style="padding-left:20px;">@item.TotalItems</td>
-                        <td style="padding-left:20px;">@item.itemDescription</td>
-                        <td style="padding-left:20px;">@item.BranchName</td>
-                        <td>@item.reqCreator</td>
-                        <td>
-                            @item.Region
-                            <span style="display:none;">@item.BranchCode</span>
-                        </td>
-                    </tr>
+            <tr class="cellspacer">
+                <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
+                <td><center>@item.reqDate</center></td>
+                <td><center>@item.reqNumber</center></td>
+                <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                <td><center>@item.TotalItems</center></td>
+                <td><center></center></td>
+                <td><center>@item.itemDescription</center></td>
+                <td><center>@item.BranchName</center></td>
+                <td><center>@item.reqCreator</center></td>
+                <td>
+                    <center>
+                        @item.Region
+                        <span style="display:none;">@item.BranchCode</span>
+                    </center>
+                </td>
+                <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+            </tr>
                 }
             }
+
         </tbody>
+        <tfoot>
+            <tr>
+                <td style="position:absolute;left:45%; font-weight:bold">
+                    Total: 
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -62,6 +76,6 @@
 @section scripts{
 
     @Scripts.Render("~/bundles/openrequestlibraries")
-  
+
     @Scripts.Render("~/bundles/openrequests")
 }

@@ -14,9 +14,9 @@ using System.Web.Mvc;
 using System.Web.Security;
 
 namespace OnlineRequestSystem.Controllers
-{    
+{
     public class OpenRequestController : Controller
-    {        
+    {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(OpenRequestController));
         private DateTime syscreated = DateTime.Now;
         private DateTime sysmodified = DateTime.Now;
@@ -49,23 +49,23 @@ namespace OnlineRequestSystem.Controllers
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "openReq_AM";
-                            cmd.Parameters.AddWithValue("@_area", ss.s_area);                            
+                            cmd.Parameters.AddWithValue("@_area", ss.s_area);
                         }
                         else if (ss.s_job_title == "REGIONAL MAN")
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "openReq_RM";
-                            cmd.Parameters.AddWithValue("@_region", ss.s_region);                         
+                            cmd.Parameters.AddWithValue("@_region", ss.s_region);
                         }
                         else if (ss.s_isDepartmentApprover == 1)
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
                             cmd.CommandText = "openReq_DeptApprover";
-                            cmd.Parameters.AddWithValue("@_costcenter", ss.s_costcenter);                       
+                            cmd.Parameters.AddWithValue("@_costcenter", ss.s_costcenter);
                         }
-                        else if (ss.s_isDivisionApprover == 1 && ss.s_task != "GMO-GENMAN" && ss.s_usr_id != "LHUI1011873" )
+                        else if (ss.s_isDivisionApprover == 1 && ss.s_task != "GMO-GENMAN" && ss.s_usr_id != "LHUI1011873")
                         {
-                            return RedirectToAction("Div_HORequests");                       
+                            return RedirectToAction("Div_HORequests");
                         }
                         else if (ss.s_task == "GMO-GENMAN")
                         {
@@ -92,7 +92,7 @@ namespace OnlineRequestSystem.Controllers
                             while (rdr.Read())
                             {
                                 var o = new OpenReqViewModel();
-                         
+
                                 o.reqNumber = rdr["reqNumber"].ToString().Trim();
                                 o.reqCreator = Culture.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                                 o.reqDescription = rdr["reqDescription"].ToString().Trim();
@@ -162,6 +162,13 @@ namespace OnlineRequestSystem.Controllers
                                 o.MMD_ForDelivery = Convert.ToInt32(rdr["isDelivered"]);
                                 o.MMD_InTransit = Convert.ToInt32(rdr["isMMDTransit"]);
 
+                                if (ss.s_usr_id == "LHUI1011873")
+                                {
+                                    o.VPO_PO_Approved = (rdr["isVPO_PO_Approved"] is DBNull) ? 0 : Convert.ToInt32(rdr["isVPO_PO_Approved"]);
+
+                                    o.Pres_PO_Approved = (rdr["isPres_PO_Approved"] is DBNull) ? 0 : Convert.ToInt32(rdr["isPres_PO_Approved"]);
+                                }
+
                                 OpenReqList.Add(o);
                             }
                         }
@@ -192,6 +199,7 @@ namespace OnlineRequestSystem.Controllers
             try
             {
                 var itemLists = new List<RequestItems>();
+                var commLists = new List<ShowAllComments>();
                 var db = new ORtoMySql();
                 var toTC = new CultureInfo("en-US", false).TextInfo;
 
@@ -266,12 +274,22 @@ namespace OnlineRequestSystem.Controllers
                                 model.Sts_VPAssistant_Approver = rdr["VPAssistant_Approver"].ToString().Trim();
                                 model.Sts_VPAssistant_Date = rdr["VPAssistant_Approved_Date"].ToString().Trim();
                                 model.Sts_VPAssistant_isApproved = rdr["isApprovedVPAssistant"].ToString().Trim();
+
+                                model.Sts_VPO_PO_Approver = rdr["VPO_PO_Approver"].ToString().Trim();
+                                model.Sts_VPO_PO_Date = rdr["VPO_PO_Approved_Date"].ToString().Trim();
+                                model.Sts_VPO_PO_isApproved = rdr["isVPO_PO_Approved"].ToString().Trim();
+                                model.Sts_Pres_PO_Approver = rdr["Pres_PO_Approver"].ToString().Trim();
+                                model.Sts_Pres_PO_Date = rdr["Pres_PO_Approved_Date"].ToString().Trim();
+                                model.Sts_Pres_PO_isApproved = rdr["isPres_PO_Approved"].ToString().Trim();
+                                model.PO_Approved = rdr["isPO_Approved"].ToString().Trim();
+
                                 model.Sts_GM_Approver = rdr["GM_Approver"].ToString().Trim();
                                 model.Sts_GM_Approved_Date = rdr["GM_Approved_Date"].ToString().Trim();
                                 model.Sts_GM_isApproved = rdr["isApprovedGM"].ToString().Trim();
                                 model.Sts_Pres_Approver = rdr["Pres_Approver"].ToString().Trim();
                                 model.Sts_Pres_Approved_Date = rdr["Pres_Approved_Date"].ToString().Trim();
                                 model.Sts_Pres_isApproved = rdr["isApprovedPres"].ToString().Trim();
+
                                 model.Sts_Div1_Approver = rdr["Div_Approver1"].ToString().Trim();
                                 model.Sts_Div1Code = rdr["DivCode1"].ToString().Trim();
                                 model.Sts_Div1_Approved_Date = rdr["Div_Approved_Date1"].ToString().Trim();
@@ -400,11 +418,40 @@ namespace OnlineRequestSystem.Controllers
                                 model.E_PresDate = rdr["EscalationPres_Date"].ToString().Trim();
                                 model.E_PresRemarks = rdr["EscalationPres_Remarks"].ToString().Trim();
 
+                                model.E_VPO_POName = rdr["EscalationVPO_PO_Name"].ToString().Trim();
+                                model.E_VPO_PODate = rdr["EscalationVPO_PO_Date"].ToString().Trim();
+                                model.E_VPO_PORemarks = rdr["EscalationVPO_PO_Remarks"].ToString().Trim();
+                                model.E_Pres_POName = rdr["EscalationPres_PO_Name"].ToString().Trim();
+                                model.E_Pres_PODate = rdr["EscalationPres_PO_Date"].ToString().Trim();
+                                model.E_Pres_PORemarks = rdr["EscalationPres_PO_Remarks"].ToString().Trim();
+
                                 #endregion Read Escalation Table
                             }
                             con.Close();
                             rdr.Close();
                         }
+
+                        cmd.CommandText = "SELECT * FROM OnlineRequest.storedComments WHERE reqNumber = @ReqNo ORDER BY commcreated DESC";
+                        cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                        con.Open();
+                        using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                var i = new ShowAllComments();
+                                i.comments = rdr["comments"].ToString().Trim();
+                                i.commCreator = rdr["commCreator"].ToString().Trim();
+                                i.commCreatorID = rdr["commCreatorID"].ToString().Trim();
+                                i.commcreated = rdr["commcreated"].ToString().Trim();
+
+                                commLists.Add(i);
+                            }
+                            con.Close();
+                            rdr.Close();
+                        }
+
+                        model.ShowComments = commLists;
+
                         cmd.CommandText = "SELECT * FROM requestType WHERE TypeID = @TypeID";
                         cmd.Parameters.AddWithValue("@TypeID", model.RequestType);
                         con.Open();
@@ -528,7 +575,7 @@ namespace OnlineRequestSystem.Controllers
                 var que = new OpenQueries();
                 var Info = new OpenReqInfo();
                 var OpenReqList = new List<OpenReqViewModel>();
-                Info._OpenInfo = OpenReqList;             
+                Info._OpenInfo = OpenReqList;
                 Info = que.BranchRequests(ss, "Div");
                 ViewBag.headTxt = "BRANCH REQUESTS";
                 Info.returnUrl = "branch-open-requests";
@@ -566,6 +613,8 @@ namespace OnlineRequestSystem.Controllers
             }
         }
 
+
+
         [Route("mmd-ho-requests")]
         public ActionResult MMD_HORequests()
         {
@@ -574,7 +623,7 @@ namespace OnlineRequestSystem.Controllers
             try
             {
                 var que = new OpenQueries();
-                var Info = new OpenReqInfo();            
+                var Info = new OpenReqInfo();
                 ViewBag.headTxt = "HEAD OFFICE REQUESTS";
                 Info = que.MMD_HORequests(ss);
                 Info.office = "division";
@@ -684,7 +733,7 @@ namespace OnlineRequestSystem.Controllers
                 Info._OpenInfo = OpenReqList;
                 Info = que.LocalRequests(ss, a);
                 Info.approver = a;
-                Info.returnUrl = "local-open-requests";               
+                Info.returnUrl = "local-open-requests";
                 return View("LocalRequests", Info);
             }
             catch (Exception x)

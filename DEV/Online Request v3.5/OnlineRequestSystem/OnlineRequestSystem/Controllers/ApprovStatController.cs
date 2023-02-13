@@ -33,7 +33,7 @@ namespace OnlineRequestSystem.Controllers
             var db = new ORtoMySql();
             try
             {
-                if (Aprv.Approver == "DM")
+                if (Aprv.Approver == "DM" && Aprv.ForPO == 0)
                 {
                     if (InsertApproveRequest(Aprv))
                     {
@@ -58,7 +58,7 @@ namespace OnlineRequestSystem.Controllers
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                if (Aprv.Approver == "LocalDiv")
+                if (Aprv.Approver == "LocalDiv" && Aprv.ForPO == 0)
                 {
                     if (InsertApproveRequest(Aprv))
                     {
@@ -83,7 +83,7 @@ namespace OnlineRequestSystem.Controllers
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                if (Recommended.isAMApproval == 1)
+                if (Recommended.isAMApproval == 1 && Aprv.ForPO == 0)
                 {
                     if (mySession.s_job_title == "AREA MANAGER")
                     {
@@ -113,7 +113,7 @@ namespace OnlineRequestSystem.Controllers
                         }
                     }
                 }
-                if (Recommended.isRMApproval == 1)
+                if (Recommended.isRMApproval == 1 && Aprv.ForPO == 0)
                 {
                     if (mySession.s_job_title == "REGIONAL MAN")
                     {
@@ -143,7 +143,7 @@ namespace OnlineRequestSystem.Controllers
                         }
                     }
                 }
-                if (mySession.s_job_title != "GMO-GENMAN" && Recommended.isDivManApproval == 1 || Recommended.isDivManApproval2 == 1 || Recommended.isDivManApproval3 == 1)
+                if (Aprv.ForPO == 0 && mySession.s_job_title != "GMO-GENMAN" && (Recommended.isDivManApproval == 1 || Recommended.isDivManApproval2 == 1 || Recommended.isDivManApproval3 == 1))
                 {
                     if (mySession.s_isDivisionApprover == 1)
                     {
@@ -176,7 +176,7 @@ namespace OnlineRequestSystem.Controllers
                     }
                 }
 
-                if (Recommended.isGMApproval == 1)
+                if (Recommended.isGMApproval == 1 || Aprv.ForPO == 1)
                 {
                     if (mySession.s_job_title == "GMO-GENMAN")
                     {
@@ -207,7 +207,7 @@ namespace OnlineRequestSystem.Controllers
                     }
                 }
 
-                if (Aprv.Approver == "VPAssistant")
+                if (Aprv.Approver == "VPAssistant" && Aprv.ForPO == 0)
                 {
                     if (InsertApproveRequest(Aprv))
                     {
@@ -234,7 +234,8 @@ namespace OnlineRequestSystem.Controllers
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                if (Recommended.isPresidentApproval == 1)
+
+                if (Recommended.isPresidentApproval == 1 || Aprv.ForPO == 1)
                 {
                     if (mySession.s_usr_id == "LHUI1011873")
                     {
@@ -265,7 +266,7 @@ namespace OnlineRequestSystem.Controllers
                     }
                 }
 
-                if (forPresident == "1")
+                if (forPresident == "1" || Aprv.ForPO == 1)
                 {
                     if (InsertApproveRequest(Aprv))
                     {
@@ -388,22 +389,48 @@ namespace OnlineRequestSystem.Controllers
                                 break;
 
                             case "GM":
-                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @E_GMName, EscalationGM_Date = @E_GMDate , EscalationGM_Remarks = @E_GMRemarks WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@E_GMName", Aprv.E_GMName);
-                                cmd.Parameters.AddWithValue("@E_GMDate", Convert.ToDateTime(Aprv.E_GMDate));
-                                if (Aprv.E_GMRemarks == "" || string.IsNullOrEmpty(Aprv.E_GMRemarks))
+                                if (Aprv.ForPO == 1)
                                 {
-                                    Aprv.E_GMRemarks = "Approved by Division Manager";
+                                    cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationVPO_PO_Name = @E_VPO_POName, EscalationVPO_PO_Date = @E_VPO_PODate , EscalationVPO_PO_Remarks = @E_VPO_PORemarks WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@E_VPO_POName", Aprv.E_VPO_POName);
+                                    cmd.Parameters.AddWithValue("@E_VPO_PODate", Convert.ToDateTime(Aprv.E_VPO_PODate));
+                                    if (Aprv.E_VPO_PORemarks == "" || string.IsNullOrEmpty(Aprv.E_VPO_PORemarks))
+                                    {
+                                        Aprv.E_VPO_PORemarks = "PO Approved by VPO";
+                                    }
+                                    cmd.Parameters.AddWithValue("@E_VPO_PORemarks", Aprv.E_VPO_PORemarks);
+                                    break;
                                 }
-                                cmd.Parameters.AddWithValue("@E_GMRemarks", Aprv.E_GMRemarks);
-                                break;
+                                else
+                                {
+                                    cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @E_GMName, EscalationGM_Date = @E_GMDate , EscalationGM_Remarks = @E_GMRemarks WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@E_GMName", Aprv.E_GMName);
+                                    cmd.Parameters.AddWithValue("@E_GMDate", Convert.ToDateTime(Aprv.E_GMDate));
+                                    if (Aprv.E_GMRemarks == "" || string.IsNullOrEmpty(Aprv.E_GMRemarks))
+                                    {
+                                        Aprv.E_GMRemarks = "Approved by Division Manager";
+                                    }
+                                    cmd.Parameters.AddWithValue("@E_GMRemarks", Aprv.E_GMRemarks);
+                                    break;
+                                }
 
                             case "Pres":
-                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_Name = @E_PresName, EscalationPres_Date = @E_PresDate , EscalationPres_Remarks = @E_PresRemarks WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@E_PresName", Aprv.E_PresName);
-                                cmd.Parameters.AddWithValue("@E_PresDate", Convert.ToDateTime(Aprv.E_PresDate));
-                                cmd.Parameters.AddWithValue("@E_PresRemarks", Aprv.E_PresRemarks);
-                                break;
+                                if (Aprv.ForPO == 1)
+                                {
+                                    cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_PO_Name = @E_Pres_POName, EscalationPres_PO_Date = @E_Pres_PODate , EscalationPres_PO_Remarks = @E_Pres_PORemarks WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@E_Pres_POName", Aprv.E_Pres_POName);
+                                    cmd.Parameters.AddWithValue("@E_Pres_PODate", Convert.ToDateTime(Aprv.E_Pres_PODate));
+                                    cmd.Parameters.AddWithValue("@E_Pres_PORemarks", Aprv.E_Pres_PORemarks);
+                                    break;
+                                }
+                                else
+                                {
+                                    cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_Name = @E_PresName, EscalationPres_Date = @E_PresDate , EscalationPres_Remarks = @E_PresRemarks WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@E_PresName", Aprv.E_PresName);
+                                    cmd.Parameters.AddWithValue("@E_PresDate", Convert.ToDateTime(Aprv.E_PresDate));
+                                    cmd.Parameters.AddWithValue("@E_PresRemarks", Aprv.E_PresRemarks);
+                                    break;
+                                }
 
                             case "Div1":
                                 cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @E_DivName , EscalationDiv_Date = @E_DivDate , EscalationDiv_Remarks = @E_DivRemarks WHERE reqNumber = @ReqNo";
@@ -485,9 +512,18 @@ namespace OnlineRequestSystem.Controllers
                             break;
 
                         case "GM":
-                            cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET GM_Approver = @Approver, GM_Approved_Date = @Date , isApprovedGM = @isApprovedGM WHERE reqNumber = @ReqNo";
-                            cmd.Parameters.AddWithValue("@isApprovedGM", Aprv.Sts_GM_isApproved);
-                            break;
+                            if (Aprv.ForPO == 1)
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET VPO_PO_Approver = @Approver, VPO_PO_Approved_Date = @Date , isVPO_PO_Approved = @isVPO_PO_Approved WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@isVPO_PO_Approved", Aprv.Sts_VPO_PO_isApproved);
+                                break;
+                            }
+                            else
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET GM_Approver = @Approver, GM_Approved_Date = @Date , isApprovedGM = @isApprovedGM WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@isApprovedGM", Aprv.Sts_GM_isApproved);
+                                break;
+                            }
 
                         case "Div1":
                             cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver1 = @Approver , DivCode1 = @DivCode , Div_Approved_Date1 = @Date , isApprovedDiv1 = @isApprovedDiv1 WHERE reqNumber = @ReqNo";
@@ -508,9 +544,19 @@ namespace OnlineRequestSystem.Controllers
                             break;
 
                         case "Pres":
-                            cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET Pres_Approver = @Approver , Pres_Approved_Date = @Date , isApprovedPres = @isApprovedPres WHERE reqNumber = @ReqNo";
-                            cmd.Parameters.AddWithValue("isApprovedPres", Aprv.Sts_Pres_isApproved);
-                            break;
+                            if (Aprv.ForPO == 1)
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET Pres_PO_Approver = @Approver , Pres_PO_Approved_Date = @Date , isPres_PO_Approved = @isPres_PO_Approved , isPO_Approved = @isPOApproved WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@isPres_PO_Approved", Aprv.Sts_Pres_PO_isApproved);
+                                cmd.Parameters.AddWithValue("@isPOApproved", 1);
+                                break;
+                            }
+                            else
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET Pres_Approver = @Approver , Pres_Approved_Date = @Date , isApprovedPres = @isApprovedPres WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@isApprovedPres", Aprv.Sts_Pres_isApproved);
+                                break;
+                            }
                     }
                     cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
                     cmd.Parameters.AddWithValue("@Approver", mySession.s_usr_id);

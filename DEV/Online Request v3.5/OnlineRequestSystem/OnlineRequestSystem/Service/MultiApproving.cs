@@ -171,7 +171,7 @@ namespace OnlineRequestSystem.Service
                         string RequestNo = objects[i].ToString();
                         object[] data = GetOpenRequestData(RequestNo);
                         if (data[6].ToString() == "0" && data[0].ToString() == ss.s_costcenter)
-                        {    
+                        {
                             #region Update Local Division Approver
 
                             string UpdateLocalDiv = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationLocalDiv_Name = @approver, EscalationLocalDiv_Date = @datenow, EscalationLocalDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -224,7 +224,7 @@ namespace OnlineRequestSystem.Service
                                 #endregion Update Division Approver 1
                             }
                             if (data[3].ToString() == ss.s_DivisionID)
-                            { 
+                            {
                                 #region Update Division Approver 2
 
                                 string UpdateDiv2 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv2_Name = @approver, EscalationDiv2_Date = @datenow, EscalationDiv2_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -251,7 +251,7 @@ namespace OnlineRequestSystem.Service
                                 #endregion Update Division Approver 2
                             }
                             if (data[4].ToString() == ss.s_DivisionID)
-                            { 
+                            {
                                 #region Update Division Approver 3
 
                                 string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -281,7 +281,7 @@ namespace OnlineRequestSystem.Service
                         else
                         {
                             if (data[2].ToString() == ss.s_DivisionID)
-                            { 
+                            {
                                 #region Update Division Approver 1
 
                                 string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -308,7 +308,7 @@ namespace OnlineRequestSystem.Service
                                 #endregion Update Division Approver 1
                             }
                             if (data[3].ToString() == ss.s_DivisionID)
-                            { 
+                            {
                                 #region Update Division Approver 2
 
                                 string UpdateDiv2 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv2_Name = @approver, EscalationDiv2_Date = @datenow, EscalationDiv2_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -335,7 +335,7 @@ namespace OnlineRequestSystem.Service
                                 #endregion Update Division Approver 2
                             }
                             if (data[4].ToString() == ss.s_DivisionID)
-                            { 
+                            {
                                 #region Update Division Approver 3
 
                                 string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -377,7 +377,7 @@ namespace OnlineRequestSystem.Service
         {
             try
             {
-                object[] data = new object[11];
+                object[] data = new object[12];
                 var db = new ORtoMySql();
                 using (var conn = db.getConnection())
                 {
@@ -385,7 +385,8 @@ namespace OnlineRequestSystem.Service
                     using (var cmd = conn.CreateCommand())
                     {
                         String x = " SELECT a.reqNumber, a.reqCreator, a.TypeID, a.DeptCode, a.isDivRequest, " +
-                                   " b.DivCode1, b.DivCode2, b.DivCode3,c.isApprovedDM, c.isApprovedLocalDiv, c.isApprovedDiv1, c.isApprovedDiv2, c.isApprovedDiv3 ,forPresident" +
+                                   " b.DivCode1, b.DivCode2, b.DivCode3,c.isApprovedDM, c.isApprovedLocalDiv, c.isApprovedDiv1, c.isApprovedDiv2, c.isApprovedDiv3 , forPresident," +
+                                   " c.isMMDProcessed" +
                                    " FROM onlineRequest_Open a " +
                                    " INNER JOIN requestType b ON a.TypeID = b.TypeID " +
                                    " INNER JOIN requestApproverStatus c ON c.reqNumber = a.reqNumber " +
@@ -411,6 +412,7 @@ namespace OnlineRequestSystem.Service
                                 data[8] = read["isApprovedDiv2"].ToString().Trim();
                                 data[9] = read["isApprovedDiv3"].ToString().Trim();
                                 data[10] = read["forPresident"].ToString().Trim();
+                                data[11] = read["isMMDProcessed"].ToString().Trim();
 
                                 #endregion Retrieve data from database
                             }
@@ -453,7 +455,7 @@ namespace OnlineRequestSystem.Service
                         cmd.CommandText = " UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationVPAssistant = @EApprover, EscalationVPAssistant_Date = @EDatenow, EscalationVPAssistant_Remarks = @ERemarks WHERE reqNumber = @ReqNo "; ;
                         cmd.ExecuteNonQuery();
                         cmd.Parameters.Clear();
-                  
+
                         cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
                         cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
                         cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
@@ -493,9 +495,176 @@ namespace OnlineRequestSystem.Service
                         object[] data = GetOpenRequestData(RequestNo);
                         if (data[1].ToString() == "1")
                         {
-                            if (data[6].ToString() == "0" && data[0].ToString() == ss.s_costcenter)
-                            {  
+                            if (data[11].ToString() == "1")
+                            {
                                 #region Update VP
+
+                                string VP = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationVPO_PO_Name = @approver, EscalationVPO_PO_Date = @datenow, EscalationVPO_PO_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@remarks", "PO approved by Vice President.");
+                                cmd.CommandText = VP;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+
+                                string Stat_VP = "UPDATE OnlineRequest.requestApproverStatus SET VPO_PO_Approver = @Approver, VPO_PO_Approved_Date = @Date, isVPO_PO_Approved = @isApproved WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@isApproved", 1);
+                                cmd.CommandText = Stat_VP;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+                                que.SetDateModified(RequestNo, ss.s_usr_id);
+                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + ". [ Vice President ]");
+
+                                #endregion Update VP
+                            }
+                            else
+                            {
+                                if (data[6].ToString() == "0" && data[0].ToString() == ss.s_costcenter)
+                                {
+                                    #region Update VP
+
+                                    string VP = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @approver, EscalationGM_Date = @datenow, EscalationGM_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                    cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                    cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                    cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                    cmd.Parameters.AddWithValue("@remarks", "Approved by Vice President.");
+                                    cmd.CommandText = VP;
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+
+                                    string Stat_VP = "UPDATE OnlineRequest.requestApproverStatus SET GM_Approver = @Approver, GM_Approved_Date = @Date, isApprovedGM = @isApproved WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                    cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                    cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                    cmd.Parameters.AddWithValue("@isApproved", 1);
+                                    cmd.CommandText = Stat_VP;
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+                                    que.SetDateModified(RequestNo, ss.s_usr_id);
+                                    log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + ". [ Vice President ]");
+
+                                    #endregion Update VP
+
+                                    if (data[2].ToString() == ss.s_DivisionID)
+                                    {
+                                        #region Update Division Approver 1
+
+                                        string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                        cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@remarks", "Approved.");
+                                        cmd.CommandText = UpdateDiv1;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+
+                                        string Stat_Div1 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver1 = @Approver, DivCode1 = @divCode,  Div_Approved_Date1 = @Date, isApprovedDiv1 = @isApproved WHERE reqNumber = @ReqNo";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                        cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
+                                        cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@isApproved", 1);
+                                        cmd.CommandText = Stat_Div1;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+                                        que.SetDateModified(RequestNo, ss.s_usr_id);
+                                        log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 1 ]");
+
+                                        #endregion Update Division Approver 1
+                                    }
+                                    if (data[3].ToString() == ss.s_DivisionID)
+                                    {
+                                        #region Update Division Approver 2
+
+                                        string UpdateDiv2 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv2_Name = @approver, EscalationDiv2_Date = @datenow, EscalationDiv2_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                        cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@remarks", "Approved.");
+                                        cmd.CommandText = UpdateDiv2;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+
+                                        string Stat_Div2 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver2 = @Approver, DivCode2 = @divCode,  Div_Approved_Date2 = @Date, isApprovedDiv2 = @isApproved WHERE reqNumber = @ReqNo";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                        cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
+                                        cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@isApproved", 1);
+                                        cmd.CommandText = Stat_Div2;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+                                        que.SetDateModified(RequestNo, ss.s_usr_id);
+                                        log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 2 ]");
+
+                                        #endregion Update Division Approver 2
+                                    }
+                                    if (data[4].ToString() == ss.s_DivisionID)
+                                    {
+                                        #region Update Division Approver 3
+
+                                        string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                        cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@remarks", "Approved.");
+                                        cmd.CommandText = UpdateDiv3;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+
+                                        string Stat_Div3 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver3 = @Approver, DivCode3 = @divCode,  Div_Approved_Date3 = @Date, isApprovedDiv3 = @isApproved WHERE reqNumber = @ReqNo";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                        cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
+                                        cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@isApproved", 1);
+                                        cmd.CommandText = Stat_Div3;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+                                        que.SetDateModified(RequestNo, ss.s_usr_id);
+                                        log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 3 ]");
+
+                                        #endregion Update Division Approver 3
+                                    }
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (data[11].ToString() == "1")
+                            {
+                                #region Update VP
+
+                                string VP = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationVPO_PO_Name = @approver, EscalationVPO_PO_Date = @datenow, EscalationVPO_PO_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@remarks", "PO approved by Vice President.");
+                                cmd.CommandText = VP;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+
+                                string Stat_VP = "UPDATE OnlineRequest.requestApproverStatus SET VPO_PO_Approver = @Approver, VPO_PO_Approved_Date = @Date, isVPO_PO_Approved = @isApproved WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@isApproved", 1);
+                                cmd.CommandText = Stat_VP;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+                                que.SetDateModified(RequestNo, ss.s_usr_id);
+                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + ". [ Vice President ]");
+
+                                #endregion Update VP
+                            }
+                            else
+                            {
+                                #region Update VP Approval
 
                                 string VP = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @approver, EscalationGM_Date = @datenow, EscalationGM_Remarks = @remarks WHERE reqNumber = @ReqNo ";
                                 cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
@@ -515,12 +684,12 @@ namespace OnlineRequestSystem.Service
                                 cmd.ExecuteNonQuery();
                                 cmd.Parameters.Clear();
                                 que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + ". [ Vice President ]");
+                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Vice President ]");
 
-                                #endregion Update VP
+                                #endregion Update VP Approval
 
                                 if (data[2].ToString() == ss.s_DivisionID)
-                                { 
+                                {
                                     #region Update Division Approver 1
 
                                     string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -574,7 +743,7 @@ namespace OnlineRequestSystem.Service
                                     #endregion Update Division Approver 2
                                 }
                                 if (data[4].ToString() == ss.s_DivisionID)
-                                { 
+                                {
                                     #region Update Division Approver 3
 
                                     string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -600,114 +769,6 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Division Approver 3
                                 }
-                            }
-                        }
-                        else
-                        {
-                            #region Update VP Approval
-
-                            string VP = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @approver, EscalationGM_Date = @datenow, EscalationGM_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                            cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                            cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                            cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                            cmd.Parameters.AddWithValue("@remarks", "Approved by Vice President.");
-                            cmd.CommandText = VP;
-                            cmd.ExecuteNonQuery();
-                            cmd.Parameters.Clear();
-
-                            string Stat_VP = "UPDATE OnlineRequest.requestApproverStatus SET GM_Approver = @Approver, GM_Approved_Date = @Date, isApprovedGM = @isApproved WHERE reqNumber = @ReqNo";
-                            cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                            cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                            cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                            cmd.Parameters.AddWithValue("@isApproved", 1);
-                            cmd.CommandText = Stat_VP;
-                            cmd.ExecuteNonQuery();
-                            cmd.Parameters.Clear();
-                            que.SetDateModified(RequestNo, ss.s_usr_id);
-                            log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Vice President ]");
-
-                            #endregion Update VP Approval
-
-                            if (data[2].ToString() == ss.s_DivisionID)
-                            { 
-                                #region Update Division Approver 1
-
-                                string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved.");
-                                cmd.CommandText = UpdateDiv1;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_Div1 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver1 = @Approver, DivCode1 = @divCode,  Div_Approved_Date1 = @Date, isApprovedDiv1 = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_Div1;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 1 ]");
-
-                                #endregion Update Division Approver 1
-                            }
-                            if (data[3].ToString() == ss.s_DivisionID)
-                            { 
-                                #region Update Division Approver 2
-
-                                string UpdateDiv2 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv2_Name = @approver, EscalationDiv2_Date = @datenow, EscalationDiv2_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved.");
-                                cmd.CommandText = UpdateDiv2;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_Div2 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver2 = @Approver, DivCode2 = @divCode,  Div_Approved_Date2 = @Date, isApprovedDiv2 = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_Div2;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 2 ]");
-
-                                #endregion Update Division Approver 2
-                            }
-                            if (data[4].ToString() == ss.s_DivisionID)
-                            { 
-                                #region Update Division Approver 3
-
-                                string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved.");
-                                cmd.CommandText = UpdateDiv3;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_Div3 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver3 = @Approver, DivCode3 = @divCode,  Div_Approved_Date3 = @Date, isApprovedDiv3 = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_Div3;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 3 ]");
-
-                                #endregion Update Division Approver 3
                             }
                         }
                     }
@@ -737,7 +798,201 @@ namespace OnlineRequestSystem.Service
                         object[] data = GetOpenRequestData(RequestNo);
                         if (data[1].ToString() == "1")
                         {
-                            if (data[10].ToString() == "1")
+                            if (data[11].ToString() == "1")
+                            {
+                                #region Update President Approval
+
+                                string UpdatePresident = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_PO_Name = @approver, EscalationPres_PO_Date = @datenow, EscalationPres_PO_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@remarks", "PO approved by President.");
+                                cmd.CommandText = UpdatePresident;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+
+                                string Stat_President = "UPDATE OnlineRequest.requestApproverStatus SET Pres_PO_Approver = @Approver, Pres_PO_Approved_Date = @Date, isPres_PO_Approved = @isApproved, isPO_Approved = @isPOApproved WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@isApproved", 1);
+                                cmd.Parameters.AddWithValue("@isPOApproved", 1);
+                                cmd.CommandText = Stat_President;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+                                que.SetDateModified(RequestNo, ss.s_usr_id);
+                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ President ]");
+
+                                #endregion Update President Approval
+                            }
+                            else
+                            {
+                                if (data[10].ToString() == "1")
+                                {
+                                    #region Update President Approval
+
+                                    string UpdatePresident = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_Name = @approver, EscalationPres_Date = @datenow, EscalationPres_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                    cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                    cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                    cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                    cmd.Parameters.AddWithValue("@remarks", "Approved by President.");
+                                    cmd.CommandText = UpdatePresident;
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+
+                                    string Stat_President = "UPDATE OnlineRequest.requestApproverStatus SET Pres_Approver = @Approver, Pres_Approved_Date = @Date, isApprovedPres = @isApproved WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                    cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                    cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                    cmd.Parameters.AddWithValue("@isApproved", 1);
+                                    cmd.CommandText = Stat_President;
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+                                    que.SetDateModified(RequestNo, ss.s_usr_id);
+                                    log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ President ]");
+
+                                    #endregion Update President Approval
+                                }
+                                if (data[6].ToString() == "0" && data[0].ToString() == ss.s_costcenter)
+                                {
+                                    #region Update Local Division Approver
+
+                                    string UpdateLocalDiv = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationLocalDiv_Name = @approver, EscalationLocalDiv_Date = @datenow, EscalationLocalDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                    cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                    cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                    cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                    cmd.Parameters.AddWithValue("@remarks", "Approved by Vice President.");
+                                    cmd.CommandText = UpdateLocalDiv;
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+
+                                    string Stat_LocalDiv = "UPDATE OnlineRequest.requestApproverStatus SET LocalDiv_Approver = @Approver, LocalDiv_Approved_Date = @Date, isApprovedLocalDiv = @isApproved WHERE reqNumber = @ReqNo";
+                                    cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                    cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                    cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                    cmd.Parameters.AddWithValue("@isApproved", 1);
+                                    cmd.CommandText = Stat_LocalDiv;
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+                                    que.SetDateModified(RequestNo, ss.s_usr_id);
+                                    log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Local Division ]");
+
+                                    #endregion Update Local Division Approver
+
+                                    if (data[2].ToString() == ss.s_DivisionID)
+                                    {
+                                        #region Update Division Approver 1
+
+                                        string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                        cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@remarks", "Approved.");
+                                        cmd.CommandText = UpdateDiv1;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+
+                                        string Stat_Div1 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver1 = @Approver, DivCode1 = @divCode,  Div_Approved_Date1 = @Date, isApprovedDiv1 = @isApproved WHERE reqNumber = @ReqNo";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                        cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
+                                        cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@isApproved", 1);
+                                        cmd.CommandText = Stat_Div1;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+                                        que.SetDateModified(RequestNo, ss.s_usr_id);
+                                        log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 1 ]");
+
+                                        #endregion Update Division Approver 1
+                                    }
+                                    if (data[3].ToString() == ss.s_DivisionID)
+                                    {
+                                        #region Update Division Approver 2
+
+                                        string UpdateDiv2 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv2_Name = @approver, EscalationDiv2_Date = @datenow, EscalationDiv2_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                        cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@remarks", "Approved.");
+                                        cmd.CommandText = UpdateDiv2;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+
+                                        string Stat_Div2 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver2 = @Approver, DivCode2 = @divCode,  Div_Approved_Date2 = @Date, isApprovedDiv2 = @isApproved WHERE reqNumber = @ReqNo";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                        cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
+                                        cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@isApproved", 1);
+                                        cmd.CommandText = Stat_Div2;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+                                        que.SetDateModified(RequestNo, ss.s_usr_id);
+                                        log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 2 ]");
+
+                                        #endregion Update Division Approver 2
+                                    }
+                                    if (data[4].ToString() == ss.s_DivisionID)
+                                    {
+                                        #region Update Division Approver 3
+
+                                        string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                        cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@remarks", "Approved.");
+                                        cmd.CommandText = UpdateDiv3;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+
+                                        string Stat_Div3 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver3 = @Approver, DivCode3 = @divCode,  Div_Approved_Date3 = @Date, isApprovedDiv3 = @isApproved WHERE reqNumber = @ReqNo";
+                                        cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                        cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                        cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
+                                        cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                        cmd.Parameters.AddWithValue("@isApproved", 1);
+                                        cmd.CommandText = Stat_Div3;
+                                        cmd.ExecuteNonQuery();
+                                        cmd.Parameters.Clear();
+                                        que.SetDateModified(RequestNo, ss.s_usr_id);
+                                        log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 3 ]");
+
+                                        #endregion Update Division Approver 3
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (data[11].ToString() == "1")
+                            {
+                                #region Update President Approval
+
+                                string UpdatePresident = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_PO_Name = @approver, EscalationPres_PO_Date = @datenow, EscalationPres_PO_Remarks = @remarks WHERE reqNumber = @ReqNo ";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
+                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@remarks", "PO approved by President.");
+                                cmd.CommandText = UpdatePresident;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+
+                                string Stat_President = "UPDATE OnlineRequest.requestApproverStatus SET Pres_PO_Approver = @Approver, Pres_PO_Approved_Date = @Date, isPres_PO_Approved = @isApproved, isPO_Approved = @isPOApproved WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
+                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
+                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                                cmd.Parameters.AddWithValue("@isApproved", 1);
+                                cmd.Parameters.AddWithValue("@isPOApproved", 1);
+                                cmd.CommandText = Stat_President;
+                                cmd.ExecuteNonQuery();
+                                cmd.Parameters.Clear();
+                                que.SetDateModified(RequestNo, ss.s_usr_id);
+                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ President ]");
+
+                                #endregion Update President Approval
+                            }
+                            else
                             {
                                 #region Update President Approval
 
@@ -762,35 +1017,9 @@ namespace OnlineRequestSystem.Service
                                 log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ President ]");
 
                                 #endregion Update President Approval
-                            }
-                            if (data[6].ToString() == "0" && data[0].ToString() == ss.s_costcenter)
-                            {  
-                                #region Update Local Division Approver
-
-                                string UpdateLocalDiv = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationLocalDiv_Name = @approver, EscalationLocalDiv_Date = @datenow, EscalationLocalDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved by Vice President.");
-                                cmd.CommandText = UpdateLocalDiv;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_LocalDiv = "UPDATE OnlineRequest.requestApproverStatus SET LocalDiv_Approver = @Approver, LocalDiv_Approved_Date = @Date, isApprovedLocalDiv = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_LocalDiv;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Local Division ]");
-
-                                #endregion Update Local Division Approver
 
                                 if (data[2].ToString() == ss.s_DivisionID)
-                                { 
+                                {
                                     #region Update Division Approver 1
 
                                     string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -816,6 +1045,7 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Division Approver 1
                                 }
+
                                 if (data[3].ToString() == ss.s_DivisionID)
                                 {
                                     #region Update Division Approver 2
@@ -843,8 +1073,9 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Division Approver 2
                                 }
+
                                 if (data[4].ToString() == ss.s_DivisionID)
-                                { 
+                                {
                                     #region Update Division Approver 3
 
                                     string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
@@ -870,114 +1101,6 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Division Approver 3
                                 }
-                            }
-                        }
-                        else
-                        {
-                            #region Update President Approval
-
-                            string UpdatePresident = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_Name = @approver, EscalationPres_Date = @datenow, EscalationPres_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                            cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                            cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                            cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                            cmd.Parameters.AddWithValue("@remarks", "Approved by President.");
-                            cmd.CommandText = UpdatePresident;
-                            cmd.ExecuteNonQuery();
-                            cmd.Parameters.Clear();
-
-                            string Stat_President = "UPDATE OnlineRequest.requestApproverStatus SET Pres_Approver = @Approver, Pres_Approved_Date = @Date, isApprovedPres = @isApproved WHERE reqNumber = @ReqNo";
-                            cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                            cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                            cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                            cmd.Parameters.AddWithValue("@isApproved", 1);
-                            cmd.CommandText = Stat_President;
-                            cmd.ExecuteNonQuery();
-                            cmd.Parameters.Clear();
-                            que.SetDateModified(RequestNo, ss.s_usr_id);
-                            log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ President ]");
-
-                            #endregion Update President Approval
-
-                            if (data[2].ToString() == ss.s_DivisionID)
-                            { 
-                                #region Update Division Approver 1
-
-                                string UpdateDiv1 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv_Name = @approver, EscalationDiv_Date = @datenow, EscalationDiv_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved.");
-                                cmd.CommandText = UpdateDiv1;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_Div1 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver1 = @Approver, DivCode1 = @divCode,  Div_Approved_Date1 = @Date, isApprovedDiv1 = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_Div1;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 1 ]");
-
-                                #endregion Update Division Approver 1
-                            }
-                            if (data[3].ToString() == ss.s_DivisionID)
-                            { 
-                                #region Update Division Approver 2
-
-                                string UpdateDiv2 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv2_Name = @approver, EscalationDiv2_Date = @datenow, EscalationDiv2_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved.");
-                                cmd.CommandText = UpdateDiv2;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_Div2 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver2 = @Approver, DivCode2 = @divCode,  Div_Approved_Date2 = @Date, isApprovedDiv2 = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_Div2;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 2 ]");
-
-                                #endregion Update Division Approver 2
-                            }
-                            if (data[4].ToString() == ss.s_DivisionID)
-                            {
-                                #region Update Division Approver 3
-
-                                string UpdateDiv3 = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationDiv3_Name = @approver, EscalationDiv3_Date = @datenow, EscalationDiv3_Remarks = @remarks WHERE reqNumber = @ReqNo ";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
-                                cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@remarks", "Approved.");
-                                cmd.CommandText = UpdateDiv3;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-
-                                string Stat_Div3 = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver3 = @Approver, DivCode3 = @divCode,  Div_Approved_Date3 = @Date, isApprovedDiv3 = @isApproved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
-                                cmd.Parameters.AddWithValue("@Approver", ss.s_usr_id);
-                                cmd.Parameters.AddWithValue("@divCode", ss.s_DivCode);
-                                cmd.Parameters.AddWithValue("@Date", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                cmd.Parameters.AddWithValue("@isApproved", 1);
-                                cmd.CommandText = Stat_Div3;
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                                que.SetDateModified(RequestNo, ss.s_usr_id);
-                                log.Info("[Multiple Approving] Request with request no." + RequestNo + " has been approved by : " + ss.s_fullname + " . [ Division Approver 3 ]");
-
-                                #endregion Update Division Approver 3
                             }
                         }
                     }
@@ -1140,7 +1263,7 @@ namespace OnlineRequestSystem.Service
                             default:
                                 break;
 
-                            #endregion Disapprover selector
+                                #endregion Disapprover selector
                         }
 
                         mod.reqNumber = RequestNo;

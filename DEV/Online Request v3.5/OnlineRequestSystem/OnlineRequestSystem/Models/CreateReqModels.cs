@@ -30,6 +30,7 @@ namespace OnlineRequestSystem.Models
         public String reqTotal { get; set; }
 
         public string Approver { get; set; }
+        public int ForPO { get; set; }
         public string BranchManager { get; set; }
         public string AreaManager { get; set; }
         public string RegionalManager { get; set; }
@@ -111,11 +112,20 @@ namespace OnlineRequestSystem.Models
 
         public string E_Div3Remarks { get; set; }
 
+        public string E_VPO_POName { get; set; }
+        public string E_VPO_PODate { get; set; }
+        public string E_VPO_PORemarks { get; set; }
+        public string E_Pres_POName { get; set; }
+        public string E_Pres_PODate { get; set; }
+        public string E_Pres_PORemarks { get; set; }
+        public string commentSection { get; set; }
+
         #endregion for Escalation
 
         #region for approver status w/ IEnumerables
 
         public List<RequestItems> ReqItems { get; set; }
+        public List<ShowAllComments> ShowComments { get; set; }
         public IEnumerable<SelectListItem> ListReqtype { get; set; }
 
         public IEnumerable<SelectListItem> ListRequestUnits
@@ -140,6 +150,16 @@ namespace OnlineRequestSystem.Models
         public List<RequestItems> Items { get; set; }
 
         #endregion for approver status w/ IEnumerables
+    }
+
+    public class ShowAllComments
+    {
+        #region Show Comments
+        public string comments { get; set; }
+        public string commCreator { get; set; }
+        public string commCreatorID { get; set; }
+        public string commcreated { get; set; }
+        #endregion Show Comments
     }
 
     public class RequestItems

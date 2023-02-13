@@ -300,3 +300,7 @@ border-left: 1px solid black;
 div.dataTables_wrapper div.dataTables_filter input {
 
 }
+
+.dataTables_filter {
+    display: none;
+}

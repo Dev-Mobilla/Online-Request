@@ -63,6 +63,9 @@
         public int result_Div3 { get; set; }
         public int result_GM { get; set; }
         public int result_Pres { get; set; }
+
+        public int VPO_PO_Approved { get; set; }
+        public int Pres_PO_Approved { get; set; }
     }
 
     public class Finalresult

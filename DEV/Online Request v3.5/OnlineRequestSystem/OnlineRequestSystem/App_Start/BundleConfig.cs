@@ -52,6 +52,7 @@ namespace OnlineRequestSystem
             // Open requests - multiple approving
             bundles.Add(new ScriptBundle("~/bundles/openrequests").Include(
                         "~/Scripts/OpenRequests/StateSaving.js",
+                        "~/Scripts/OpenRequests/DateRangeSort.js",
                         "~/Scripts/MultiApproval/MultiApprove_AM.js",
                         "~/Scripts/MultiApproval/MultiApprove_RM.js",
                         "~/Scripts/MultiApproval/MultiApprove_DM.js",
@@ -72,7 +73,8 @@ namespace OnlineRequestSystem
                         "~/Scripts/notify.js",
                         "~/Scripts/Request/RequestDetails.js",
                         "~/Scripts/bootbox.js",
-                        "~/Scripts/Request/PrintFunctions.js"));
+                        "~/Scripts/Request/PrintFunctions.js",
+                        "~/Scripts/Request/CommentSection.js"));
 
             // Request Details Ajax functions
             bundles.Add(new ScriptBundle("~/bundles/requestdetails_functions").Include(

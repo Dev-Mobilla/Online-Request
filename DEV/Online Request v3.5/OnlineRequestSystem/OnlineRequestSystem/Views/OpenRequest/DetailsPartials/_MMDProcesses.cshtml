@@ -36,17 +36,17 @@
                 <div class="col-sm-2">
                     @if (Model.Sts_MMD_isProcessed == "1")
                     {
-                    <img src="~/Content/images/MMD/PROCESS_PO_SUCCESS.png" height="40" width="150" />
-                    <br />
-                    <u>@Model.Sts_MMD_Processed_Date</u>
-                    <br />
-                    <span class="glyphicon glyphicon-user"></span>
-                    <u>@Model.Sts_MMD_Processor</u>
+                        <img src="~/Content/images/MMD/PROCESS_PO_SUCCESS.png" height="40" width="150" />
+                        <br />
+                        <u>@Model.Sts_MMD_Processed_Date</u>
+                        <br />
+                        <span class="glyphicon glyphicon-user"></span>
+                        <u>@Model.Sts_MMD_Processor</u>
                     }
                     else
                     {
-                    <img src="~/Content/images/MMD/PROCESS_PO.png" class="mmdButton" id="ProcessedPO" height="40" width="150" />
-                    <br />
+                        <img src="~/Content/images/MMD/PROCESS_PO.png" class="mmdButton" id="ProcessedPO" height="40" width="150" />
+                        <br />
                     }
                 </div>
 
@@ -54,24 +54,24 @@
                 <div class="col-sm-2">
                     @if (Model.Sts_MMD_isTransit == "1")
                     {
-                    <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER_SUCCESS.png" height="40" width="150" />
-                    <br />
-                    <u>@Model.Sts_MMD_Transit_Date </u>
-                    <br />
-                    <span class="glyphicon glyphicon-user"></span>
-                    <u>@Model.Sts_MMD_Transitor</u>
+                        <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER_SUCCESS.png" height="40" width="150" />
+                        <br />
+                        <u>@Model.Sts_MMD_Transit_Date </u>
+                        <br />
+                        <span class="glyphicon glyphicon-user"></span>
+                        <u>@Model.Sts_MMD_Transitor</u>
                     }
                     else
                     {
-                        if (Model.Sts_MMD_isProcessed == "1")
+                        if (Model.Sts_MMD_isProcessed == "1" && Model.PO_Approved == "1")
                         {
-                    <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER.png" class="mmdButton" id="InTransit" height="40" width="150" />
-                    <br />
+                            <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER.png" class="mmdButton" id="InTransit" height="40" width="150" />
+                            <br />
                         }
                         else
                         {
-                    <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER.png" height="40" width="150" />
-                    <br />
+                            <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER.png" height="40" width="150" />
+                            <br />
                         }
                     }
                 </div>
@@ -108,12 +108,12 @@
                 <div class="col-sm-2">
                     @if (Model.Sts_RM_isReceived == "1")
                     {
-                    <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD_SUCCESS.png" height="40" width="150" />
-                    <br />
-                    <u>@Model.Sts_RM_Received_Date </u>
-                    <br />
-                    <span class="glyphicon glyphicon-user"></span>
-                    <u>@Model.Sts_RM_Receiver</u>
+                        <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD_SUCCESS.png" height="40" width="150" />
+                        <br />
+                        <u>@Model.Sts_RM_Received_Date </u>
+                        <br />
+                        <span class="glyphicon glyphicon-user"></span>
+                        <u>@Model.Sts_RM_Receiver</u>
                     }
                     else
                     {
@@ -121,17 +121,17 @@
                         {
                             if (mySession.s_job_title == "REGIONAL MAN")
                             {
-                    <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" class="mmdButton" id="Received" height="40" width="150" />
+                                <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" class="mmdButton" id="Received" height="40" width="150" />
                             }
                             else
                             {
-                    <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" height="40" width="150" />
+                                <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" height="40" width="150" />
                             }
                         }
                         else
                         {
-                    <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" height="40" width="150" />
-                    <br />
+                            <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" height="40" width="150" />
+                            <br />
                         }
                     }
                 </div>

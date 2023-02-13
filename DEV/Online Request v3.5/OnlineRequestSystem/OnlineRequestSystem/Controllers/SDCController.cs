@@ -98,12 +98,12 @@ namespace OnlineRequestSystem.Controllers
                         {
                             case "TO BE RECEIVED":
                                 cmd.CommandText = " SELECT  a.reqNumber,  COUNT(d.itemDescription) AS TotalCount, a.reqCreator , a.reqDescription, a.reqDate, a.TypeID , " +
-                                                  " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                                  " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                                   " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.isDivRequest, a.DeptCode," +
                                                   " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                                                   " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                                                   " WHERE b.isRMReceived = 0 AND b.isDelivered = 1 " +
                                                   " AND isRMTransit = 0 AND a.isDivRequest = 0 AND a.ZoneCode = @zoneCode AND a.region = @region GROUP BY a.reqNumber ORDER BY a.sysmodified ASC ";
                                 cmd.Parameters.AddWithValue("@zoneCode", ss.s_zonecode);
@@ -112,12 +112,12 @@ namespace OnlineRequestSystem.Controllers
 
                             case "RECEIVED":
                                 cmd.CommandText = " SELECT  a.reqNumber,  COUNT(d.itemDescription) AS TotalCount,  a.reqCreator , a.reqDescription, a.reqDate, a.TypeID , " +
-                                                  " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                                  " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                                   " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.isDivRequest, a.DeptCode," +
                                                   " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                                                   " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                                                   " WHERE b.isDelivered = 1 AND b.isRMReceived = 1 " +
                                                   " AND isRMTransit = 0 AND a.isDivRequest = 0 AND a.ZoneCode = @zoneCode AND a.region = @region GROUP BY a.reqNumber ORDER BY a.sysmodified ASC ";
                                 cmd.Parameters.AddWithValue("@zoneCode", ss.s_zonecode);
@@ -126,12 +126,12 @@ namespace OnlineRequestSystem.Controllers
 
                             case "IN TRANSIT-BRANCH":
                                 cmd.CommandText = " SELECT  a.reqNumber,  COUNT(d.itemDescription) AS TotalCount, a.reqCreator , a.reqDescription, a.reqDate, a.TypeID , " +
-                                                  " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                                  " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                                   " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.isDivRequest, a.DeptCode, a.TotalQty," +
                                                   " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                                                   " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                                                   " WHERE b.isDelivered = 1 AND b.isRMReceived = 1 AND " +
                                                   " b.isRMTransit = 1  AND a.isDivRequest = 0 AND a.ZoneCode = @zoneCode AND a.region = @region GROUP BY a.reqNumber ORDER BY a.sysmodified ASC ";
                                 cmd.Parameters.AddWithValue("@zoneCode", ss.s_zonecode);
@@ -311,7 +311,7 @@ namespace OnlineRequestSystem.Controllers
                                           " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                                           " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                                           " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                                          " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber" +
+                                          " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber" +
                                           " WHERE b.isRMReceived = 0 AND b.isDelivered = 1 " +
                                           " AND a.isDivRequest = 0 AND a.ZoneCode = @zoneCode AND a.region = @region GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                         cmd.Parameters.AddWithValue("@region", ss.s_region);

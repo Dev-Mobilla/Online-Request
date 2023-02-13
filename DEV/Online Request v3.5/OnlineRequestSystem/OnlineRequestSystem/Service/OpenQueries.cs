@@ -786,5 +786,30 @@ namespace OnlineRequestSystem.Service
             else
             { return "L"; }
         }
+
+        //public status_filter(string zoneCode, string branchCode)
+        //{
+        //    var db = new ORtoMySql();
+
+        //    using (MySqlConnection con = db.getConnection())
+        //    {
+        //        using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM `OnlineRequest`.`requestType` WHERE `isGMApproval`='1' OR `isPresidentApproval` = '1'", con))
+        //        {
+        //            con.Open();
+        //            MySqlDataReader rdr = cmd.ExecuteReader();
+
+        //            if (rdr.HasRows)
+        //            {
+        //                con.Close();
+        //                return true;
+        //            }
+        //            else
+        //            {
+        //                con.Close();
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

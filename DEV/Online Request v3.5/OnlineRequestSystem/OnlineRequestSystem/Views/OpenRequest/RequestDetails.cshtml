@@ -97,7 +97,8 @@
                     <tr class="ORSHeading orHeader">
                         <th style="width:3%"></th>
                         <th class="col-md-4">Description</th>
-                        <th class="col-md-1">Item Quantity</th>
+                        <th class="col-md-1"><center>Item Quantity</center></th>
+                        <th class="col-md-1"><center>Item Price</center></th>
                         <th class="col-md-1"><center>MMD</center></th>
                         @if (Model.isDivRequest == 0)
                         {
@@ -106,7 +107,8 @@
                         }
                         else
                         {
-                            <th class="col-md-1"><center>Division</center></th> }
+                            <th class="col-md-1"><center>Division</center></th>
+                        }
                         <th class="col-md-1"><center>Status</center></th>
                     </tr>
                 </thead>
@@ -114,31 +116,36 @@
                     @foreach (var item in Model.ReqItems)
                     {
                         <tr>
-                            <td><center>@count</center></td>
-                            <td id="itemDesc">
+                            <td style="vertical-align:middle"><center>@count</center></td>
+                            <td id="itemDesc" class="itemDesc" style="vertical-align:middle">
                                 @item.ItemDescription
                             </td>
-                            <td id="itemQty">
-                                @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i>
+                            <td id="itemQty" style="vertical-align:middle">
+                                <center> @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
+                            </td>
+                            <td id="itemPrice" style="vertical-align:middle">
+                                <center>For Test</center>
                             </td>
                             <td style="padding:1px;">
-                                @if (item.isCheckedMMD == 1)
-                                {
-                                    <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" checked />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" />
-                                }
-                                <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
-                                <span class="dropdown">
-                                    &nbsp;&nbsp;<i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
-                                    <span class="dropdown-menu itemSelect">
-                                        <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                        <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
-                                        <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger"></i>&nbsp; Cancelled</span><br />
+                                <center>
+                                    @if (item.isCheckedMMD == 1)
+                                    {
+                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
+                                    }
+                                    <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
+                                    <span class="dropdown">
+                                        <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
+                                        <span class="dropdown-menu itemSelect">
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger"></i>&nbsp; Cancelled</span><br />
+                                        </span>
                                     </span>
-                                </span>
+                                </center>
                             </td>
 
                             @if (Model.isDivRequest == 0)
@@ -146,15 +153,15 @@
                                 <td style="padding:1px;">
                                     @if (item.isCheckedSDC == 1)
                                     {
-                                        <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" checked />
+                                        <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " checked />
                                     }
                                     else
                                     {
-                                        <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" />
+                                        <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
                                     }
                                     <input type="text" @sdc class="ReqDetailsBlock" id="txtSDC" maxlength="6" value=@item.actualQtySDC />
                                     <span class="dropdown">
-                                        &nbsp;&nbsp;<i class="@item.SDCStatus dropdown-toggle SDCSelect" style="font-size:16px;" data-toggle="@ViewBag.SDC"></i>
+                                        <i class="@item.SDCStatus dropdown-toggle SDCSelect" style="font-size:16px;" data-toggle="@ViewBag.SDC"></i>
                                         <span class="dropdown-menu itemSelect">
                                             <span class="SDCOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
                                             <span class="SDCOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
@@ -165,15 +172,15 @@
                                 <td style="padding:1px;">
                                     @if (item.isCheckedBranch == 1)
                                     {
-                                        <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" checked />
+                                        <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " checked />
                                     }
                                     else
                                     {
-                                        <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" />
+                                        <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
                                     }
                                     <input type="text" @branch class="ReqDetailsBlock" id="txtBranch" maxlength="6" value=@item.actualQtyBranch />
                                     <span class="dropdown">
-                                        &nbsp;&nbsp;<i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
+                                        <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
                                         <span class="dropdown-menu itemSelect">
                                             <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
                                             <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
@@ -186,15 +193,15 @@
                                 <td style="padding:1px;">
                                     @if (item.isCheckedDiv == 1)
                                     {
-                                        <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" checked />
+                                        <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " checked />
                                     }
                                     else
                                     {
-                                        <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" />
+                                        <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" style="vertical-align: middle; margin:-4px 0 0 0" />
                                     }
                                     <input type="text" @div class="ReqDetailsBlock" id="txtDiv" maxlength="6" value=@item.actualQtyDiv />
                                     <span class="dropdown">
-                                        &nbsp;&nbsp;<i class="@item.DivStatus dropdown-toggle DivSelect" style="font-size:16px;" data-toggle="@ViewBag.Division"></i>
+                                        <i class="@item.DivStatus dropdown-toggle DivSelect" style="font-size:16px;" data-toggle="@ViewBag.Division"></i>
                                         <span class="dropdown-menu itemSelect">
                                             <span class="DivOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
                                             <span class="DivOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
@@ -243,11 +250,15 @@
                 { Html.RenderPartial("DetailsPartials/_GMApproval"); }
             }
 
+            @{Html.RenderPartial("DetailsPartials/_CommentSection");}
+
             @{Html.RenderPartial("DetailsPartials/_DivApproval");}
             @{Html.RenderPartial("DetailsPartials/_DivApproval2");}
             @{Html.RenderPartial("DetailsPartials/_DivApproval3");}
 
             @{Html.RenderPartial("DetailsPartials/_PresApproval");}
+            @{Html.RenderPartial("DetailsPartials/_VPO_POApproval");}
+            @{Html.RenderPartial("DetailsPartials/_Pres_POApproval");}
             <br />
             @{Html.RenderPartial("DetailsPartials/_MMDProcesses");}
             <br />
@@ -301,7 +312,7 @@
     <link rel="stylesheet" href="~/Content/bootstrap-datepicker.min.css" />
 }
 
-@section scripts{   
+@section scripts{
     <script>
         var ReqNO = $('#Req').val();
     </script>

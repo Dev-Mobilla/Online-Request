@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -468,11 +470,13 @@
     <Content Include="Scripts\MultiApproval\MultiApprove_VPassistant.js" />
     <Content Include="Scripts\MultiApproval\MultipleDisapprove.js" />
     <Content Include="Scripts\notify.js" />
+    <Content Include="Scripts\OpenRequests\DateRangeSort.js" />
     <Content Include="Scripts\OpenRequests\StateSaving.js" />
     <Content Include="Scripts\Reports\ReportMenu.js" />
     <Content Include="Scripts\Reports\SDCReport.js" />
     <Content Include="Scripts\Request\ApproveRequest.js" />
     <Content Include="Scripts\Request\CloseOrDisapprove.js" />
+    <Content Include="Scripts\Request\CommentSection.js" />
     <Content Include="Scripts\Request\createformview.js" />
     <Content Include="Scripts\Request\ItemOptions\BranchStatus.js" />
     <Content Include="Scripts\Request\ItemOptions\DivStatus.js" />
@@ -535,6 +539,10 @@
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_AreaManager.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_RegionalManager.cshtml" />
+    <Content Include="Views\OpenRequest\DetailsPartials\_VPO_POApproval.cshtml" />
+    <Content Include="Views\OpenRequest\DetailsPartials\_Pres_POApproval.cshtml" />
+    <Content Include="Views\OpenRequest\DetailsPartials\_CommentSection.cshtml" />
+    <Content Include="Views\OpenRequest\OpenReqPartials\Sorting.cshtml" />
     <None Include="Views\OpenRequest\OpenReqPartials\_DivisionManager" />
     <None Include="Views\OpenRequest\OpenReqPartials\_GeneralManager" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_President.cshtml" />

@@ -63,6 +63,16 @@
         public string Sts_RM_Transitor { get; set; }
         public string Sts_RM_Transit_Date { get; set; }
         public string Sts_RM_isTransit { get; set; }
+
+        public string Sts_VPO_PO_Approver { get; set; }
+        public string Sts_VPO_PO_Date { get; set; }
+        public string Sts_VPO_PO_isApproved { get; set; }
+
+        public string Sts_Pres_PO_Approver { get; set; }
+        public string Sts_Pres_PO_Date { get; set; }
+        public string Sts_Pres_PO_isApproved { get; set; }
+
+        public string PO_Approved { get; set; }
     }
 
     public class RecommendedApproval
@@ -79,5 +89,7 @@
         public string DivCode2 { get; set; }
         public string DivCode3 { get; set; }
         public int? isPresidentApproval { get; set; }
+        public int? isVPO_PO_Approval { get; set; }
+        public int? isPresident_PO_Approval { get; set; }
     }
 }

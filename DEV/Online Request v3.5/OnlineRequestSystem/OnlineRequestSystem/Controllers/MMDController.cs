@@ -55,13 +55,14 @@ namespace OnlineRequestSystem.Controllers
                                 #region PP Query
 
                                 cmd.CommandText = "SELECT a.reqNumber, a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID  " +
-                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
+                              " AND b.isPO_Approved = 1" +
                               " AND b.isDelivered = 0 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
@@ -74,13 +75,13 @@ namespace OnlineRequestSystem.Controllers
                                 #region RFS Query
 
                                 cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
+                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                              " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +                             
                               " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
@@ -93,12 +94,12 @@ namespace OnlineRequestSystem.Controllers
                                 #region ITS Query
 
                                 cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
                               " AND b.isDelivered = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
@@ -120,12 +121,12 @@ namespace OnlineRequestSystem.Controllers
                                 #region PP Query
 
                                 cmd.CommandText = "SELECT a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount,  a.reqDescription, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
                               " AND b.isDelivered = 0 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
@@ -139,12 +140,12 @@ namespace OnlineRequestSystem.Controllers
                                 #region RFS Query
 
                                 cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
                               " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
@@ -158,12 +159,12 @@ namespace OnlineRequestSystem.Controllers
                                 #region ITS Query
 
                                 cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber " +
+                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
                               " AND b.isDelivered = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
@@ -1367,6 +1368,44 @@ namespace OnlineRequestSystem.Controllers
                 {
                     status = false,
                     msg = "Error, Unable to process request."
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult StoreComments(string ReqNo, string comment)
+        {
+            var ss = (ORSession)Session["UserSession"];
+            var db = new ORtoMySql();
+            try
+            {
+                using (var conn = db.getConnection())
+                {
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "INSERT INTO OnlineRequest.storedComments (reqNumber, comments, commCreator, commCreatorID, commcreated)" +
+                        "VALUES (@reqNumber, @comments, @commCreator, @commCreatorID, @commcreated)";
+                    cmd.Parameters.AddWithValue("@reqNumber", ReqNo);
+                    cmd.Parameters.AddWithValue("@comments", comment);
+                    cmd.Parameters.AddWithValue("@commCreator", ss.s_fullname);
+                    cmd.Parameters.AddWithValue("@commCreatorID", ss.s_usr_id);
+                    cmd.Parameters.AddWithValue("@commcreated", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                log.Info("Comment added  || request no: " + ReqNo + " || Creator: " + ss.s_usr_id);
+                return Json(new
+                {
+                    status = true,
+                    msg = "Your comment was posted."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                return Json(new
+                {
+                    status = false,
+                    msg = x.Message
                 }, JsonRequestBehavior.AllowGet);
             }
         }
