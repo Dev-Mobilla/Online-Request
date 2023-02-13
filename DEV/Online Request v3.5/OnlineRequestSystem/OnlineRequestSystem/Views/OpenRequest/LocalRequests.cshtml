@@ -19,11 +19,13 @@
                 <th class="col-sm-1"><center>Date</center></th>
                 <th class="col-sm-2"><center>Request no.</center></th>
                 <th class="col-sm-2"><center>Types</center></th>
-                <th style="width:6%">Count</th>
-                <th class="col-sm-1">Description</th>
-                <th class="col-sm-2">Branch/Division</th>
+                <th style="width:6%; padding-left:20px;">Count</th>
+                <th style="width:6%; padding-left:20px;">Price</th>
+                <th class="col-sm-2" style="padding-left:20px;">Description</th>
+                <th class="col-sm-2" style="padding-left:20px;">Branch/Division</th>
                 <th class="col-sm-2">Author</th>
                 <th class="col-sm-2">Region</th>
+                <th class="col-sm-2">Post</th>
             </tr>
         </thead>
         <tbody style="font-size:12px;">
@@ -38,14 +40,16 @@
                             <td style="padding-left:20px;"><center>@item.reqDate</center></td>
                             <td style="padding-left:20px;">@item.reqNumber</td>
                             <td style="padding-left:15px;">@item.TypeName</td>
-                            <td style="padding-left:20px;">@item.TotalItems</td>
-                            <td style="padding-left:20px;">@item.itemDescription</td>
+                            <td><center>@item.TotalItems</center></td>
+                            <td><center>@item.OverallTotalPrice</center></td>
+                            <td style="padding-left:20px;">@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</td>
                             <td style="padding-left:20px;">@item.BranchName</td>
                             <td>@item.reqCreator</td>
                             <td>
                                 @item.Region
                                 <span style="display:none;">@item.BranchCode</span>
                             </td>
+                            <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                         </tr>
                     }
                     else
@@ -57,14 +61,16 @@
                                 <td style="padding-left:20px;"><center>@item.reqDate</center></td>
                                 <td style="padding-left:20px;">@item.reqNumber</td>
                                 <td style="padding-left:15px;">@item.TypeName</td>
-                                <td style="padding-left:20px;">@item.TotalItems</td>
-                                <td style="padding-left:20px;">@item.itemDescription</td>
+                                <td><center>@item.TotalItems</center></td>
+                                <td><center>0</center></td>
+                                <td style="padding-left:20px;">@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</td>
                                 <td style="padding-left:20px;">@item.BranchName</td>
                                 <td>@item.reqCreator</td>
                                 <td>
                                     @item.Region
                                     <span style="display:none;">@item.BranchCode</span>
                                 </td>
+                                <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                             </tr>
                         }
                         else if (item.isApprovedLocalDiv == 1)
@@ -76,14 +82,16 @@
                                     <td style="padding-left:20px;"><center>@item.reqDate</center></td>
                                     <td style="padding-left:20px;">@item.reqNumber</td>
                                     <td style="padding-left:15px;">@item.TypeName</td>
-                                    <td style="padding-left:20px;">@item.TotalItems</td>
-                                    <td style="padding-left:20px;">@item.itemDescription</td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td><center>0</center></td>
+                                    <td style="padding-left:20px;">@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</td>
                                     <td style="padding-left:20px;">@item.BranchName</td>
                                     <td>@item.reqCreator</td>
                                     <td>
                                         @item.Region
                                         <span style="display:none;">@item.BranchCode</span>
                                     </td>
+                                    <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                 </tr>
                             }
                             else if (item.DivCode2 == mySession.s_DivisionID && item.isApprovedDiv2 == 0)
@@ -93,14 +101,16 @@
                                     <td style="padding-left:20px;"><center>@item.reqDate</center></td>
                                     <td style="padding-left:20px;">@item.reqNumber</td>
                                     <td style="padding-left:15px;">@item.TypeName</td>
-                                    <td style="padding-left:20px;">@item.TotalItems</td>
-                                    <td style="padding-left:20px;">@item.itemDescription</td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td><center>0</center></td>
+                                    <td style="padding-left:20px;">@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</td>
                                     <td style="padding-left:20px;">@item.BranchName</td>
                                     <td>@item.reqCreator</td>
                                     <td>
                                         @item.Region
                                         <span style="display:none;">@item.BranchCode</span>
                                     </td>
+                                    <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                 </tr>
                             }
                             else if (item.DivCode3 == mySession.s_DivisionID && item.isApprovedDiv3 == 0)
@@ -110,14 +120,16 @@
                                     <td style="padding-left:20px;"><center>@item.reqDate</center></td>
                                     <td style="padding-left:20px;">@item.reqNumber</td>
                                     <td style="padding-left:15px;">@item.TypeName</td>
-                                    <td style="padding-left:20px;">@item.TotalItems</td>
-                                    <td style="padding-left:20px;">@item.itemDescription</td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td><center>0</center></td>
+                                    <td style="padding-left:20px;">@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</td>
                                     <td style="padding-left:20px;">@item.BranchName</td>
                                     <td>@item.reqCreator</td>
                                     <td>
                                         @item.Region
                                         <span style="display:none;">@item.BranchCode</span>
                                     </td>
+                                    <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                 </tr>
                             }
                         }

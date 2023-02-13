@@ -9,12 +9,15 @@
         <tr>
             <th class="checkAll"><input type="checkbox" class="checkAll thChkbox"></th>
             <th><center>Select</center></th>
-            <th class="col-sm-1"><center>Date</center></th>
-            <th class="col-sm-2"><center>Request no.</center></th>
-            <th class="col-sm-3"><center>Types</center></th>
-            <th class="col-sm-1">Branch/Division</th>
+            <th class="col-sm-1" style="padding-left:20px;"><center>Date Created</center></th>
+            <th class="col-sm-2" style="padding-left:20px;"><center>Request no.</center></th>
+            <th class="col-sm-3" style="padding-left:15px;"><center>Types</center></th>
+            <th style="width:6%; padding-left:20px">Count</th>
+            <th style="width:6%; padding-left:20px">Price</th>
+            <th class="col-sm-1"  style="padding-left:10px;">Branch/Division</th>
             <th class="col-sm-2">Author</th>
             <th class="col-sm-2">Region</th>
+            <th class="col-sm-2">Post</th>
         </tr>
     </thead>
     <tbody style="font-size:12px;">

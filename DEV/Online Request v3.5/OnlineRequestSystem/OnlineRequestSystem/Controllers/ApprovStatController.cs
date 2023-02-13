@@ -19,7 +19,7 @@ namespace OnlineRequestSystem.Controllers
         #endregion In
 
         #region Approve Requests
-        public ActionResult ApprovedRequest(int Status, CreateReqModels Aprv, string forPresident, string returnUrl)
+        public ActionResult ApprovedRequest(int? Status, CreateReqModels Aprv, string forPresident, string returnUrl)
         {
             Aprv.returnUrl = returnUrl;
             if (Status == 0)

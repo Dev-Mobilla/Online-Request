@@ -300,3 +300,34 @@ border-left: 1px solid black;
 div.dataTables_wrapper div.dataTables_filter input {
 
 }
+
+#search-result td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+#search-result tbody {
+    display: block;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#search-result {
+    border-collapse: collapse;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    max-height: 400px;
+}
+
+#search-result tr {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}
+
+#itemSearch{
+    width: 400px;
+}

@@ -447,9 +447,9 @@ namespace OnlineRequestSystem.Controllers
                     if (User.s_job_title == "AREA MANAGER")
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                           " FROM OnlineRequest.onlineRequest_Close a " +
-                                          " INNER JOIN requestitems  b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems  b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus = @c AND (a.Area = @Area AND a.Region = @Region AND a.ZoneCode = @ZoneCode OR a.reqCreator = @Creator) " +
                                           " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                         cmd.Parameters.AddWithValue("@Region", User.s_region);
@@ -460,9 +460,9 @@ namespace OnlineRequestSystem.Controllers
                     else if (User.s_job_title == "REGIONAL MAN")
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                           " FROM OnlineRequest.onlineRequest_Close a " +
-                                          " INNER JOIN requestitems  b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems  b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus = @c AND (a.Region = @Region AND a.ZoneCode = @ZoneCode OR a.reqCreator = @Creator) " +
                                           " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                         cmd.Parameters.AddWithValue("@Region", User.s_region);
@@ -472,27 +472,27 @@ namespace OnlineRequestSystem.Controllers
                     else if (User.s_costcenter == "0001MMD")
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                           " FROM OnlineRequest.onlineRequest_Close a " +
-                                          " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus = @c AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                                           " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                     }
                     else if (User.s_costcenter == "0002MMD")
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                           " FROM OnlineRequest.onlineRequest_Close a " +
-                                          " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus = @c AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR' ) " +
                                           " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                     }
                     else if (User.s_isDivisionApprover == 1 && User.s_task != "GMO-GENMAN" && User.s_usr_id != "LHUI1011873")
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description" +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description" +
                                           " FROM OnlineRequest.onlineRequest_Close a" +
-                                          " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus =@c AND a.deptCode = @deptCode " +
                                           " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
@@ -504,18 +504,18 @@ namespace OnlineRequestSystem.Controllers
                         if (User.s_costcenter == "0001GMO")
                         {
                             cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                              " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description" +
+                                              " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description" +
                                               " FROM OnlineRequest.onlineRequest_Close a " +
-                                              " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                              " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                               " WHERE a.reqStatus = @c AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                         }
                         else if (User.s_costcenter == "0002GMO")
                         {
                             cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                              " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                              " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                               " FROM OnlineRequest.onlineRequest_Close a " +
-                                              " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                              " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                               " WHERE a.reqStatus = @c AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
                                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                         }
@@ -523,17 +523,17 @@ namespace OnlineRequestSystem.Controllers
                     else if (User.s_usr_id == "LHUI1011873")
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                           " FROM OnlineRequest.onlineRequest_Close a " +
-                                          " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus = @c GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                     }
                     else
                     {
                         cmd.CommandText = " SELECT * , COUNT(b.reqnumber) AS TotalCount, " +
-                                          " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
+                                          " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description " +
                                           " FROM OnlineRequest.onlineRequest_Close a " +
-                                          " INNER JOIN requestitems b ON a.reqnumber = b.reqnumber " +
+                                          " INNER JOIN requestItems b ON a.reqnumber = b.reqnumber " +
                                           " WHERE a.reqStatus = @c AND a.reqCreator = @Creator GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
                         cmd.Parameters.AddWithValue("@Region", User.s_region);

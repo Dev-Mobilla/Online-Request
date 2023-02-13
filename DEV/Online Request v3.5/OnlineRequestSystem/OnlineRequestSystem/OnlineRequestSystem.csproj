@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -236,6 +238,7 @@
     <Compile Include="Models\DepartmentInfo.cs" />
     <Compile Include="Models\DivisionInfo.cs" />
     <Compile Include="Models\IniFile.cs" />
+    <Compile Include="Models\ItemsInfo.cs" />
     <Compile Include="Models\OpenReqDetails.cs" />
     <Compile Include="Models\OpenReqInfo.cs" />
     <Compile Include="Models\OpenReqViewModel.cs" />
@@ -484,6 +487,7 @@
     <Content Include="Scripts\Request\PrintFunctions.js" />
     <Content Include="Scripts\Request\RequestDetails.js" />
     <Content Include="Scripts\Request\RequestFormView.js" />
+    <Content Include="Scripts\Request\RequestItems\AddItemPrice.js" />
     <Content Include="Scripts\Request\RequestItems\BranchItems.js" />
     <Content Include="Scripts\Request\RequestItems\DivItems.js" />
     <Content Include="Scripts\Request\RequestItems\MMDItems.js" />
@@ -535,6 +539,7 @@
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_AreaManager.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_RegionalManager.cshtml" />
+    <Content Include="Views\OpenRequest\DetailsPartials\_AddItemPrice.cshtml" />
     <None Include="Views\OpenRequest\OpenReqPartials\_DivisionManager" />
     <None Include="Views\OpenRequest\OpenReqPartials\_GeneralManager" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_President.cshtml" />

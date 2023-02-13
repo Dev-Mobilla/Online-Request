@@ -17,7 +17,7 @@
             <tr>
                 <th class="checkAll"><input type="checkbox" class="checkAll thChkbox"></th>
                 <th><center>Select</center></th>
-                <th class="col-sm-1"><center>Date</center></th>
+                <th class="col-sm-1"><center>Date Created</center></th>
                 <th class="col-sm-2"><center>Request no.</center></th>
                 <th class="col-sm-2"><center>Types</center></th>
                 <th style="width:4%">Count</th>
@@ -25,6 +25,7 @@
                 <th class="col-sm-2">Branch/Division</th>
                 <th class="col-sm-2">Author</th>
                 <th class="col-sm-2">Region</th>
+                <th class="col-sm-2">Post</th>
             </tr>
         </thead>
         <tbody style="font-size:12px;">
@@ -32,26 +33,29 @@
             {
                 foreach (var item in Model._OpenInfo)
                 {
-                    <tr class="cellspacer">
-                        @if (item.reqCreator == mySession.s_fullname)
-                        {
-                            <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-user red"></span></td> }
-                        else
-                        {
-                            <td><center><input type="checkbox" class="chkBox" /></center></td> }
-                        <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
-                        <td style="padding-left:20px;"><center>@item.reqDate</center></td>
-                        <td style="padding-left:20px;">@item.reqNumber</td>
-                        <td style="padding-left:15px;">@item.TypeName</td>
-                        <td style="padding-left:20px;">@item.TotalItems</td>
-                        <td style="padding-left:20px;">@item.itemDescription</td>
-                        <td style="padding-left:10px;">@item.BranchName</td>
-                        <td>@item.reqCreator</td>
-                        <td>
-                            @item.Region
-                            <span style="display:none;">@item.BranchCode</span>
-                        </td>
-                    </tr>
+            <tr class="cellspacer">
+                @if (item.reqCreator == mySession.s_fullname)
+                {
+                    <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-user red"></span></td>
+ }
+                else
+                {
+                    <td><center><input type="checkbox" class="chkBox" /></center></td>
+}
+                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                <td style="padding-left:20px;"><center>@item.reqDate</center></td>
+                <td style="padding-left:20px;">@item.reqNumber</td>
+                <td style="padding-left:15px;">@item.TypeName</td>
+                <td style="padding-left:20px;">@item.TotalItems</td>
+                <td style="padding-left:20px;">0</td>
+                <td style="padding-left:20px;">@item.itemDescription</td>
+                <td style="padding-left:10px;">@item.BranchName</td>
+                <td>@item.reqCreator</td>
+                <td>
+                    @item.Region
+                    <span style="display:none;">@item.BranchCode</span>
+                </td>
+            </tr>
                 }
             }
         </tbody>

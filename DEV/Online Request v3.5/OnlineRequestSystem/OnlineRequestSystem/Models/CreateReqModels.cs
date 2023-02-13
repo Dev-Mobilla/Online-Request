@@ -28,6 +28,7 @@ namespace OnlineRequestSystem.Models
         public string RequestType { get; set; }
         public string Description { get; set; }
         public String reqTotal { get; set; }
+        public string OverallTotalPrice { get; set; }
 
         public string Approver { get; set; }
         public string BranchManager { get; set; }
@@ -57,9 +58,10 @@ namespace OnlineRequestSystem.Models
         #region for Request Items Model
 
         public string TotalQty { get; set; }
-
         public string TotalUnitCost { get; set; }
         public string OverallTotalCost { get; set; }
+        
+
 
         #endregion for Request Items Model
 
@@ -150,6 +152,7 @@ namespace OnlineRequestSystem.Models
         public string ItemQty { get; set; }
         public string ItemUnitCost { get; set; }
         public string ItemTotalCost { get; set; }
+        public string TotalPrice { get; set; }
         public string ItemUnit { get; set; }
         public string ItemStatus { get; set; }
 

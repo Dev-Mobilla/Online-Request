@@ -1141,5 +1141,81 @@ namespace OnlineRequestWCF.Request.Methods
             return GenManFullname;
         }
         #endregion
+
+        //For Item Pricing
+        protected internal ListOfItemsResponse GetAllItems()
+        {
+            try
+            {
+                var List = new ListOfItemsResponse();
+                List.ListOfItems = new List<ListOfItems>();
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["MMDHO"].ToString()))
+                {
+                    con.Open();
+                    using (SqlCommand cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = "Select ItemCode , Description, SalesPackagePrice from Items";
+                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                List.ListOfItems.Add(new ListOfItems { ItemCode = rdr["ItemCode"].ToString().Trim(), ItemDescription = rdr["Description"].ToString().Trim(), ItemPrice = rdr["SalesPackagePrice"].ToString().Trim() });
+                            }
+                        }
+                    }
+                }
+                var res = new ListOfItemsResponse { ListOfItems = List.ListOfItems, resCode = "0", resMsg = resMessages(1) };
+                return res;
+            }
+            catch (TimeoutException e)
+            {
+                _log.Fatal(e.Message, e);
+                return new ListOfItemsResponse { resCode = "1", resMsg = resMessages(5) };
+            }
+            catch (Exception x)
+            {
+                _log.Fatal(x.Message, x);
+                return new ListOfItemsResponse { resCode = "1", resMsg = resMessages(0) };
+            }
+
+        }
+
+        protected internal ListOfItemsResponse SearchItem(string searchCriteria)
+        {
+            try
+            {
+                var List = new ListOfItemsResponse();
+                List.ListOfItems = new List<ListOfItems>();
+                using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["MMDHO"].ToString()))
+                {
+                    con.Open();
+                    using (SqlCommand cmd = con.CreateCommand())
+                    {
+                        cmd.CommandText = "Select ItemCode, Description, SalesPackagePrice from Items where Description LIKE '%' + @searchCriteria + '%' OR ItemCode=@searchCriteria";
+                        cmd.Parameters.AddWithValue("@searchCriteria", searchCriteria);
+                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                List.ListOfItems.Add(new ListOfItems { ItemCode = rdr["ItemCode"].ToString().Trim(), ItemDescription = rdr["Description"].ToString().Trim(), ItemPrice = rdr["SalesPackagePrice"].ToString().Trim() });
+                            }
+                        }
+                    }
+                }
+                var res = new ListOfItemsResponse { ListOfItems = List.ListOfItems, resCode = "0", resMsg = resMessages(1) };
+                return res;
+            }
+            catch (TimeoutException e)
+            {
+                _log.Fatal(e.Message, e);
+                return new ListOfItemsResponse { resCode = "1", resMsg = resMessages(5) };
+            }
+            catch (Exception x)
+            {
+                _log.Fatal(x.Message, x);
+                return new ListOfItemsResponse { resCode = "1", resMsg = resMessages(0) };
+            }
+
+        }
     }
 }

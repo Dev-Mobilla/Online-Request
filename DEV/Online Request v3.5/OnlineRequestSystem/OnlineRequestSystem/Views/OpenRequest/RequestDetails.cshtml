@@ -19,6 +19,9 @@
     int divRequest = Model.isDivRequest;
     string RequestTypeName = ViewBag.requestName;
     int count = 1;
+    int i = 0;
+
+
 }
 <br />
 @using (Ajax.BeginForm("ApprovedRequest", "ApprovStat", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }))
@@ -96,8 +99,10 @@
                 <thead>
                     <tr class="ORSHeading orHeader">
                         <th style="width:3%"></th>
-                        <th class="col-md-4">Description</th>
-                        <th class="col-md-1">Item Quantity</th>
+                        <th class="col-md-2">Description</th>
+                        <th class="col-md-1"><center>Item Quantity</center></th>
+                        <th class="col-md-1"><center>Item Unit</center></th>
+                        <th class="col-md-1"><center>Item Price</center></th>
                         <th class="col-md-1"><center>MMD</center></th>
                         @if (Model.isDivRequest == 0)
                         {
@@ -106,21 +111,57 @@
                         }
                         else
                         {
-                            <th class="col-md-1"><center>Division</center></th> }
+                            <th class="col-md-1"><center>Division</center></th>
+                        }
                         <th class="col-md-1"><center>Status</center></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.ReqItems)
                     {
+                        var j = 0;
+                        var newID = "priceItem" + count;
+                        var priceNewID = "priceMMD" + count;
+                        var quantity = "itemQty" + count;
+                        var newItemDesc = "itemDesc" + count;
                         <tr>
                             <td><center>@count</center></td>
-                            <td id="itemDesc">
+                            <td id="@newItemDesc" class="itemDesc">
                                 @item.ItemDescription
                             </td>
-                            <td id="itemQty">
-                                @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i>
+                            <td id="@quantity">
+                                @item.ItemQty
                             </td>
+                            <td>
+                                <i>@item.ItemUnit</i>
+                            </td>
+
+                            <td style="padding:1px;">
+                                @if (mySession.s_MMD == 1)
+                                {
+                                    if (Model.Sts_MMD_isProcessed == "0")
+                                    {
+                                <center>
+                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "margin-top:6px; width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required" })
+                                    <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
+                                </center>
+                                    }
+                                    else
+                                    {
+                                        <center>
+                                            @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "margin-top:6px; width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
+                                        <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                        </center>
+                                    }
+
+                                }
+                                else
+                                {
+                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "margin-top:6px; width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
+                                    <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                }
+                            </td>
+
                             <td style="padding:1px;">
                                 @if (item.isCheckedMMD == 1)
                                 {
@@ -205,11 +246,22 @@
                             <td class="status" style="text-align:center">@item.ItemStatus</td>
                         </tr>
                         count++;
+                        j++;
+                        i++;
                     }
                 </tbody>
             </table>
+
+            <div class="totalPrice" style="text-align:center; font-size:18px; font-weight:bold">
+                <label>Total: </label>
+                @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 120px; outline: 0;", @readonly = "readonly"})
+                <input type="hidden" id="_overallPrice" />
+            </div>
+
             <input hidden id="Req" value="@Model.RequestNo" />
             <div hidden><input id="divRequest" value="@Model.isDivRequest" /></div>
+
+
             <!-- Hidden Recommended Approval Values -->
             @Html.TextBoxFor(m => m.RequestType, new { @style = "display:none" })
             @if (!(new[] { "001", "002" }).Contains(Model.BranchCode))
@@ -252,6 +304,8 @@
             @{Html.RenderPartial("DetailsPartials/_MMDProcesses");}
             <br />
 
+
+
             @if (Model.reqCreator == mySession.s_fullname)
             {
                 if (Model.isDivRequest == 0) // Branch Requests
@@ -293,19 +347,22 @@
     </div>
     <input id="isProcessed" value="@Model.Sts_MMD_isProcessed" hidden />
 }
-
-@{Html.RenderPartial("_CloseReqConfirmation");}
-@{Html.RenderPartial("_DisapproveConfirmation");}
+@{ Html.RenderPartial("DetailsPartials/_AddItemPrice"); }
+@{ Html.RenderPartial("_CloseReqConfirmation"); }
+@{ Html.RenderPartial("_DisapproveConfirmation"); }
 
 @section tableCss{
     <link rel="stylesheet" href="~/Content/bootstrap-datepicker.min.css" />
 }
 
-@section scripts{   
+@section scripts{
     <script>
         var ReqNO = $('#Req').val();
+                //var OverallTotal = $('#overallPrice').val();
+                //var OverallTotalPrice = document.getElementById("_overallPrice").value;
+                //console.log("p" + OverallTotal);
     </script>
-
+    <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>
     @Scripts.Render("~/bundles/requestdetails")
     @Scripts.Render("~/bundles/requestdetails_functions")
 

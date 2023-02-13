@@ -20,10 +20,28 @@
                     closeButton: false
                 });
                 e.preventDefault();
+                var OverallTotal = $('#overallPrice').val();
+                var inputsPrice = [];
+                var inputsDesc = [];
+
+                $('input[name="pricePerItem"]').each(function () {
+                    if ($(this).val() != "") {
+                        inputsPrice.push($(this).val().toString());
+                    }
+                });
+
+                $('.itemDesc').each(function () {
+                    if ($(this).text() != "") {
+                        inputsDesc.push($(this).text().toString());
+                    }
+                });
+
+           
                 $.ajax({
                     type: "POST",
                     url: Url + '/MMD/ProcessedPO',
-                    data: { ReqNo: ReqNO },
+                    traditional: true,
+                    data: { 'ReqNo': ReqNO, 'OverallTotal': OverallTotal, 'TotalP': inputsPrice, 'desc': inputsDesc },
                     success: function (result) {
                         if (result.status) {
                             dialog.modal('hide');
@@ -59,7 +77,6 @@ $("#ForDelivery").on('click', function (e) {
     bootbox.confirm({
         title: "Confirmation",
         message: "Are you sure you want to deliver the item/s ?",
-        //size: "small",
         buttons: {
             confirm: {
                 label: '<span class="glyphicon glyphicon-ok-sign"></span> Confirm ',

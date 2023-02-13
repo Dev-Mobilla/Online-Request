@@ -89,7 +89,7 @@ namespace OnlineRequestSystem.Controllers
                                               " FROM onlineRequest_Open a " +
                                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                               " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                              " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                               " WHERE a.reqStatus = 'PENDING' AND (a.BranchCode = @BranchCode AND a.Region = @Region AND a.ZoneCode = @ZoneCode) " +
                                               " AND a.reqCreator = @Creator GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                             cmd.Parameters.AddWithValue("@Region", ss.s_region);

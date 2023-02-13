@@ -158,6 +158,23 @@ public interface IORequest
     UriTemplate = "/GetCashRequestApprovers/?zonecode={zonecode}&class_04={class_04}&region={region}&areacode={areacode}&task={task}")]
     CashRequestApproversResponse ListOfCashRequestApprovers(string zonecode, string class_04, string region, string areacode, string task);
     #endregion
+
+    //For Item Pricing
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+     RequestFormat = WebMessageFormat.Json,
+     ResponseFormat = WebMessageFormat.Json,
+     BodyStyle = WebMessageBodyStyle.WrappedRequest,
+     UriTemplate = "/GetAllItems")]
+    ListOfItemsResponse ListOfItems();
+
+    [OperationContract]
+    [WebInvoke(Method = "GET",
+    RequestFormat = WebMessageFormat.Json,
+    ResponseFormat = WebMessageFormat.Json,
+    BodyStyle = WebMessageBodyStyle.WrappedRequest,
+    UriTemplate = "/SearchItem/?itemDetails={searchCriteria}")]
+    ListOfItemsResponse SearchItem(string searchCriteria);
 }
 
 

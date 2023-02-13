@@ -6,6 +6,7 @@
         public string ItemQty { get; set; }
         public string ItemUnitCost { get; set; }
         public string TotalCost { get; set; }
+        public string TotalPrice { get; set; }
     }
 
     public class IssuanceSlipModel

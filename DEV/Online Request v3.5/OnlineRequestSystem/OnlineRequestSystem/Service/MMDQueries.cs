@@ -550,5 +550,21 @@ namespace OnlineRequestSystem.Service
             }
             return Resp;
         }
+
+        //For Item Pricing: Search Item Price
+        //public ItemsInfo SearchItemPrice(string searchCriteria)
+        //{
+        //    string w = ConfigurationManager.AppSettings["ServiceUrl"].ToString();
+        //    Uri source = new System.Uri(w + "/SearchItem?itemDetails=" + searchCriteria);
+        //    RequestHandler reqHandler = new RequestHandler(source, "GET", "application/json");
+        //    string response = reqHandler.HttpGetRequest();
+        //    string ee = response.Substring(0, 5);
+        //    if (ee == "Error")
+        //        log.Fatal("No Service Available");
+
+        //    var Response = JsonConvert.DeserializeObject<ItemsInfoResponses>(response);
+        //    return Response.ItemsInfoResp;
+        //}
+
     }
 }

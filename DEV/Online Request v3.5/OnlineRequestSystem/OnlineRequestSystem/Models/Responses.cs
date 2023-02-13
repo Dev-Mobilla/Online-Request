@@ -155,4 +155,15 @@ namespace OnlineRequestSystem.Models
         public string Region { get; set; }
         public string RegionValue { get; set; }
     }
+
+    public class ItemsInfoResponses : Resp
+    {
+        private ItemsInfo _ItemsInfo;
+
+        public ItemsInfo ItemsInfoResp
+        {
+            get { return _ItemsInfo; }
+            set { _ItemsInfo = value; }
+        }
+    }
 }

@@ -25,7 +25,7 @@ namespace OnlineRequestSystem.Service
                 var cmd = conn.CreateCommand();
                 string MMD = " SELECT " +
                              " a.reqNumber,  a.reqCreator , a.reqDescription, COUNT(d.itemDescription) AS TotalCount," +
-                             " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                             " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                              " a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode, a.reqStatus, " +
                              " a.isDivRequest, a.DeptCode, a.forPresident," +
                              " IF(b.isApprovedDM = c.isDMApproval, 1,0) AS DM, " +
@@ -41,7 +41,7 @@ namespace OnlineRequestSystem.Service
                              " FROM onlineRequest_Open a " +
                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                              " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                             " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                             " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                              " WHERE a.TypeID = c.TypeID AND a.reqStatus = 'PENDING' AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC";
                 cmd.CommandText = MMD;
@@ -146,7 +146,7 @@ namespace OnlineRequestSystem.Service
                 var data = new List<OpenReqViewModel>();             
                 string MMD = " SELECT " +
                              " a.reqNumber,  a.reqCreator , a.reqDescription, COUNT(d.itemDescription) AS TotalCount, " +
-                             " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                             " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                              " a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode, a.reqStatus," +
                              " a.isDivRequest, a.DeptCode, a.forPresident," +
                              " IF(b.isApprovedDM = c.isDMApproval, 1,0) AS DM ," +
@@ -164,7 +164,7 @@ namespace OnlineRequestSystem.Service
                              " FROM onlineRequest_Open a " +
                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                              " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                             " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                             " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                              " WHERE a.TypeID = c.TypeID AND a.reqStatus = 'PENDING' AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC";
                 cmd.CommandText = MMD;
@@ -271,7 +271,7 @@ namespace OnlineRequestSystem.Service
 
                 cmd.CommandText = " SELECT " +
                                   " a.reqNumber,  a.reqCreator , a.reqDescription, COUNT(d.itemDescription) AS TotalCount,  " +
-                                  " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                   " a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode, a.reqStatus, a.isDivRequest, b.isApprovedLocalDiv, a.DeptCode, a.forPresident, " +
                                   " b.isApprovedDM, c.isDMApproval," +
                                   " b.isApprovedAM, c.isAMApproval, " +
@@ -285,7 +285,7 @@ namespace OnlineRequestSystem.Service
                                   " FROM onlineRequest_Open a " +
                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                   " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                   " WHERE a.reqStatus = 'PENDING' AND (c.isAMApproval = 1 AND a.Area = @Area AND a.ZoneCode = @ZoneCode)  " +
                                   " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
@@ -383,7 +383,7 @@ namespace OnlineRequestSystem.Service
 
                 cmd.CommandText = " SELECT " +
                                   " a.reqNumber,  a.reqCreator , a.reqDescription, COUNT(d.itemDescription) AS TotalCount, a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, " +
-                                  " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                   " a.DivCode, a.Zonecode, a.reqStatus, a.isDivRequest, b.isApprovedLocalDiv, a.DeptCode, a.forPresident," +
                                   " b.isApprovedDM, c.isDMApproval, " +
                                   " b.isApprovedAM, c.isAMApproval, " +
@@ -397,7 +397,7 @@ namespace OnlineRequestSystem.Service
                                   " FROM onlineRequest_Open a " +
                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                   " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                   " WHERE a.reqStatus = 'PENDING' AND (a.Region = @Region AND a.ZoneCode = @ZoneCode) " +
                                   " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                 cmd.Parameters.AddWithValue("@Region", ss.s_region);
@@ -493,7 +493,7 @@ namespace OnlineRequestSystem.Service
                 var data = new List<OpenReqViewModel>();
 
                 cmd.CommandText = " SELECT  a.reqNumber, a.reqCreator, a.reqDescription, COUNT(d.itemDescription) AS TotalCount, a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode,   " +
-                                  " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                   " a.reqStatus, a.isDivRequest, a.DeptCode, a.forPresident, b.isApprovedLocalDiv, b.isApprovedDM, c.isDMApproval,  b.isApprovedAM, " +
                                   " c.isAMApproval,  b.isApprovedRM, c.isRMApproval,  b.isApprovedGM,  c.isGMApproval, b.isApprovedVPAssistant, b.isApprovedDiv1, " +
                                   " c.isDivManApproval,  b.isApprovedDiv2, c.isDivManApproval2,  b.isApprovedDiv3, c.isDivManApproval3,  b.isApprovedPres, c.isPresidentApproval,  " +
@@ -501,7 +501,7 @@ namespace OnlineRequestSystem.Service
                                   " FROM onlineRequest_Open a " +
                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                   " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                   " WHERE a.reqStatus = 'Pending' AND " +
                                   " a.DeptCode = @deptCode GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";        
                 cmd.Parameters.AddWithValue("@deptCode", ss.s_costcenter);
@@ -597,7 +597,7 @@ namespace OnlineRequestSystem.Service
                 var data = new List<OpenReqViewModel>();
 
                 cmd.CommandText = " SELECT  a.reqNumber, a.reqCreator, a.reqDescription, COUNT(d.itemDescription) AS TotalCount, a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode,   " +
-                                  " (SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                   " a.reqStatus, a.isDivRequest, a.DeptCode, a.forPresident, b.isApprovedLocalDiv, b.isApprovedDM, c.isDMApproval,  b.isApprovedAM, " +
                                   " c.isAMApproval,  b.isApprovedRM, c.isRMApproval,  b.isApprovedGM,  c.isGMApproval, b.isApprovedVPAssistant,  b.isApprovedDiv1, " +
                                   " c.isDivManApproval,  b.isApprovedDiv2, c.isDivManApproval2,  b.isApprovedDiv3, c.isDivManApproval3,  b.isApprovedPres, c.isPresidentApproval,  " +
@@ -605,7 +605,7 @@ namespace OnlineRequestSystem.Service
                                   " FROM onlineRequest_Open a " +
                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                   " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                   " WHERE a.reqStatus = 'Pending' AND " +
                                   " a.DeptCode = @deptCode  GROUP BY a.reqNumber ORDER BY a.syscreated ASC  ";
                 cmd.Parameters.AddWithValue("@deptCode", ss.s_costcenter);
@@ -700,7 +700,7 @@ namespace OnlineRequestSystem.Service
 
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = " SELECT  a.reqNumber, a.reqCreator, a.reqDescription, COUNT(d.itemDescription) AS TotalCount, a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode,   " +
-                                  " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                   " a.reqStatus, a.isDivRequest, a.DeptCode, a.forPresident, b.isApprovedLocalDiv, b.isApprovedDM, c.isDMApproval,  b.isApprovedAM, " +
                                   " c.isAMApproval,  b.isApprovedRM, c.isRMApproval,  b.isApprovedGM,  c.isGMApproval, b.isApprovedVPAssistant, b.isApprovedDiv1, " +
                                   " c.isDivManApproval,  b.isApprovedDiv2, c.isDivManApproval2,  b.isApprovedDiv3, c.isDivManApproval3,  b.isApprovedPres, c.isPresidentApproval,  " +
@@ -708,7 +708,7 @@ namespace OnlineRequestSystem.Service
                                   " FROM onlineRequest_Open a " +
                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                   " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                   " WHERE a.reqStatus = 'PENDING' AND " +
                                   " a.DeptCode = @deptCode GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                 cmd.Parameters.AddWithValue("@deptCode", ss.s_costcenter);
@@ -804,7 +804,7 @@ namespace OnlineRequestSystem.Service
                 var data = new List<OpenReqViewModel>();
 
                 cmd.CommandText = " SELECT  a.reqNumber, a.reqCreator, a.reqDescription, COUNT(d.itemDescription) AS TotalCount, a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, a.Zonecode,   " +
-                                  " ( SELECT itemDescription FROM requestitems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                   " a.reqStatus, a.isDivRequest, a.DeptCode, a.forPresident, b.isApprovedLocalDiv, b.isApprovedDM, c.isDMApproval,  b.isApprovedAM, " +
                                   " c.isAMApproval,  b.isApprovedRM, c.isRMApproval,  b.isApprovedGM,  c.isGMApproval, b.isApprovedVPAssistant, b.isApprovedDiv1, " +
                                   " c.isDivManApproval,  b.isApprovedDiv2, c.isDivManApproval2,  b.isApprovedDiv3, c.isDivManApproval3,  b.isApprovedPres, c.isPresidentApproval,  " +
@@ -812,7 +812,7 @@ namespace OnlineRequestSystem.Service
                                   " FROM onlineRequest_Open a " +
                                   " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                   " INNER JOIN requestType c ON a.TypeID = c.TypeID " +
-                                  " INNER JOIN requestitems d ON d.reqNumber = a.reqNumber  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber  " +
                                   " WHERE a.reqStatus = 'Pending' AND " +
                                   " a.DeptCode = @deptCode GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
                 cmd.Parameters.AddWithValue("@deptCode", ss.s_costcenter);
