@@ -225,6 +225,7 @@ namespace OnlineRequestSystem.Controllers
                                 ViewBag.requestName = getRequestType(TypeName);
                                 model.RequestType = rdr["TypeID"].ToString().Trim();
                                 model.Description = rdr["reqDescription"].ToString().Trim();
+                                model.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                                 model.BranchCode = rdr["BranchCode"].ToString().Trim();
                                 model.DivisionCode = rdr["DivCode"].ToString().Trim();
                                 model.Area = rdr["Area"].ToString().Trim();
@@ -337,6 +338,7 @@ namespace OnlineRequestSystem.Controllers
                                 var i = new RequestItems();
                                 i.ItemDescription = rdr["itemDescription"].ToString().Trim();
                                 i.ItemQty = rdr["qty"].ToString().Trim();
+                                i.TotalPrice = rdr["TotalPrice"].ToString().Trim();
                                 i.ItemUnit = rdr["unit"].ToString().Trim();
                                 i.ItemStatus = rdr["itemStatus"].ToString().Trim();
                                 i.isCheckedSDC = Convert.ToInt32(rdr["isCheckedSDC"].ToString().Trim());
@@ -474,6 +476,7 @@ namespace OnlineRequestSystem.Controllers
                             }
                         }
                         model.ReqItems = itemLists;
+                        TempData["reqItems"] = itemLists;
 
                         // need to do some functions to disable and enable the 
                         // checkbox , dropdown and serve option for

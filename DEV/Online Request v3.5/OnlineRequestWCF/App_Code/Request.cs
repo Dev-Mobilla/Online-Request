@@ -123,4 +123,18 @@ public class Request : IORequest
     }
     #endregion
 
+
+    //FOR ITEM PRICING
+    public ListOfItemsResponse ListOfItems()
+    {
+        var x = new Queries(_RequestLog);
+        return x.GetAllItems();
+    }
+
+    public ListOfItemsResponse SearchItem(string searchCriteria)
+    {
+        var x = new Queries(_RequestLog);
+        return x.SearchItem(searchCriteria);
+    }
+
 }

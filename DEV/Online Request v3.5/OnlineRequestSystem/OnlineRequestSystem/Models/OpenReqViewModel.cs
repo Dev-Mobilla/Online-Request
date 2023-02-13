@@ -7,6 +7,7 @@
         public string reqNumber { get; set; }
         public string reqCreator { get; set; }
         public string reqDescription { get; set; }
+        public decimal OverallTotalPrice { get; set; }
         public string reqDate { get; set; }
         public string reqStatus { get; set; }
         public string TypeID { get; set; }
@@ -18,6 +19,7 @@
         public string isDivRequest { get; set; }
         public string TotalItems { get; set; }
         public string itemDescription { get; set; }
+        
 
         public string DeptCode { get; set; }
         public string forPresident { get; set; }

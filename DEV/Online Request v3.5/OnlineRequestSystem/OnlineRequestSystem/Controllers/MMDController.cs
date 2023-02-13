@@ -59,6 +59,7 @@ namespace OnlineRequestSystem.Controllers
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID  " +
                               " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
@@ -248,7 +249,7 @@ namespace OnlineRequestSystem.Controllers
 
         #region Processed PO
 
-        public ActionResult ProcessedPO(string reqNumber, string ReqNo)
+        public ActionResult ProcessedPO(string ReqNo, string OverallTotal, List<string> TotalP, List<string> desc)
         {
             var ss = (ORSession)Session["UserSession"];
             var db = new ORtoMySql();
@@ -260,14 +261,38 @@ namespace OnlineRequestSystem.Controllers
                 using (var conn = db.getConnection())
                 {
                     var cmd = conn.CreateCommand();
-                    cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed WHERE reqNumber = @ReqNo";
-                    cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                    conn.Open();
+
+                    for (var i = 0; i < TotalP.Count; i++)
+                    {
+
+                        var totalP = Convert.ToDecimal(TotalP[i]);
+                        var descc = desc[i].ToString().Trim();
+
+                        cmd.CommandText = "UPDATE OnlineRequest.requestItems SET TotalPrice = @TotalPrice WHERE reqNumber = @reqNumber1 AND itemDescription = @desc";
+                        cmd.Parameters.AddWithValue("@TotalPrice", totalP);
+                        cmd.Parameters.AddWithValue("@desc", descc);
+                        cmd.Parameters.AddWithValue("@reqNumber1", ReqNo);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                    }
+
+                    cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Open SET OverallTotalPrice = @OverallTotalPrice WHERE reqNumber = @reqNumber2";
+                    cmd.Parameters.AddWithValue("@OverallTotalPrice", Convert.ToDecimal(OverallTotal));
+                    cmd.Parameters.AddWithValue("@reqNumber2", ReqNo);
+                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+
+                    cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed WHERE reqNumber = @ReqNo3";
+                    cmd.Parameters.AddWithValue("@ReqNo3", ReqNo);
                     cmd.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
                     cmd.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
                     cmd.Parameters.AddWithValue("@isMMDProcessed", 1);
-                    conn.Open();
                     cmd.ExecuteNonQuery();
+
+                    conn.Close();
                 }
+
             }
             catch (Exception x)
             {
@@ -1401,12 +1426,50 @@ namespace OnlineRequestSystem.Controllers
             }
             catch (Exception x)
             {
-                log.Fatal(x.Message, x);
+              log.Fatal(x.Message, x);
                 return Json(new
                 {
                     status = false,
                     msg = x.Message
                 }, JsonRequestBehavior.AllowGet);
+            }
+
+                    
+
+        //FOR ITEM PRICING: SEARCH PRICE
+        public JsonResult SearchItemPrice(string searchCriteria)
+        {
+            var ss = (ORSession)Session["UserSession"];
+
+            try
+            {
+                var xlist = new List<ItemsInfo>();
+                string w = ConfigurationManager.AppSettings["ServiceUrl"].ToString();
+                var source = new System.Uri(w + "/SearchItem?itemDetails=" + searchCriteria);
+                var reqHandler = new RequestHandler(source, "GET", "application/json");
+                string x = reqHandler.HttpGetRequest();
+                if (x == "Error")
+                    return null;
+
+                var resData = JsonConvert.DeserializeObject<ListOfItemsResponse>(x);
+
+                Session["ItemsInfo"] = resData;
+                return Json(new
+                {
+                    data = resData,
+                    status = true,
+                    msg = "Success!"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                return Json(new
+                {
+                    status = false,
+                    msg = "Unable to process request."
+                }, JsonRequestBehavior.AllowGet);
+                throw;
             }
         }
     }

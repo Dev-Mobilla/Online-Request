@@ -298,6 +298,22 @@ namespace OnlineRequestWCF.Request.Models
             set { _GmoGenName = value; }
         }
     }
-#endregion
+    #endregion
+
+    //FOR ITEM PRICING
+
+    [DataContract]
+    public class ListOfItemsResponse : Responses
+    {
+        [DataMember]
+        public List<ListOfItems> ListOfItems { get; set; }
+    }
+    public class ListOfItems
+    {
+        public string ItemCode { get; set; }
+        public string ItemDescription { get; set; }
+        public string ItemPrice { get; set; }
+
+    }
 
 }
