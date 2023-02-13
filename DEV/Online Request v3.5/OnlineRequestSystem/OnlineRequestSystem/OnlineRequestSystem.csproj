@@ -238,6 +238,7 @@
     <Compile Include="Models\DepartmentInfo.cs" />
     <Compile Include="Models\DivisionInfo.cs" />
     <Compile Include="Models\IniFile.cs" />
+    <Compile Include="Models\ItemsInfo.cs" />
     <Compile Include="Models\OpenReqDetails.cs" />
     <Compile Include="Models\OpenReqInfo.cs" />
     <Compile Include="Models\OpenReqViewModel.cs" />

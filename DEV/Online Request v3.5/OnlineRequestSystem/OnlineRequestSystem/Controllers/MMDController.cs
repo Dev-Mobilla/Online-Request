@@ -82,7 +82,7 @@ namespace OnlineRequestSystem.Controllers
                               " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
                               " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +                             
+                              " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
                               " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
@@ -1426,7 +1426,7 @@ namespace OnlineRequestSystem.Controllers
             }
             catch (Exception x)
             {
-              log.Fatal(x.Message, x);
+                log.Fatal(x.Message, x);
                 return Json(new
                 {
                     status = false,
@@ -1434,7 +1434,7 @@ namespace OnlineRequestSystem.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
 
-                    
+        }
 
         //FOR ITEM PRICING: SEARCH PRICE
         public JsonResult SearchItemPrice(string searchCriteria)
