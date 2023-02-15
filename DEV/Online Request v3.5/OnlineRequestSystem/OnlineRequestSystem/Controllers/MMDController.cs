@@ -54,7 +54,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 #region PP Query
 
-                                cmd.CommandText = "SELECT a.reqNumber, a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
+                                cmd.CommandText = "SELECT a.reqNumber, a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
                               " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
@@ -75,7 +75,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 #region RFS Query
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
+                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
                               " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
@@ -121,7 +121,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 #region PP Query
 
-                                cmd.CommandText = "SELECT a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount,  a.reqDescription, a.reqDate, a.TypeID , " +
+                                cmd.CommandText = "SELECT a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount,  a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
                               " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
@@ -140,7 +140,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 #region RFS Query
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
+                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
                               " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
@@ -159,7 +159,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 #region ITS Query
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
+                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
                               " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
@@ -193,6 +193,7 @@ namespace OnlineRequestSystem.Controllers
                             o.reqNumber = rdr["reqNumber"].ToString().Trim();
                             o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                             o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                            o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                             o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                             o.TypeID = rdr["TypeID"].ToString().Trim();
                             o.TotalItems = rdr["TotalCount"].ToString().Trim();

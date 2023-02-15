@@ -20,15 +20,14 @@
     @{Html.RenderPartial("~/Views/OpenRequest/OpenReqPartials/Sorting.cshtml");}
 
     @*To: <input type="text" id="search_date_range" style="position: absolute; left: 57%; height: 2%;" />*@
-    <table class="table-hover" id="MMDOpenRequest">
+    <table class="requests table-hover" id="MMDOpenRequest">
         <thead>
-            <tr>
-                <th style="display:none">Status</th>
+            <tr>                           
                 <th><center>Select</center></th>
                 <th class="col-sm-1"><center style="width:130%">Date Created</center></th>
                 <th class="col-sm-2"><center>Request no.</center></th>
                 <th class="col-sm-2"><center>Types</center></th>
-                <th style="width:6%"><center>Count</center></th>
+                <th class="col-sm-1"><center>Count</center></th>
                 <th class="col-sm-1"><center>Price</center></th>
                 <th class="col-sm-1" style="width:10%"><center>Description</center></th>
                 <th class="col-sm-2"><center>Branch/Division</center></th>
@@ -44,12 +43,12 @@
                     <tr class="cellspacer">
                         @if (item.MMD_Processed == 1)
                         {
-                            <td style="display:none">PO Approval</td>
+                            
                             <td><center><button class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
                         }
                         else
                         {
-                            <td style="display:none">Open Requests</td>
+                         
                             <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
                         }
 
@@ -57,7 +56,7 @@
                         <td><center>@item.reqNumber</center></td>
                         <td title="@item.TypeName"><center>@item.TypeName</center></td>
                         <td><center>@item.TotalItems</center></td>
-                        <td><center>@*@item.OverallTotalPrice*@</center></td>
+                        <td class="reqOverallTotal" style="padding-left:15px">@item.OverallTotalPrice.ToString()</td>
                         <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                         <td><center>@item.BranchName</center></td>
                         <td><center>@item.reqCreator</center></td>
@@ -73,11 +72,20 @@
             }
 
         </tbody>
-        <tfoot>
+         <tfoot>
             <tr>
-                <td style="position:absolute;left:45%; font-weight:bold">
-                    Total:
-                </td>
+                <th>&nbsp;</th>
+                <th class="col-sm-1">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th style="font-size:16px"><center>Total:</center></th>
+                <th class="col-sm-1"></th>
+                <th class="col-sm-1" style="width:10%">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th class="col-sm-3">&nbsp;</th>
+                <th class="col-sm-1">&nbsp;</th>
+                
             </tr>
         </tfoot>
     </table>
@@ -98,4 +106,7 @@
     @Scripts.Render("~/bundles/openrequestlibraries")
 
     @Scripts.Render("~/bundles/openrequests")
+<script>
+    
+ </script>
 }

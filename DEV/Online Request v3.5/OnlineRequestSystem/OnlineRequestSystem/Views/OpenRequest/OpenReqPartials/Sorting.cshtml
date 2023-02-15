@@ -1,4 +1,30 @@
-﻿<div style="position: absolute; left: 42.5%; width: 16.5%; z-index: 1; display:flex">
+﻿@model OnlineRequestSystem.Models.OpenReqInfo
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+@if (mySession.s_MMD == 1)
+{
+    <input type="hidden" id="usr_For_sort" value="MMDOpenRequest" />
+}
+else if (mySession.s_usr_id == "LHUI1011873")
+{
+    <input type="hidden" id="usr_For_sort" value="PresidentOpen" />
+}
+else if (mySession.s_task == "GMO-GENMAN")
+{
+    @*if (mySession.s_Division == "GMO")
+        {
+            <input type="hidden" id="usr_For_sort" value="DivisionOpenReq" />
+        }
+        else
+        {
+            <input type="hidden" id="usr_For_sort" value="GMOpen" />
+        }*@
+    <input type="hidden" id="usr_For_sort" value="GMOpen" />
+
+}
+
+<div style="position: absolute; left: 42.5%; width: 16.5%; z-index: 1; display:flex">
     <label style="padding:8px">Search</label>
     <select id="filter_Status" class="form-control">
         <option value="All Requests">All Requests</option>

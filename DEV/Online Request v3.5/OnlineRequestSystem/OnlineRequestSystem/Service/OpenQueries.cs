@@ -41,6 +41,7 @@ namespace OnlineRequestSystem.Service
                     o.reqNumber = read["reqNumber"].ToString().Trim();
                     o.reqCreator = read["reqCreator"].ToString().Trim();
                     o.reqDescription = read["reqDescription"].ToString().Trim();
+                    o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
                     o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
                     o.TypeID = read["TypeID"].ToString().Trim();
                     o.TotalItems = read["TotalCount"].ToString().Trim();
@@ -68,6 +69,7 @@ namespace OnlineRequestSystem.Service
                         o.result_AM = Convert.ToInt32(read["AM"].ToString().Trim());
                         o.result_RM = Convert.ToInt32(read["RM"].ToString().Trim());
                     }
+                    
                     o.result_Div1 = Convert.ToInt32(read["Div1"]);
                     o.result_Div2 = Convert.ToInt32(read["Div2"]);
                     o.result_Div3 = Convert.ToInt32(read["Div3"]);
@@ -127,6 +129,7 @@ namespace OnlineRequestSystem.Service
                     o.reqNumber = read["reqNumber"].ToString().Trim();
                     o.reqCreator = read["reqCreator"].ToString().Trim();
                     o.reqDescription = read["reqDescription"].ToString().Trim();
+                    o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
                     o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
                     o.TypeID = read["TypeID"].ToString().Trim();
                     o.TotalItems = read["TotalCount"].ToString().Trim();
@@ -151,6 +154,7 @@ namespace OnlineRequestSystem.Service
                     o.forPresident = read["forPresident"].ToString().Trim();
                     o.result_DM = Convert.ToInt32(read["DM"]);
                     o.isApprovedLocalDiv = Convert.ToInt32(read["isApprovedLocalDiv"]);
+
                     o.result_Div1 = Convert.ToInt32(read["Div1"]);
                     o.result_Div2 = Convert.ToInt32(read["Div2"]);
                     o.result_Div3 = Convert.ToInt32(read["Div3"]);
@@ -210,6 +214,7 @@ namespace OnlineRequestSystem.Service
                             o.reqNumber = rdr["reqNumber"].ToString().Trim();
                             o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                             o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                            o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                             o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                             o.TypeID = rdr["TypeID"].ToString().Trim();
                             o.TotalItems = rdr["TotalCount"].ToString().Trim();
@@ -298,6 +303,7 @@ namespace OnlineRequestSystem.Service
                         o.reqNumber = rdr["reqNumber"].ToString().Trim();
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                        o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                         o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = rdr["TotalCount"].ToString().Trim();
@@ -588,6 +594,7 @@ namespace OnlineRequestSystem.Service
                         o.reqNumber = rdr["reqNumber"].ToString().Trim();
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                        o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                         o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = rdr["TotalCount"].ToString().Trim();
@@ -704,6 +711,7 @@ namespace OnlineRequestSystem.Service
                         o.reqNumber = rdr["reqNumber"].ToString().Trim();
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                        o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                         o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = rdr["TotalCount"].ToString().Trim();

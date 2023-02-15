@@ -14,6 +14,10 @@ $.fn.dataTable.ext.search.push(
         var dataStatus = data[0];
         var stat = document.getElementById("filter_Status").value;
 
+        //console.log(min);
+
+        //console.log(date);
+
         if (stat === "All Requests") {
             if (
                 (min === null && max === null) ||
@@ -86,18 +90,65 @@ $(document).ready(function () {
         });
     }
 
-    // DataTables initialisation
-    var table = $('#MMDOpenRequest').DataTable({
-        "order": [[0, "desc"]], "bSort": false, stateSave: true,
+    var sortID = $('#usr_For_sort').val();
 
-    });
+    var sorIDD = "'#" + sortID + "'";
+
+    console.log(sorIDD);
+
+     //DataTables initialisation
+    //var table = $("#" + sortID).DataTable({
+    //    "order": [[0, "desc"]], "bSort": false, stateSave: true, "bDestroy": true,
+        
+    //});
+    
 
     $('#filter_Status').on('change', function () {
         table.draw();
     });
 
-    // Refilter the table
+    // Refilter the tables
     $('#search_filter').on('click', function () {
         table.draw();
     });
+
+
+    $(".requests").DataTable({
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (i) {
+                let val = i === '' && typeof i === 'string' ? 0 : parseFloat(i);
+                return val
+            };
+
+            var tbl = $('.requests th')
+            var index;
+             tbl.each(function () {
+                if ($(this).text() == "Price") {
+                    tbl.index(this);
+                    console.log(tbl.index(this));
+                    index =  tbl.index(this);
+                }
+            })
+            console.log(index)
+            
+
+
+            // Total over all pages
+            total = api
+                .column(index)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Update footer
+            console.log(total)
+            $(api.column(index).footer()).html(total.toFixed(2));
+        },
+    });
+
+ 
 });
