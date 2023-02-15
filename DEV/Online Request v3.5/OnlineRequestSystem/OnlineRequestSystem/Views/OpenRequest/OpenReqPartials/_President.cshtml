@@ -5,7 +5,9 @@
 }
 <div style="padding-top:7px;"></div>
 
-<table class="table-hover table_data" id="PresidentOpen" cellspacing="0">
+@{Html.RenderPartial("~/Views/OpenRequest/OpenReqPartials/Sorting.cshtml");}
+
+<table class="requests table-hover table_data" id="PresidentOpen" cellspacing="0">
     <thead>
         <tr>
             <th class="checkAll"><center><input type="checkbox" class="checkAll thChkbox"></center></th>
