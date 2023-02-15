@@ -88,6 +88,7 @@ namespace OnlineRequestSystem.Models
         public string TotalQty_SDC { get; set; }
 
         public string Approver { get; set; }
+        public int ForPO { get; set; }
         public string ClosedDate { get; set; }
         public string ClosedBy { get; set; }
         public DateTime? ReceivedDate { get; set; }
@@ -104,6 +105,7 @@ namespace OnlineRequestSystem.Models
         public string E_AMName { get; set; }
         public string E_AMDate { get; set; }
         public string E_AMRemarks { get; set; }
+
         public string E_RMName { get; set; }
         public string E_RMDate { get; set; }
         public string E_RMRemarks { get; set; }
@@ -115,12 +117,21 @@ namespace OnlineRequestSystem.Models
         public string E_GMName { get; set; }
         public string E_GMDate { get; set; }
         public string E_GMRemarks { get; set; }
+
         public string E_PresName { get; set; }
         public string E_PresDate { get; set; }
         public string E_PresRemarks { get; set; }
+
         public string E_DivName { get; set; }
         public string E_DivDate { get; set; }
         public string E_DivRemarks { get; set; }
+
+        public string E_VPO_POName { get; set; }
+        public string E_VPO_PODate { get; set; }
+        public string E_VPO_PORemarks { get; set; }
+        public string E_Pres_POName { get; set; }
+        public string E_Pres_PODate { get; set; }
+        public string E_Pres_PORemarks { get; set; }
 
         public string E_Div2Name { get; set; }
 

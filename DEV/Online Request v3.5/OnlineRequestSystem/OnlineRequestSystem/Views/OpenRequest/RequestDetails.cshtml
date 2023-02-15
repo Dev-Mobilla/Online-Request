@@ -132,11 +132,11 @@
                             <td id="@quantity" style="vertical-align:middle">
                                 <center>@item.ItemQty</center>
                             </td>
-                            <td>
+                            <td style="vertical-align:middle">
                                 <center> @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
                             </td>
 
-                            <td style="padding:1px;">
+                            <td style="padding: 1px; vertical-align: middle">
                                 @if (mySession.s_MMD == 1)
                                 {
                                     if (Model.Sts_MMD_isProcessed == "0")
@@ -157,12 +157,12 @@
                                 }
                                 else
                                 {
-                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "margin-top:6px; width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
+                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
                                     <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
                                 }
                             </td>
 
-                            <td style="padding:1px;">
+                            <td style="padding: 1px; vertical-align: middle">
                                 <center>
                                     @if (item.isCheckedMMD == 1)
                                     {
@@ -186,7 +186,7 @@
 
                             @if (Model.isDivRequest == 0)
                             {
-                                <td style="padding:1px;">
+                                <td style="padding: 1px; vertical-align: middle">
                                     <center>
                                         @if (item.isCheckedSDC == 1)
                                         {
@@ -207,7 +207,7 @@
                                     </center>
                                 </td>
 
-                                <td style="padding:1px;">
+                                <td style="padding: 1px; vertical-align: middle">
                                     <center>
                                         @if (item.isCheckedBranch == 1)
                                         {
@@ -230,7 +230,7 @@
                             }
                             else
                             {
-                                <td style="padding:1px;">
+                                <td style="padding: 1px; vertical-align: middle">
                                     <center>
                                         @if (item.isCheckedDiv == 1)
                                         {
@@ -251,7 +251,7 @@
                                     </center>
                                 </td>
                             }
-                            <td class="status" style="text-align:center">@item.ItemStatus</td>
+                            <td class="status" style="text-align:center; vertical-align:middle">@item.ItemStatus</td>
                         </tr>
                         count++;
                         j++;
