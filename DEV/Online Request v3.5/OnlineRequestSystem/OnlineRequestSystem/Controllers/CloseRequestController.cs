@@ -227,6 +227,12 @@ namespace OnlineRequestSystem.Controllers
                                 model.E_PresName = rdr["EscalationPres_Name"].ToString().Trim();
                                 model.E_PresDate = rdr["EscalationPres_Date"].ToString().Trim();
                                 model.E_PresRemarks = rdr["EscalationPres_Remarks"].ToString().Trim();
+                                model.E_VPO_POName = rdr["EscalationVPO_PO_Name"].ToString().Trim();
+                                model.E_VPO_PODate = rdr["EscalationVPO_PO_Date"].ToString().Trim();
+                                model.E_VPO_PORemarks = rdr["EscalationVPO_PO_Remarks"].ToString().Trim();
+                                model.E_Pres_POName = rdr["EscalationPres_PO_Name"].ToString().Trim();
+                                model.E_Pres_PODate = rdr["EscalationPres_PO_Date"].ToString().Trim();
+                                model.E_Pres_PORemarks = rdr["EscalationPres_PO_Remarks"].ToString().Trim();
                             }
                         }
                         cmd.CommandText = "SELECT * FROM OnlineRequest.requestApproverStatus WHERE reqNumber = @ReqNo4";
@@ -288,6 +294,14 @@ namespace OnlineRequestSystem.Controllers
                                 model.Sts_RM_Transitor = rdr["RM_Transitor"].ToString().Trim();
                                 model.Sts_RM_Transit_Date = rdr["RM_Transit_Date"].ToString().Trim();
                                 model.Sts_RM_isTransit = rdr["isRMTransit"].ToString().Trim();
+
+                                model.Sts_VPO_PO_Approver = rdr["VPO_PO_Approver"].ToString().Trim();
+                                model.Sts_VPO_PO_Date = rdr["VPO_PO_Approved_Date"].ToString().Trim();
+                                model.Sts_VPO_PO_isApproved = rdr["isVPO_PO_Approved"].ToString().Trim();
+                                model.Sts_Pres_PO_Approver = rdr["Pres_PO_Approver"].ToString().Trim();
+                                model.Sts_Pres_PO_Date = rdr["Pres_PO_Approved_Date"].ToString().Trim();
+                                model.Sts_Pres_PO_isApproved = rdr["isPres_PO_Approved"].ToString().Trim();
+                                model.PO_Approved = rdr["isPO_Approved"].ToString().Trim();
                             }
                         }
                         cmd.CommandText = "SELECT * FROM requestType WHERE TypeID = @TypeID";

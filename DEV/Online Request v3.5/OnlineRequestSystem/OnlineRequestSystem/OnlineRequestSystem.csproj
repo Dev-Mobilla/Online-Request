@@ -546,6 +546,8 @@
     <Content Include="Views\OpenRequest\DetailsPartials\_CommentSection.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\Sorting.cshtml" />
     <Content Include="Views\OpenRequest\DetailsPartials\_AddItemPrice.cshtml" />
+    <Content Include="Views\CloseRequest\DetailsPartials\_VPO_POApproval.cshtml" />
+    <Content Include="Views\CloseRequest\DetailsPartials\_Pres_POApproval.cshtml" />
     <None Include="Views\OpenRequest\OpenReqPartials\_DivisionManager" />
     <None Include="Views\OpenRequest\OpenReqPartials\_GeneralManager" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_President.cshtml" />
