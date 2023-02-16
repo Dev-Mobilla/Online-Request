@@ -7,10 +7,10 @@ $('#AMOpen').DataTable({
 $('#DeptOpenReq').DataTable({
     "order": [[0, "desc"]], "bSort": false, stateSave: true
 });
-$('#DivisionOpenReq').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
-});
-//$('#GMOpen').DataTable({
+//$('#DivisionOpenReq').DataTable({
+//    "order": [[0, "desc"]], "bSort": false, stateSave: true
+//});
+////$('#GMOpen').DataTable({
 //    "order": [[0, "desc"]], "bSort": false, stateSave: true
 //});
 //$('#PresidentOpen').DataTable({

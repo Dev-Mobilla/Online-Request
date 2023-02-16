@@ -114,6 +114,7 @@ $(document).ready(function () {
 
 
     $(".requests").DataTable({
+        "order": [[0, "desc"]], "bSort": false, stateSave: true,
         footerCallback: function (row, data, start, end, display) {
             var api = this.api();
 

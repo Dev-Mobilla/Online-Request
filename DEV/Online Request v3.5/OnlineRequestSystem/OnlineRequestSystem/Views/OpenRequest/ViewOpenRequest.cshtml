@@ -39,18 +39,20 @@
         if (mySession.s_isDepartmentApprover != 1)
         {
             <div style="padding-top:7px;"></div>
-            <table class="table-hover" id="BMorOthers">
+            <table class="requests table-hover" id="BMorOthers">
                 <thead>
                     <tr>
                         <th><center>Select</center></th>
-                        <th class="col-sm-1"><center>Date</center></th>
+                        <th class="col-sm-2"><center style="width:130%">Date Created</center></th>
                         <th class="col-sm-2"><center>Request no.</center></th>
-                        <th class="col-sm-2"><center>Type</center></th>
-                        <th style="width:6%"><center>Count</center></th>
-                        <th class="col-sm-1">Description</th>
-                        <th class="col-sm-2">Branch/Division</th>
-                        <th class="col-sm-2">Author</th>
-                        <th class="col-sm-2">Region</th>
+                        <th class="col-sm-2"><center>Types</center></th>
+                        <th class="col-sm-1"><center>Count</center></th>
+                        <th class="col-sm-1"><center>Price</center></th>
+                        <th class="col-sm-1" style="width:10%"><center>Description</center></th>
+                        <th class="col-sm-2"><center>Branch/Division</center></th>
+                        <th class="col-sm-2"><center>Author</center></th>
+                        <th class="col-sm-3"><center>Region</center></th>
+                        <th class="col-sm-1"><center>Post</center></th>
                     </tr>
                 </thead>
                 <tbody style="font-size:12px;" id="tbodys">
@@ -66,6 +68,7 @@
                                     <td style="padding-left:15px;">@item.reqNumber</td>
                                     <td style="padding-left:15px;">@item.TypeName</td>
                                     <td style="padding-left:25px;">@item.TotalItems</td>
+                                    <td class="reqOverallTotal" style="text-align:center">@item.OverallTotalPrice.ToString()</td>
                                     <td>@item.itemDescription</td>
                                     <td style="padding-left:10px;">@item.BranchName</td>
                                     <td>@item.reqCreator</td>
