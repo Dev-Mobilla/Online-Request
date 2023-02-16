@@ -21,18 +21,22 @@
     @if (mySession.s_isDepartmentApprover == 1)
     {
         @Html.Partial("OpenReqPartials/_DepartmentManager", Model);
+        <input id="forFilter" type="text" value="General_usr" hidden />
     }
     else if (mySession.s_job_title == "AREA MANAGER")
     {
         @Html.Partial("OpenReqPartials/_AreaManager", Model);
+        <input id="forFilter" type="text" value="General_usr" hidden />
     }
     else if (mySession.s_job_title == "REGIONAL MAN")
     {
         @Html.Partial("OpenReqPartials/_RegionalManager", Model);
+        <input id="forFilter" type="text" value="General_usr" hidden />
     }
     else if (mySession.s_usr_id == "LHUI1011873")
     {
         @Html.Partial("OpenReqPartials/_President", Model);
+        <input id="forFilter" type="text" value="Pres" hidden />
     }
     else
     {
@@ -110,15 +114,15 @@
             });
         });
 
-                                            //$('#BMorOthers tr').click(function () {
-                                            //    var reqno = $(this).closest("tr").find('td:eq(1)').text();
-                                            //    var region = $(this).closest("tr").find('#region').text();
-                                            //    var bcode = $(this).closest("tr").find('#bcode').text();
-                                            //    var zonecode = $(this).closest("tr").find('#zonecode').text();
-                                            //    window.location.href = Url + '/request-details?ReqNo=' + reqno + '&BranchCode=' + bcode + '&ZoneCode=' + zonecode + '&Region=' + region;
-                                            //    // Sample URL
-                                            //    // http://localhost:61746/request-details?ReqNo=OR-HO-01P-0918-00019&BranchCode=001&ZoneCode=VISMIN&Region=PRESIDENT%20OFFICE&retUrl=head-office-open-requests
-                                            //});
+//$('#BMorOthers tr').click(function () {
+//    var reqno = $(this).closest("tr").find('td:eq(1)').text();
+//    var region = $(this).closest("tr").find('#region').text();
+//    var bcode = $(this).closest("tr").find('#bcode').text();
+//    var zonecode = $(this).closest("tr").find('#zonecode').text();
+//    window.location.href = Url + '/request-details?ReqNo=' + reqno + '&BranchCode=' + bcode + '&ZoneCode=' + zonecode + '&Region=' + region;
+//    // Sample URL
+// http://localhost:61746/request-details?ReqNo=OR-HO-01P-0918-00019&BranchCode=001&ZoneCode=VISMIN&Region=PRESIDENT%20OFFICE&retUrl=head-office-open-requests
+//});
 
     </script>
 }
