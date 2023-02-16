@@ -91,12 +91,14 @@ $(document).ready(function () {
 
     // Refilter the tables
     $('#search_filter').on('click', function () {
-        table.draw();      
+        table.draw();
     });
 
     var getUser = $('#forFilter').val();
 
-    if (getUser == "Pres" || getUser == "VPO" || getUser == "MMD") {
+    console.log(getUser);
+
+    if (getUser == "Pres" || getUser == "VPO" || getUser == "MMD" || getUser == "VPO_local") {
         custom_search();
     }
 
@@ -108,6 +110,9 @@ $(document).ready(function () {
 
                 if ($('#forFilter').val() == "Pres" || $('#forFilter').val() == "VPO") {
                     index = 2;
+                }
+                else if ($('#forFilter').val() == "VPO_local") {
+                    index = 1;
                 }
                 else {
                     index = 1;
