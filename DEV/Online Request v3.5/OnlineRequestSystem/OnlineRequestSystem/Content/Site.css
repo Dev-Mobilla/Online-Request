@@ -301,9 +301,9 @@ div.dataTables_wrapper div.dataTables_filter input {
 
 }
 
-.dataTables_filter {
+/*.dataTables_filter {
     display: none;
-}
+}*/
 #search-result td {
     text-align: center;
     vertical-align: middle;

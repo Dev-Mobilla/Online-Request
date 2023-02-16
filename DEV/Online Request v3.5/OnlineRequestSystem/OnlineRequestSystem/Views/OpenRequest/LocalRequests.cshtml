@@ -187,6 +187,19 @@
             </tr>
         </tfoot>
     </table>
+
+    @if (mySession.s_task == "GMO-GENMAN")
+    {
+        <input id="forFilter" type="text" value="VPO" hidden />
+    }
+    else if (mySession.s_MMD == 1)
+    {
+        <input id="forFilter" type="text" value="MMD" hidden />
+    }
+    else
+    {
+        <input id="forFilter" type="text" value="General_usr" hidden />
+    }
 </div>
 
 @section tableCss{
