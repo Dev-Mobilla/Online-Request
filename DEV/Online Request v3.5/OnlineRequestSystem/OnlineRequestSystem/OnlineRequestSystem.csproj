@@ -47,17 +47,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\AESEncrypt.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalDecisions.ReportSource.1.0.0\lib\CrystalDecisions.ReportSource.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CrystalDecisions.ReportSource.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
-      <HintPath>..\packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CrystalDecisions.Shared.dll</HintPath>
     </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -256,8 +256,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dailyReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Report\issuanceForm.cs">
       <AutoGen>True</AutoGen>
@@ -275,8 +275,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>monthlyReport.rpt</DependentUpon>
-      <SubType>Component</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Report\request.cs">
       <AutoGen>True</AutoGen>
@@ -489,6 +489,7 @@
     <Content Include="Scripts\Request\PrintFunctions.js" />
     <Content Include="Scripts\Request\RequestDetails.js" />
     <Content Include="Scripts\Request\RequestFormView.js" />
+    <Content Include="Scripts\Request\RequestItems\AddItemPrice.js" />
     <Content Include="Scripts\Request\RequestItems\BranchItems.js" />
     <Content Include="Scripts\Request\RequestItems\DivItems.js" />
     <Content Include="Scripts\Request\RequestItems\MMDItems.js" />
@@ -544,6 +545,7 @@
     <Content Include="Views\OpenRequest\DetailsPartials\_Pres_POApproval.cshtml" />
     <Content Include="Views\OpenRequest\DetailsPartials\_CommentSection.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\Sorting.cshtml" />
+    <Content Include="Views\OpenRequest\DetailsPartials\_AddItemPrice.cshtml" />
     <None Include="Views\OpenRequest\OpenReqPartials\_DivisionManager" />
     <None Include="Views\OpenRequest\OpenReqPartials\_GeneralManager" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_President.cshtml" />

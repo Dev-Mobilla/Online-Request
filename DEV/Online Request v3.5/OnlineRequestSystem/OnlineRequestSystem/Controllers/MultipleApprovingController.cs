@@ -246,12 +246,12 @@ namespace OnlineRequestSystem.Controllers
             }
         }
 
-        public JsonResult MultipleDisapprove(string ReqNo, string approver)
+        public JsonResult MultipleDisapprove(string ReqNo, string ForPO, string approver)
         {
             var ss = (ORSession)Session["UserSession"];
             try
             {
-                if (que.MultipleDisapprove(ReqNo, ss, approver) == "success")
+                if (que.MultipleDisapprove(ReqNo, ForPO, ss, approver) == "success")
                 {
                     return Json(new
                     {

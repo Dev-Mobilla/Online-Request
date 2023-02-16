@@ -168,26 +168,155 @@ namespace OnlineRequestSystem.Controllers
                     con.Open();
                     var cmd = con.CreateCommand();
                     string query = "";
-                    if (Selected == "Branch")
+                    if (Category == "Close")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + "  WHERE MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear AND BranchCode = @Code";
-                        cmd.Parameters.AddWithValue("@Code", Code);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@Status", "CLOSED");
                     }
-                    else if (Selected == "Division")
+                    else if (Category == "Open")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + " WHERE DeptCode = @CostCenter AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
-                        cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@isMMDProcessed", 0);
                     }
-                    else if (Selected == "Area")
+                    else if (Category == "Approved")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + " WHERE Area = @Area AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
-                        cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@isPO_Approved", 1);
                     }
-                    else if (Selected == "Region")
+                    else if (Category == "Disapproved")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + " WHERE region = @Region AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear  ORDER BY reqDate";
-                        cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@Status", "DISAPPROVED");
                     }
+
                     cmd.Parameters.AddWithValue("@Month", month);
                     cmd.Parameters.AddWithValue("@mYear", mYear);
                     cmd.CommandText = query;
@@ -229,53 +358,163 @@ namespace OnlineRequestSystem.Controllers
                     con.Open();
                     var cmd = con.CreateCommand();
                     string query = "";
+
                     if (Category == "Close")
                     {
                         if (Selected == "Branch")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code  AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@Code", Code);
                         }
                         else if (Selected == "Division")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
                         }
                         else if (Selected == "Area")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@Area", Obj.area);
                         }
                         else if (Selected == "Region")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@Region", Obj.region);
                         }
+
+                        cmd.Parameters.AddWithValue("@Status", "CLOSED");
                         cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
                         cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
-                    else
+
+                    else if (Category == "Approved")
                     {
                         if (Selected == "Branch")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE BranchCode = @Code  AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
-                            cmd.Parameters.AddWithValue("@Code", Code);
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Code", Code);                       
                         }
                         else if (Selected == "Division")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE DeptCode = @CostCenter AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
                         }
                         else if (Selected == "Area")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE Area = @Area AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@Area", Obj.area);
                         }
                         else if (Selected == "Region")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE region = @Region AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@Region", Obj.region);
                         }
+
+                        cmd.Parameters.AddWithValue("@isPO_Approved", 1);
+                        cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+                        cmd.Parameters.AddWithValue("@DateTo", DateTo);
+                    }
+
+                    else if (Category == "Disapproved")
+                    {
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@Status", "DISAPPROVED");
+                        cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+                        cmd.Parameters.AddWithValue("@DateTo", DateTo);                    
+                    }
+
+                    else if (Category == "Open")
+                    {
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@CostCenter", Obj.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Area", Obj.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Region", Obj.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@isMMDProcessed", 0);
                         cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
                         cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
@@ -318,29 +557,160 @@ namespace OnlineRequestSystem.Controllers
                     conn.Open();
                     var cmd = conn.CreateCommand();
                     string query = "";
-                    if (Selected == "Branch")
+
+                    if (Category == "Close")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + "  WHERE MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear AND BranchCode = @Code";
-                        cmd.Parameters.AddWithValue("@Code", Code);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Area", rep.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Region", rep.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@Status", "CLOSED");
                     }
-                    else if (Selected == "Division")
+                    else if (Category == "Open")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + " WHERE DeptCode = @CostCenter AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
-                        cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Area", rep.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Region", rep.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@isMMDProcessed", 0);
                     }
-                    else if (Selected == "Area")
+                    else if (Category == "Approved")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + " WHERE Area = @Area AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
-                        cmd.Parameters.AddWithValue("@Area", rep.area);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Area", rep.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Region", rep.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@isPO_Approved", 1);
                     }
-                    else if (Selected == "Region")
+                    else if (Category == "Disapproved")
                     {
-                        query = "SELECT * FROM OnlineRequest.onlineRequest_" + Category + " WHERE region = @Region AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear  ORDER BY reqDate";
-                        cmd.Parameters.AddWithValue("@Region", rep.region);
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Area", rep.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND MONTH(reqDate) = @Month AND YEAR(reqDate) = @mYear ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Region", rep.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@Status", "DISAPPROVED");
                     }
+
                     cmd.Parameters.AddWithValue("@Month", Month);
                     cmd.Parameters.AddWithValue("@mYear", mYear);
                     cmd.CommandText = query;
+
                     using (var read = cmd.ExecuteReader())
                     {
                         if (read.HasRows)
@@ -382,24 +752,26 @@ namespace OnlineRequestSystem.Controllers
                     {
                         if (Selected == "Branch")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code  AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@Code", Code);
                         }
                         else if (Selected == "Division")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@CostCenter", rep.division);
                         }
                         else if (Selected == "Area")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@Area", rep.area);
                         }
                         else if (Selected == "Region")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
                             cmd.Parameters.AddWithValue("@Region", rep.region);
                         }
+
+                        cmd.Parameters.AddWithValue("@Status", "CLOSED");
                         cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
                         cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
@@ -407,39 +779,130 @@ namespace OnlineRequestSystem.Controllers
                     {
                         if (Selected == "Branch")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE BranchCode = @Code  AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@Code", Code);
                         }
                         else if (Selected == "Division")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE DeptCode = @CostCenter AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@CostCenter", rep.division);
                         }
                         else if (Selected == "Area")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE Area = @Area AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@Area", rep.area);
                         }
                         else if (Selected == "Region")
                         {
-                            query = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE region = @Region AND reqDate BETWEEN @DateFrom AND  @DateTo ORDER BY reqDate";
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isMMDProcessed = @isMMDProcessed " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
                             cmd.Parameters.AddWithValue("@Region", rep.region);
                         }
+
+                        cmd.Parameters.AddWithValue("@isMMDProcessed", 0);
                         cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
                         cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
                     else if (Category == "Approved")
                     {
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.BranchCode = @Code " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
 
+                            cmd.Parameters.AddWithValue("@Code", Code);
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.DeptCode = @CostCenter " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.Area = @Area " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Area", rep.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
+                                    "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                    "WHERE a.region = @Region " +
+                                    "AND b.isPO_Approved = @isPO_Approved " +
+                                    "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
+                                    "ORDER BY a.reqDate";
+
+                            cmd.Parameters.AddWithValue("@Region", rep.region);
+                        }
+
+                        cmd.Parameters.AddWithValue("@isPO_Approved", 1);
+                        cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+                        cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
-
-                    else if (Category == "Pending")
+                    else if (Category == "Disapproved")
                     {
+                        if (Selected == "Branch")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE BranchCode = @Code AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Code", Code); 
+                        }
+                        else if (Selected == "Division")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE DeptCode = @CostCenter AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@CostCenter", rep.division);
+                        }
+                        else if (Selected == "Area")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE Area = @Area AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Area", rep.area);
+                        }
+                        else if (Selected == "Region")
+                        {
+                            query = "SELECT * FROM OnlineRequest.onlineRequest_Close WHERE region = @Region AND reqStatus = @Status AND ClosedDate BETWEEN @DateFrom AND @DateTo ORDER BY reqDate";
+                            cmd.Parameters.AddWithValue("@Region", rep.region);
+                        }
 
-                    }
-                    else
-                    {
-
+                        cmd.Parameters.AddWithValue("@Status", "DISAPPROVED");
+                        cmd.Parameters.AddWithValue("@DateFrom", DateFrom);
+                        cmd.Parameters.AddWithValue("@DateTo", DateTo);
                     }
 
                     cmd.CommandText = query;
@@ -473,8 +936,8 @@ namespace OnlineRequestSystem.Controllers
                 var reqHandler = new RequestHandler(source, "GET", "application/json");
                 string x = reqHandler.HttpGetRequest();
                 if (x == "Error")
-                return "Service Unavailable";
-              
+                    return "Service Unavailable";
+
                 var Response = JsonConvert.DeserializeObject<DivisionNameResponse>(x);
                 Result = Response.DivisionName;
             }
@@ -496,7 +959,7 @@ namespace OnlineRequestSystem.Controllers
                 var reqHandler = new RequestHandler(source, "GET", "application/json");
                 string x = reqHandler.HttpGetRequest();
                 if (x == "Error")
-                return "Service Unavailable";
+                    return "Service Unavailable";
 
                 var Response = JsonConvert.DeserializeObject<BranchCodeResponse>(x);
                 Result = Response.BranchCode;
@@ -519,8 +982,8 @@ namespace OnlineRequestSystem.Controllers
                 var reqHandler = new RequestHandler(source, "GET", "application/json");
                 string x = reqHandler.HttpGetRequest();
                 if (x == "Error")
-                return null;
-                
+                    return null;
+
                 var Response = JsonConvert.DeserializeObject<ListOfBranchesResponse>(x);
                 foreach (var item in Response.ListOfBranches)
                 {
@@ -541,12 +1004,12 @@ namespace OnlineRequestSystem.Controllers
             {
                 var xlist = new List<SelectListItem>();
                 string w = ConfigurationManager.AppSettings["ServiceUrl"].ToString();
-                var source = new System.Uri(w  + "/GetIRDivisions?zonecode=" + zonecode);
+                var source = new System.Uri(w + "/GetIRDivisions?zonecode=" + zonecode);
                 var reqHandler = new RequestHandler(source, "GET", "application/json");
                 string x = reqHandler.HttpGetRequest();
                 if (x == "Error")
-                return null;
-                
+                    return null;
+
                 var Response = JsonConvert.DeserializeObject<ListOfIRDivisionResponse>(x);
                 foreach (var item in Response.ListIRDivisions)
                 {
@@ -571,8 +1034,8 @@ namespace OnlineRequestSystem.Controllers
                 var reqHandler = new RequestHandler(source, "GET", "application/json");
                 string x = reqHandler.HttpGetRequest();
                 if (x == "Error")
-                return null;
-                
+                    return null;
+
                 var Response = JsonConvert.DeserializeObject<ListOfAreaResponse>(x);
                 foreach (var item in Response.ListOfAreas)
                 {
@@ -597,8 +1060,8 @@ namespace OnlineRequestSystem.Controllers
                 var reqHandler = new RequestHandler(source, "GET", "application/json");
                 string x = reqHandler.HttpGetRequest();
                 if (x == "Error")
-                return null;
-                
+                    return null;
+
                 var Response = JsonConvert.DeserializeObject<ListOfRegionResponse>(x);
                 foreach (var item in Response.ListOfRegions)
                 {

@@ -1114,11 +1114,12 @@ namespace OnlineRequestSystem.Service
             }
         }
 
-        internal string MultipleDisapprove(string ReqNo, ORSession ss, string approver)
+        internal string MultipleDisapprove(string ReqNo, string ForPO, ORSession ss, string approver)
         {
             try
             {
                 var objects = JsonConvert.DeserializeObject<List<object>>(ReqNo);
+                var ForPOobj = JsonConvert.DeserializeObject<List<object>>(ForPO);
                 var db = new ORtoMySql();
                 var mod = new CloseRequest();
                 string newDivApprover = "";
@@ -1236,13 +1237,31 @@ namespace OnlineRequestSystem.Service
                                 break;
 
                             case "GM":
-                                mod.E_GMName = ss.s_fullname;
-                                mod.E_GMDate = syscreated.ToString(format);
+                                if (ForPOobj[i].ToString() == "1")
+                                {
+                                    mod.E_VPO_POName = ss.s_fullname;
+                                    mod.E_VPO_PODate = syscreated.ToString(format);
+                                }
+                                else
+                                {
+                                    mod.E_GMName = ss.s_fullname;
+                                    mod.E_GMDate = syscreated.ToString(format);
+                                }
+
                                 break;
 
                             case "Pres":
-                                mod.E_PresName = ss.s_fullname;
-                                mod.E_PresDate = syscreated.ToString(format);
+                                if (ForPOobj[i].ToString() == "1")
+                                {
+                                    mod.E_Pres_POName = ss.s_fullname;
+                                    mod.E_Pres_PODate = syscreated.ToString(format);
+                                }
+                                else
+                                {
+                                    mod.E_PresName = ss.s_fullname;
+                                    mod.E_PresDate = syscreated.ToString(format);
+                                }
+
                                 break;
 
                             case "Div1":
@@ -1267,6 +1286,7 @@ namespace OnlineRequestSystem.Service
                         }
 
                         mod.reqNumber = RequestNo;
+                        mod.ForPO = Convert.ToInt32(ForPOobj[i]);
                         disp.UpdateEscalationRemarks(mod, "DISAPPROVED", ss);
                         cmd.Parameters.Clear();
                         cmd.CommandText = "DELETE FROM OnlineRequest.onlineRequest_Open WHERE reqNumber = @reqNo ";

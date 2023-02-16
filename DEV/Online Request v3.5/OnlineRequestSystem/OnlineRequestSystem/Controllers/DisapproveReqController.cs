@@ -21,7 +21,6 @@ namespace OnlineRequestSystem.Controllers
             {
                 string Remarks = "";
                 var mod = new CloseRequest();
-                mod.Approver = Aprv.Approver;
                 var db = new ORtoMySql();
                 using (var conn = db.getConnection())
                 {
@@ -50,48 +49,115 @@ namespace OnlineRequestSystem.Controllers
                         mod.DeptCode = rdr["DeptCode"].ToString().Trim();
                     }
 
-                    #region [ Switching Approver ]
+                    mod.Approver = Aprv.Approver;
+                    mod.ForPO = Aprv.ForPO;
 
-                    switch (Aprv.Approver)
+                    mod.E_DMName = Aprv.E_DMName;
+                    mod.E_DMDate = Aprv.E_DMDate;
+                    mod.E_DMRemarks = Aprv.E_DMRemarks;
+
+                    mod.E_LocalDivName = Aprv.E_LocalDivName;
+                    mod.E_LocalDivDate = Aprv.E_LocalDivDate;
+                    mod.E_LocalDivRemarks = Aprv.E_LocalDivRemarks;
+
+                    mod.E_AMName = Aprv.E_AMName;
+                    mod.E_AMDate = Aprv.E_AMDate;
+                    mod.E_AMRemarks = Aprv.E_AMRemarks;
+
+                    mod.E_RMName = Aprv.E_RMName;
+                    mod.E_RMDate = Aprv.E_RMDate;
+                    mod.E_RMRemarks = Aprv.E_RMRemarks;
+
+                    mod.E_VPAssistantName = Aprv.E_VPAssistantName;
+                    mod.E_VPAssistantDate = Aprv.E_VPAssistantDate;
+                    mod.E_VPAssistantRemarks = Aprv.E_VPAssistantRemarks;
+
+                    mod.E_GMName = Aprv.E_GMName;
+                    mod.E_GMDate = Aprv.E_GMDate;
+                    mod.E_GMRemarks = Aprv.E_GMRemarks;
+
+                    mod.E_PresName = Aprv.E_PresName;
+                    mod.E_PresDate = Aprv.E_PresDate;
+                    mod.E_PresRemarks = Aprv.E_PresRemarks;
+
+                    mod.E_DivName = Aprv.E_DivName;
+                    mod.E_DivDate = Aprv.E_DivDate;
+                    mod.E_DivRemarks = Aprv.E_DivRemarks;
+
+                    mod.E_Div2Name = Aprv.E_Div2Name;
+                    mod.E_Div2Date = Aprv.E_Div2Date;
+                    mod.E_Div2Remarks = Aprv.E_Div2Remarks;
+
+                    mod.E_Div3Name = Aprv.E_Div3Name;
+                    mod.E_Div3Date = Aprv.E_Div3Date;
+                    mod.E_Div3Remarks = Aprv.E_Div3Remarks;
+
+                    mod.E_VPO_POName = Aprv.E_VPO_POName;
+                    mod.E_VPO_PODate = Aprv.E_VPO_PODate;
+                    mod.E_VPO_PORemarks = Aprv.E_VPO_PORemarks;
+
+                    mod.E_Pres_POName = Aprv.E_Pres_POName;
+                    mod.E_Pres_PODate = Aprv.E_Pres_PODate;
+                    mod.E_Pres_PORemarks = Aprv.E_Pres_PORemarks;
+
+                    #region [ Switching Approver ]                   
+
+                    switch (mod.Approver)
                     {
                         case "DM":
-                            Remarks = Aprv.E_DMRemarks;
+                            Remarks = mod.E_DMRemarks;
                             break;
 
                         case "LocalDiv":
-                            Remarks = Aprv.E_LocalDivRemarks;
+                            Remarks = mod.E_LocalDivRemarks;
                             break;
 
                         case "AM":
-                            Remarks = Aprv.E_AMRemarks;
+                            Remarks = mod.E_AMRemarks;
                             break;
 
                         case "RM":
-                            Remarks = Aprv.E_RMRemarks;
+                            Remarks = mod.E_RMRemarks;
                             break;
 
                         case "VPAssistant":
-                            Remarks = Aprv.E_VPAssistantRemarks;
+                            Remarks = mod.E_VPAssistantRemarks;
                             break;
 
                         case "GM":
-                            Remarks = Aprv.E_GMRemarks;
+                            if (mod.ForPO == 1)
+                            {
+                                Remarks = mod.E_VPO_PORemarks;
+                            }
+                            else
+                            {
+                                Remarks = mod.E_GMRemarks;
+                            }
+
                             break;
 
                         case "Pres":
-                            Remarks = Aprv.E_PresRemarks;
+                            if (mod.ForPO == 1)
+                            {
+                                Remarks = mod.E_Pres_PORemarks;
+                            }
+                            else
+                            {
+                                Remarks = mod.E_PresRemarks;
+                            }
+
                             break;
 
                         case "Div1":
-                            Remarks = Aprv.E_DivRemarks;
+                            Remarks = mod.E_DivRemarks;
                             break;
 
                         case "Div2":
-                            Remarks = Aprv.E_Div2Remarks;
+                            Remarks = mod.E_Div2Remarks;
                             break;
 
                         case "Div3":
-                            Remarks = Aprv.E_Div3Remarks;
+                            Remarks = mod.E_Div3Remarks;
                             break;
 
                         default:
@@ -104,7 +170,7 @@ namespace OnlineRequestSystem.Controllers
                     {
                         cmd.CommandText = "DELETE FROM OnlineRequest.onlineRequest_Open WHERE reqNumber = @reqNo ";
                         cmd.Parameters.Clear();
-                        cmd.Parameters.AddWithValue("@reqNo", Aprv.RequestNo);
+                        cmd.Parameters.AddWithValue("@reqNo", mod.reqNumber);
                         conn.Open();
                         if (cmd.ExecuteNonQuery() == 1)
                         {
@@ -232,15 +298,35 @@ namespace OnlineRequestSystem.Controllers
                             break;
 
                         case "GM":
-                            cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @E_GMName, EscalationGM_Date = @E_GMDate , EscalationGM_Remarks = @Remarks WHERE reqNumber = @ReqNo";
-                            cmd.Parameters.AddWithValue("@E_GMName", mod.E_GMName);
-                            cmd.Parameters.AddWithValue("@E_GMDate", Convert.ToDateTime(mod.E_GMDate));
+                            if (mod.ForPO == 1)
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationVPO_PO_Name = @E_VPO_PO_Name, EscalationVPO_PO_Date = @E_VPO_PO_Date , EscalationVPO_PO_Remarks = @Remarks WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@E_VPO_PO_Name", mod.E_VPO_POName);
+                                cmd.Parameters.AddWithValue("@E_VPO_PO_Date", Convert.ToDateTime(mod.E_VPO_PODate));
+                            }
+                            else
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationGM_Name = @E_GMName, EscalationGM_Date = @E_GMDate , EscalationGM_Remarks = @Remarks WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@E_GMName", mod.E_GMName);
+                                cmd.Parameters.AddWithValue("@E_GMDate", Convert.ToDateTime(mod.E_GMDate));
+                            }
+
                             break;
 
                         case "Pres":
-                            cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_Name = @E_PresName, EscalationPres_Date = @E_PresDate , EscalationPres_Remarks = @Remarks WHERE reqNumber = @ReqNo";
-                            cmd.Parameters.AddWithValue("@E_PresName", mod.E_PresName);
-                            cmd.Parameters.AddWithValue("@E_PresDate", Convert.ToDateTime(mod.E_PresDate));
+                            if (mod.ForPO == 1)
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_PO_Name = @E_Pres_PO_Name, EscalationPres_PO_Date = @E_Pres_PO_Date , EscalationPres_Remarks = @Remarks WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@E_Pres_PO_Name", mod.E_Pres_POName);
+                                cmd.Parameters.AddWithValue("@E_Pres_PO_Date", Convert.ToDateTime(mod.E_Pres_PODate));
+                            }
+                            else
+                            {
+                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_Name = @E_PresName, EscalationPres_Date = @E_PresDate , EscalationPres_Remarks = @Remarks WHERE reqNumber = @ReqNo";
+                                cmd.Parameters.AddWithValue("@E_PresName", mod.E_PresName);
+                                cmd.Parameters.AddWithValue("@E_PresDate", Convert.ToDateTime(mod.E_PresDate));
+                            }
+
                             break;
 
                         case "Div1":

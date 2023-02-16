@@ -6,7 +6,7 @@
 }
 <br />
 
-<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%;">
+<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%; padding-left:0px; padding-right:0px">
     <div class="panel-heading ORSHeading">
         <b class="orHeader">@ViewBag.headTxt REQUESTS</b>
         @if ((new[] { "0001MMD", "0002MMD", }).Contains(mySession.s_costcenter))
@@ -42,17 +42,15 @@
             <table class="requests table-hover" id="BMorOthers">
                 <thead>
                     <tr>
-                        <th><center>Select</center></th>
-                        <th class="col-sm-2"><center style="width:130%">Date Created</center></th>
+                        <th class="col-sm-1"><center>Select</center></th>
+                        <th class="col-sm-1"><center>Date Created</center></th>
                         <th class="col-sm-2"><center>Request no.</center></th>
-                        <th class="col-sm-2"><center>Types</center></th>
-                        <th class="col-sm-1"><center>Count</center></th>
-                        <th class="col-sm-1"><center>Price</center></th>
-                        <th class="col-sm-1" style="width:10%"><center>Description</center></th>
+                        <th class="col-sm-2"><center>Type</center></th>
+                        <th style="width:6%"><center>Count</center></th>
+                        <th class="col-sm-1"><center>Description</center></th>
                         <th class="col-sm-2"><center>Branch/Division</center></th>
                         <th class="col-sm-2"><center>Author</center></th>
-                        <th class="col-sm-3"><center>Region</center></th>
-                        <th class="col-sm-1"><center>Post</center></th>
+                        <th class="col-sm-2"><center>Region</center></th>
                     </tr>
                 </thead>
                 <tbody style="font-size:12px;" id="tbodys">
@@ -63,18 +61,19 @@
                             if (item.reqCreator == mySession.s_fullname && item.reqStatus == "OPEN")
                             {
                                 <tr class="cellspacer" style="cursor:pointer;">
-                                    <td><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
-                                    <td style="padding-left:-15px;"><center>@item.reqDate</center></td>
-                                    <td style="padding-left:15px;">@item.reqNumber</td>
-                                    <td style="padding-left:15px;">@item.TypeName</td>
-                                    <td style="padding-left:25px;">@item.TotalItems</td>
-                                    <td class="reqOverallTotal" style="text-align:center">@item.OverallTotalPrice.ToString()</td>
-                                    <td>@item.itemDescription</td>
-                                    <td style="padding-left:10px;">@item.BranchName</td>
-                                    <td>@item.reqCreator</td>
+                                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></center></td>
+                                    <td><center>@item.reqDate</center></td>
+                                    <td><center>@item.reqNumber</center></td>
+                                    <td><center>@item.TypeName</center></td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                                    <td><center>@item.BranchName</center></td>
+                                    <td><center>@item.reqCreator</center></td>
                                     <td>
-                                        @item.Region
-                                        <span id="bcode" style="display:none;">@item.BranchCode</span>
+                                        <center>
+                                            @item.Region
+                                            <span id="bcode" style="display:none;">@item.BranchCode</span>
+                                        </center>
                                     </td>
                                 </tr>
                             }
@@ -111,15 +110,15 @@
             });
         });
 
-                    //$('#BMorOthers tr').click(function () {
-                    //    var reqno = $(this).closest("tr").find('td:eq(1)').text();
-                    //    var region = $(this).closest("tr").find('#region').text();
-                    //    var bcode = $(this).closest("tr").find('#bcode').text();
-                    //    var zonecode = $(this).closest("tr").find('#zonecode').text();
-                    //    window.location.href = Url + '/request-details?ReqNo=' + reqno + '&BranchCode=' + bcode + '&ZoneCode=' + zonecode + '&Region=' + region;
-                    //    // Sample URL
-                    //    // http://localhost:61746/request-details?ReqNo=OR-HO-01P-0918-00019&BranchCode=001&ZoneCode=VISMIN&Region=PRESIDENT%20OFFICE&retUrl=head-office-open-requests
-                    //});
+                                            //$('#BMorOthers tr').click(function () {
+                                            //    var reqno = $(this).closest("tr").find('td:eq(1)').text();
+                                            //    var region = $(this).closest("tr").find('#region').text();
+                                            //    var bcode = $(this).closest("tr").find('#bcode').text();
+                                            //    var zonecode = $(this).closest("tr").find('#zonecode').text();
+                                            //    window.location.href = Url + '/request-details?ReqNo=' + reqno + '&BranchCode=' + bcode + '&ZoneCode=' + zonecode + '&Region=' + region;
+                                            //    // Sample URL
+                                            //    // http://localhost:61746/request-details?ReqNo=OR-HO-01P-0918-00019&BranchCode=001&ZoneCode=VISMIN&Region=PRESIDENT%20OFFICE&retUrl=head-office-open-requests
+                                            //});
 
     </script>
 }

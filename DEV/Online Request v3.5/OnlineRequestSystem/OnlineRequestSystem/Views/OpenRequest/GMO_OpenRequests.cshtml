@@ -6,92 +6,105 @@
 }
 <br />
 
-<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%;">
+<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%; padding-right:0px; padding-left:0px">
     <div class="panel-heading ORSHeading">
         <b class="orHeader">@ViewBag.headTxt</b>
     </div>
-
     <div style="padding-top:7px;"></div>
 
     @{Html.RenderPartial("~/Views/OpenRequest/OpenReqPartials/Sorting.cshtml");}
 
-<table class="requests table-hover" id="GMOpen">
-    <thead>
-        <tr>
-            <th class="checkAll"><center><input type="checkbox" class="checkAll thChkbox"></center></th>
-            <th class="col-sm-2"><center>Select</center></th>
-            <th class="col-sm-2"><center style="width:130%">Date Created</center></th>
-            <th class="col-sm-2"><center>Request no.</center></th>
-            <th class="col-sm-2"><center>Types</center></th>
-            <th class="col-sm-2"><center>Count</center></th>
-            <th class="col-sm-1"><center>Price</center></th>
-            <th class="col-sm-2" style="width:10%"><center>Description</center></th>
-            <th class="col-sm-2"><center>Branch/Division</center></th>
-            <th class="col-sm-2"><center>Author</center></th>
-            <th class="col-sm-3"><center>Region</center></th>
-            <th class="col-sm-2"><center>Post</center></th>
-        </tr>
-    </thead>
-    <tbody style="font-size:12px;">
-        @if (Model._OpenInfo != null)
-        {
-            foreach (var item in Model._OpenInfo)
+    <table class="requests table-hover" id="GMOpen">
+        <thead>
+            <tr>
+                <th class="checkAll"><center><input type="checkbox" class="checkAll thChkbox"></center></th>
+                <th><center>Select</center></th>
+                <th class="col-sm-1"><center>Date Created</center></th>
+                <th class="col-sm-2"><center>Request no.</center></th>
+                <th class="col-sm-2"><center>Types</center></th>
+                <th style="width:6%;"><center>Count</center></th>
+                <th class="col-sm-1"><center>Price</center></th>
+                <th class="col-sm-1"><center>Description</center></th>
+                <th class="col-sm-2"><center>Branch/Division</center></th>
+                <th class="col-sm-2"><center>Author</center></th>
+                <th class="col-sm-2"><center>Region</center></th>
+                <th class="col-sm-1"><center>Post</center></th>
+                <th style="display:none"><center>ForPO</center></th>
+                <th style="display:none"><center>Status</center></th>
+            </tr>
+        </thead>
+        <tbody style="font-size:12px;">
+            @if (Model._OpenInfo != null)
             {
-                <tr class="cellspacer">
-                    @if (item.reqCreator == mySession.s_fullname)
-                    {
-                        <td>&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-user red"></span></td>
-                    }
-                    else
-                    {
-                        <td><center><input type="checkbox" class="chkBox" /></center></td>
-                    }
-                    @if (item.MMD_Processed == 1)
-                    {
-                        <td style="padding-left:10px;"><button class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
-                    }
-                    else
-                    {
-                        <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
-                    }
-                    <td><center>@item.reqDate</center></td>
-                    <td><center>@item.reqNumber</center></td>
-                    <td title="@item.TypeName"><center>@item.TypeName</center></td>
-                    <td><center>@item.TotalItems</center></td>
-                    <td class="reqOverallTotal" style="text-align:center">@item.OverallTotalPrice.ToString()</td>
-                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
-                    <td><center>@item.BranchName</center></td>
-                    <td><center>@item.reqCreator</center></td>
-                    <td>
-                        <center>
-                            @item.Region
-                            <span style="display:none;">@item.BranchCode</span>
-                        </center>
-                    </td>
-                    <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
-                </tr>
+                foreach (var item in Model._OpenInfo)
+                {
+                    <tr class="cellspacer">
+                        @if (item.reqCreator == mySession.s_fullname)
+                        {
+                            <td><center><span class="glyphicon glyphicon-user red"></span></center></td>
+                        }
+                        else
+                        {
+                            <td><center><input type="checkbox" class="chkBox" /></center></td>
+                        }
+                        @if (item.MMD_Processed == 1)
+                        {
+                            <td><center><button class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></center></td>
+                        }
+                        else
+                        {
+                            <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></center></td>
+                        }
+
+                        <td><center>@item.reqDate</center></td>
+                        <td><center>@item.reqNumber</center></td>
+                        <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                        <td><center>@item.TotalItems</center></td>
+                        <td style="text-align: center;">@item.OverallTotalPrice</td>
+                        <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                        <td><center>@item.BranchName</center></td>
+                        <td><center>@item.reqCreator</center></td>
+                        <td>
+                            <center>
+                                @item.Region
+                                <span style="display:none;">@item.BranchCode</span>
+                            </center>
+                        </td>
+                        <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
+                        <td style="display:none">0</td>
+
+                        @if (item.MMD_Processed == 1)
+                        {
+                            <td style="display:none">PO Approval</td>
+                        }
+                        else
+                        {
+                            <td style="display:none">Open Requests</td>
+                        }
+                    </tr>
+                }
             }
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <th>&nbsp;</th>
-            <th class="col-sm-1">&nbsp;</th>
-            <th class="col-sm-1">&nbsp;</th>
-            <th class="col-sm-2">&nbsp;</th>
-            <th class="col-sm-2">&nbsp;</th>
-            <th style="font-size:16px"><center>Total:</center></th>
-            <th class="col-sm-1"></th>
-            <th class="col-sm-1" style="width:10%">&nbsp;</th>
-            <th class="col-sm-2">&nbsp;</th>
-            <th class="col-sm-2">&nbsp;</th>
-            <th class="col-sm-3">&nbsp;</th>
-            <th class="col-sm-1">&nbsp;</th>
-</tfoot>
-</table>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>&nbsp;</th>
+                <th class="col-sm-1">&nbsp;</th>
+                <th class="col-sm-1">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th style="font-size:16px"><center>Total:</center></th>
+                <th class="col-sm-1"></th>
+                <th class="col-sm-1" style="width:10%">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th class="col-sm-2">&nbsp;</th>
+                <th class="col-sm-3">&nbsp;</th>
+                <th class="col-sm-1">&nbsp;</th>
+        </tfoot>
+    </table>
 
-
+    <input id="forFilter" type="text" value="VPO" hidden />
     <input id="approver" type="text" value="GM" hidden />
+    &nbsp;&nbsp;&nbsp;
     <button class="btn btn-sm btn-success orHeader" id="VP_mApprove"><i class="fa fa-check"></i> &nbsp;Approve</button>
     <button class="btn btn-sm btn-danger orHeader" id="btnMultiDisapprove"><i class="fa fa-times"></i> &nbsp;Disapprove</button>
 </div>

@@ -8,15 +8,21 @@ Date.prototype.addHours = function (h) {
 // Custom filtering function which will search data in column four between two values
 $.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
+
+        var index;
+
+        if ($('#forFilter').val() == "Pres" || $('#forFilter').val() == "VPO") {
+            index = 2;
+        }
+        else {
+            index = 1;
+        }
+
         var min = minDate.val();
         var max = maxDate.val();
-        var date = new Date(data[2]).addHours(8);
-        var dataStatus = data[0];
+        var date = new Date(data[index]).addHours(8);
+        var dataStatus = data[13];
         var stat = document.getElementById("filter_Status").value;
-
-        //console.log(min);
-
-        //console.log(date);
 
         if (stat === "All Requests") {
             if (
@@ -90,31 +96,20 @@ $(document).ready(function () {
         });
     }
 
-    var sortID = $('#usr_For_sort').val();
+    //var sortID = $('#usr_For_sort').val();
 
-    var sorIDD = "'#" + sortID + "'";
+    //var sorIDD = "'#" + sortID + "'";
 
-    console.log(sorIDD);
-
-     //DataTables initialisation
+    //DataTables initialisation
     //var table = $("#" + sortID).DataTable({
     //    "order": [[0, "desc"]], "bSort": false, stateSave: true, "bDestroy": true,
-        
+
     //});
-    
 
-    $('#filter_Status').on('change', function () {
-        table.draw();
-    });
-
-    // Refilter the tables
-    $('#search_filter').on('click', function () {
-        table.draw();
-    });
-
-
-    $(".requests").DataTable({
-        "order": [[0, "desc"]], "bSort": false, stateSave: true,
+    var table = $(".requests").DataTable({
+        "order": [[0, "desc"]],
+        "bSort": false,
+        stateSave: true,
         footerCallback: function (row, data, start, end, display) {
             var api = this.api();
 
@@ -126,16 +121,13 @@ $(document).ready(function () {
 
             var tbl = $('.requests th')
             var index;
-             tbl.each(function () {
+            tbl.each(function () {
                 if ($(this).text() == "Price") {
                     tbl.index(this);
                     console.log(tbl.index(this));
-                    index =  tbl.index(this);
+                    index = tbl.index(this);
                 }
             })
-            console.log(index)
-            
-
 
             // Total over all pages
             total = api
@@ -146,10 +138,17 @@ $(document).ready(function () {
                 }, 0);
 
             // Update footer
-            console.log(total)
             $(api.column(index).footer()).html(total.toFixed(2));
         },
     });
 
- 
+    $('#filter_Status').on('change', function () {
+        table.draw();
+    });
+
+    // Refilter the tables
+    $('#search_filter').on('click', function () {
+        table.draw();
+    });
+
 });
