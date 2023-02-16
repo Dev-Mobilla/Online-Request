@@ -23,6 +23,7 @@
             <th class="col-sm-2"><center>Region</center></th>
             <th class="col-sm-1"><center>Post</center></th>
             <th style="display:none"><center>ForPO</center></th>
+            <th style="display:none"><center>Status</center></th>
         </tr>
     </thead>
     <tbody style="font-size:12px;">
@@ -54,7 +55,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td><center>@*@item.OverallTotalPrice*@</center></td>
+                                    <td><center>@item.OverallTotalPrice</center></td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -66,6 +67,7 @@
                                     </td>
                                     <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                     <td style="display:none">0</td>
+                                    <td style="display:none">Open Requests</td>
                                 </tr>
                             }
 
@@ -86,7 +88,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td><center>@*@item.OverallTotalPrice*@</center></td>
+                                    <td><center>@item.OverallTotalPrice</center></td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -98,6 +100,7 @@
                                     </td>
                                     <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                     <td style="display:none">1</td>
+                                    <td style="display:none">PO Approval</td>
                                 </tr>
                             }
                         }
@@ -124,7 +127,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td><center>@*@item.OverallTotalPrice*@</center></td>
+                                    <td><center>@item.OverallTotalPrice</center></td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -136,9 +139,10 @@
                                     </td>
                                     <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                     <td style="display:none">0</td>
+                                    <td style="display:none">Open Requests</td>
                                 </tr>
                             }
-                            else if (item.forPresident == "1" && item.isApprovedPres == 0)
+                            else if (item.forPresident == "1" && item.isApprovedPres == 0 && item.MMD_Processed == 0)
                             {
                                 <tr class="cellspacer">
                                     @if (item.reqCreator == mySession.s_fullname)
@@ -154,7 +158,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td><center>@*@item.OverallTotalPrice*@</center></td>
+                                    <td><center>@item.OverallTotalPrice</center></td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -166,6 +170,7 @@
                                     </td>
                                     <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                     <td style="display:none">0</td>
+                                    <td style="display:none">Open Requests</td>
                                 </tr>
                             }
 
@@ -198,6 +203,7 @@
                                     </td>
                                     <td><center><span class="glyphicon glyphicon-comment"></span></center></td>
                                     <td style="display:none">1</td>
+                                    <td style="display:none">PO Approval</td>
                                 </tr>
                             }
                         }
@@ -208,6 +214,7 @@
     </tbody>
 </table>
 
+<input id="forFilter" type="text" value="Pres" hidden />
 <input id="approver" type="text" value="Pres" hidden />
 &nbsp;&nbsp;&nbsp;
 <button class="btn btn-sm btn-success orHeader" id="Pres_mApprove"><i class="fa fa-check"></i> &nbsp;Approve</button>

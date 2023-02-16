@@ -96,10 +96,15 @@ namespace OnlineRequestSystem.Controllers
                                 o.reqNumber = rdr["reqNumber"].ToString().Trim();
                                 o.reqCreator = Culture.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                                 o.reqDescription = rdr["reqDescription"].ToString().Trim();
-                                o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
+
+                                if (ss.s_usr_id == "LHUI1011873")
+                                {
+                                    o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
+                                }
+
                                 o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
-                                
+
 
 
                                 string typeName = "";

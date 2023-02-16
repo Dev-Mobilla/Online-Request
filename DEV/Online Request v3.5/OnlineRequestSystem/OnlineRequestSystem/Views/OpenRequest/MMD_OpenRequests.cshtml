@@ -22,7 +22,7 @@
     @*To: <input type="text" id="search_date_range" style="position: absolute; left: 57%; height: 2%;" />*@
     <table class="requests table-hover" id="MMDOpenRequest">
         <thead>
-            <tr>                           
+            <tr>
                 <th><center>Select</center></th>
                 <th class="col-sm-1"><center>Date Created</center></th>
                 <th class="col-sm-2"><center>Request no.</center></th>
@@ -34,6 +34,9 @@
                 <th class="col-sm-2"><center>Author</center></th>
                 <th class="col-sm-3"><center>Region</center></th>
                 <th class="col-sm-1"><center>Post</center></th>
+                <th style="display:none"><center>Do not Delete</center></th>
+                <th style="display:none"><center>Do not Delete</center></th>
+                <th style="display:none"><center>Status</center></th>
         </thead>
         <tbody style="font-size:12px;">
             @if (Model._OpenInfo != null)
@@ -43,12 +46,10 @@
                     <tr class="cellspacer">
                         @if (item.MMD_Processed == 1)
                         {
-                            
                             <td><center><button class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
                         }
                         else
                         {
-                         
                             <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
                         }
 
@@ -67,12 +68,22 @@
                             </center>
                         </td>
                         <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                        <td style="display:none">Do not Delete</td>
+                        <td style="display:none">Do not Delete</td>
+                        @if (item.MMD_Processed == 1)
+                        {
+                            <td style="display:none">PO Approval</td>
+                        }
+                        else
+                        {
+                            <td style="display:none">Open Requests</td>
+                        }
                     </tr>
                 }
             }
 
         </tbody>
-         <tfoot>
+        <tfoot>
             <tr>
                 <th>&nbsp;</th>
                 <th class="col-sm-1">&nbsp;</th>
@@ -85,10 +96,12 @@
                 <th class="col-sm-2">&nbsp;</th>
                 <th class="col-sm-3">&nbsp;</th>
                 <th class="col-sm-1">&nbsp;</th>
-                
+
             </tr>
         </tfoot>
     </table>
+
+    <input id="forFilter" type="text" value="MMD" hidden />
 </div>
 
 @section tableCss{
@@ -106,7 +119,7 @@
     @Scripts.Render("~/bundles/openrequestlibraries")
 
     @Scripts.Render("~/bundles/openrequests")
-<script>
-    
- </script>
+    <script>
+
+    </script>
 }
