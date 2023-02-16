@@ -5,65 +5,7 @@ Date.prototype.addHours = function (h) {
     return this;
 }
 
-// Custom filtering function which will search data in column four between two values
-$.fn.dataTable.ext.search.push(
-    function (settings, data, dataIndex) {
-
-        var index;
-
-        if ($('#forFilter').val() == "Pres" || $('#forFilter').val() == "VPO") {
-            index = 2;
-        }
-        else {
-            index = 1;
-        }
-
-        var min = minDate.val();
-        var max = maxDate.val();
-        var date = new Date(data[index]).addHours(8);
-        var dataStatus = data[13];
-        var stat = document.getElementById("filter_Status").value;
-
-        if (stat === "All Requests") {
-            if (
-                (min === null && max === null) ||
-                (min === null && date <= max) ||
-                (min <= date && max === null) ||
-                (min <= date && date <= max)
-            ) {
-                return true;
-            }
-        }
-
-        else if (stat === "Open Requests" && dataStatus === stat) {
-            if (
-                (min === null && max === null) ||
-                (min === null && date <= max) ||
-                (min <= date && max === null) ||
-                (min <= date && date <= max)
-            ) {
-                return true;
-            }
-        }
-
-        else if (stat === "PO Approval" && dataStatus === stat) {
-            if (
-                (min === null && max === null) ||
-                (min === null && date <= max) ||
-                (min <= date && max === null) ||
-                (min <= date && date <= max)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-);
-
 $(document).ready(function () {
-
-    // Create date inputs
 
     $('#min, #max').on('change', function () {
 
@@ -107,6 +49,7 @@ $(document).ready(function () {
     //});
 
     var table = $(".requests").DataTable({
+        "dom": 'lrtip',
         "order": [[0, "desc"]],
         "bSort": false,
         stateSave: true,
@@ -148,7 +91,70 @@ $(document).ready(function () {
 
     // Refilter the tables
     $('#search_filter').on('click', function () {
-        table.draw();
+        table.draw();      
     });
+
+    var getUser = $('#forFilter').val();
+
+    if (getUser == "Pres" || getUser == "VPO" || getUser == "MMD") {
+        custom_search();
+    }
+
+    function custom_search() {
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+
+                var index;
+
+                if ($('#forFilter').val() == "Pres" || $('#forFilter').val() == "VPO") {
+                    index = 2;
+                }
+                else {
+                    index = 1;
+                }
+
+                var min = minDate.val();
+                var max = maxDate.val();
+                var date = new Date(data[index]).addHours(8);
+                var dataStatus = data[13];
+                var stat = document.getElementById("filter_Status").value;
+
+                if (stat === "All Requests") {
+                    if (
+                        (min === null && max === null) ||
+                        (min === null && date <= max) ||
+                        (min <= date && max === null) ||
+                        (min <= date && date <= max)
+                    ) {
+                        return true;
+                    }
+                }
+
+                else if (stat === "Open Requests" && dataStatus === stat) {
+                    if (
+                        (min === null && max === null) ||
+                        (min === null && date <= max) ||
+                        (min <= date && max === null) ||
+                        (min <= date && date <= max)
+                    ) {
+                        return true;
+                    }
+                }
+
+                else if (stat === "PO Approval" && dataStatus === stat) {
+                    if (
+                        (min === null && max === null) ||
+                        (min === null && date <= max) ||
+                        (min <= date && max === null) ||
+                        (min <= date && date <= max)
+                    ) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        );
+    }
 
 });
