@@ -102,7 +102,12 @@
                         <th class="col-md-2">Description</th>
                         <th class="col-md-1"><center>Item Quantity</center></th>
                         <th class="col-md-1"><center>Item Unit</center></th>
-                        <th class="col-md-1"><center>Item Price</center></th>
+
+                        @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+                        {
+                            <th class="col-md-1"><center>Item Price</center></th>
+                        }
+
                         <th class="col-md-1"><center>MMD</center></th>
                         @if (Model.isDivRequest == 0)
                         {
@@ -136,31 +141,34 @@
                                 <center> @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
                             </td>
 
-                            <td style="padding: 1px; vertical-align: middle">
-                                @if (mySession.s_MMD == 1)
-                                {
-                                    if (Model.Sts_MMD_isProcessed == "0")
+                            @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+                            {
+                                <td style="padding: 1px; vertical-align: middle">
+                                    @if (mySession.s_MMD == 1)
                                     {
-                                        <center>
-                                            @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off" })
-                                            <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
-                                        </center>
-                                    }
-                                    else
-                                    {
-                                        <center>
-                                            @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
-                                            <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                        </center>
-                                    }
+                                        if (Model.Sts_MMD_isProcessed == "0")
+                                        {
+                                            <center>
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off" })
+                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
+                                            </center>
+                                        }
+                                        else
+                                        {
+                                            <center>
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
+                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                            </center>
+                                        }
 
-                                }
-                                else
-                                {
-                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
-                                    <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                }
-                            </td>
+                                    }
+                                    else if (mySession.s_task == "GMO-GENMAN" || mySession.s_usr_id == "LHUI1011873")
+                                    {
+                                        @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
+                                        <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                    }
+                                </td>
+                            }
 
                             <td style="padding: 1px; vertical-align: middle">
                                 <center>
@@ -260,11 +268,14 @@
                 </tbody>
             </table>
 
-            <div class="totalPrice" style="text-align:center; font-size:18px; font-weight:bold">
-                <label>Total: </label>
-                @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
-                <input type="hidden" id="_overallPrice" />
-            </div>
+            @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+            {
+                <div class="totalPrice" style="text-align:center; font-size:18px; font-weight:bold">
+                    <label>Total: </label>
+                    @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
+                    <input type="hidden" id="_overallPrice" />
+                </div>
+            }
 
             <input hidden id="Req" value="@Model.RequestNo" />
             <div hidden><input id="divRequest" value="@Model.isDivRequest" /></div>
@@ -370,9 +381,9 @@
 @section scripts{
     <script>
         var ReqNO = $('#Req').val();
-                    //var OverallTotal = $('#overallPrice').val();
-                    //var OverallTotalPrice = document.getElementById("_overallPrice").value;
-                    //console.log("p" + OverallTotal);
+                                        //var OverallTotal = $('#overallPrice').val();
+                                        //var OverallTotalPrice = document.getElementById("_overallPrice").value;
+                                        //console.log("p" + OverallTotal);
     </script>
     <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>
     @Scripts.Render("~/bundles/requestdetails")
