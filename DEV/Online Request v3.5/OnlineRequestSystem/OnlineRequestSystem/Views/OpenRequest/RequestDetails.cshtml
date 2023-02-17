@@ -142,7 +142,7 @@
                                     if (Model.Sts_MMD_isProcessed == "0")
                                     {
                                         <center>
-                                            @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required" })
+                                            @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off" })
                                             <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
                                         </center>
                                     }
@@ -262,7 +262,7 @@
 
             <div class="totalPrice" style="text-align:center; font-size:18px; font-weight:bold">
                 <label>Total: </label>
-                @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 120px; outline: 0;", @readonly = "readonly" })
+                @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
                 <input type="hidden" id="_overallPrice" />
             </div>
 

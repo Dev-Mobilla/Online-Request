@@ -129,6 +129,7 @@ namespace OnlineRequestSystem.Controllers
                               " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
                               " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
                               " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
+                              " AND b.isPO_Approved = 1" +
                               " AND b.isDelivered = 0 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
                               " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 

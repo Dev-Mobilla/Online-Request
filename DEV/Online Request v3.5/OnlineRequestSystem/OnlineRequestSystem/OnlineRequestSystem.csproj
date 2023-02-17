@@ -203,13 +203,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
-    <Compile Include="Areas\Administrator\Controllers\ApproverStatusController.cs" />
-    <Compile Include="Areas\Administrator\Controllers\EscalationController.cs" />
-    <Compile Include="Areas\Administrator\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Administrator\Controllers\OpenRequestController.cs" />
-    <Compile Include="Areas\Administrator\Controllers\RequestItemsController.cs" />
-    <Compile Include="Areas\Administrator\Models\RequestModels.cs" />
     <Compile Include="Controllers\ApprovStatController.cs" />
     <Compile Include="Controllers\CloseRequestController.cs" />
     <Compile Include="Controllers\DisapproveReqController.cs" />
@@ -385,14 +378,6 @@
     <Content Include="Dataset\ReportDataset.xsc">
       <DependentUpon>ReportDataset.xsd</DependentUpon>
     </Content>
-    <Content Include="Areas\Administrator\Views\web.config" />
-    <Content Include="Areas\Administrator\Views\Home\Index.cshtml" />
-    <Content Include="Areas\Administrator\Views\Shared\_Utility.cshtml" />
-    <Content Include="Areas\Administrator\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Administrator\Views\OpenRequest\OpenRequest.cshtml" />
-    <Content Include="Areas\Administrator\Views\Shared\_Unauthorized.cshtml" />
-    <Content Include="Areas\Administrator\Views\Escalation\Escalation.cshtml" />
-    <Content Include="Areas\Administrator\Views\RequestItems\RequestItems.cshtml" />
     <None Include="Dataset\ReportDataset.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -616,6 +601,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\" />
     <Folder Include="Content\images\NewFolder1\" />
     <Folder Include="Views\Admin\" />
   </ItemGroup>
