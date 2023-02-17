@@ -4,8 +4,11 @@
     }
 });
 
-$('#showComments').click(function () {
-    $('#_ShowComments').modal('show');
+$('#_ShowComments').on('shown.bs.modal', function () {
+
+    var messageBody = document.querySelector('#comment_body');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
 });
 
 function postComment() {
