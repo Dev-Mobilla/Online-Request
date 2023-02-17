@@ -208,7 +208,6 @@
     <Compile Include="Areas\Administrator\Controllers\EscalationController.cs" />
     <Compile Include="Areas\Administrator\Controllers\HomeController.cs" />
     <Compile Include="Areas\Administrator\Controllers\OpenRequestController.cs" />
-    <Compile Include="Areas\Administrator\Controllers\RequestItemsController.cs" />
     <Compile Include="Areas\Administrator\Models\RequestModels.cs" />
     <Compile Include="Controllers\ApprovStatController.cs" />
     <Compile Include="Controllers\CloseRequestController.cs" />
