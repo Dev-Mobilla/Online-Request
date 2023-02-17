@@ -94,7 +94,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 #region ITS Query
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
+                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
                               " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                               " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
                               " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +

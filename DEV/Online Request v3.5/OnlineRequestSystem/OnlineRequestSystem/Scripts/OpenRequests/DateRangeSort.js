@@ -111,9 +111,6 @@ $(document).ready(function () {
                 if ($('#forFilter').val() == "Pres" || $('#forFilter').val() == "VPO") {
                     index = 2;
                 }
-                else if ($('#forFilter').val() == "VPO_local") {
-                    index = 1;
-                }
                 else {
                     index = 1;
                 }

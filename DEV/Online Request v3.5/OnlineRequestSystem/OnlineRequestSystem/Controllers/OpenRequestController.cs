@@ -427,7 +427,6 @@ namespace OnlineRequestSystem.Controllers
                                 model.E_PresName = rdr["EscalationPres_Name"].ToString().Trim();
                                 model.E_PresDate = rdr["EscalationPres_Date"].ToString().Trim();
                                 model.E_PresRemarks = rdr["EscalationPres_Remarks"].ToString().Trim();
-
                                 model.E_VPO_POName = rdr["EscalationVPO_PO_Name"].ToString().Trim();
                                 model.E_VPO_PODate = rdr["EscalationVPO_PO_Date"].ToString().Trim();
                                 model.E_VPO_PORemarks = rdr["EscalationVPO_PO_Remarks"].ToString().Trim();
