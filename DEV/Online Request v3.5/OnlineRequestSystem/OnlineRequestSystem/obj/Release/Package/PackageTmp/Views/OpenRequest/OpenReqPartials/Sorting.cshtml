@@ -1,0 +1,37 @@
+﻿@model OnlineRequestSystem.Models.OpenReqInfo
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+@if (mySession.s_MMD == 1)
+{
+    <input type="hidden" id="usr_For_sort" value="MMDOpenRequest" />
+}
+else if (mySession.s_usr_id == "LHUI1011873")
+{
+    <input type="hidden" id="usr_For_sort" value="PresidentOpen" />
+}
+else if (mySession.s_task == "GMO-GENMAN")
+{
+    @*if (mySession.s_Division == "GMO")
+        {
+            <input type="hidden" id="usr_For_sort" value="DivisionOpenReq" />
+        }
+        else
+        {
+            <input type="hidden" id="usr_For_sort" value="GMOpen" />
+        }*@
+    <input type="hidden" id="usr_For_sort" value="GMOpen" />
+
+}
+
+<div style="position: absolute; left: 42.5%; width: 16.5%; z-index: 1; display:flex">
+    <label style="padding:8px">Search</label>
+    <select id="filter_Status" class="form-control">
+        <option value="All Requests">All Requests</option>
+        <option value="Open Requests">Open Requests</option>
+        <option value="PO Approval">PO Approval</option>
+    </select>
+</div>
+<div style="position: absolute; left: 60%; height: 14%; width: 15.5%; z-index: 1; display:flex"><label style="padding-top:8px; width:70%">Date From:</label><input type="text" id="min" name="min" class="form-control form-control-sm" placeholder="MM/DD/YYYY" /></div>
+<div style="position: absolute; left: 76%; height: 14%; width: 14.5%; z-index: 1; display: flex"><label style="padding:8px; width: 60%">Date To:</label><input type="text" id="max" name="max" class="form-control form-control-sm" placeholder="MM/DD/YYYY" /></div>
+<div style="position: absolute; left: 91.5%; width: 10.5%; margin-top:1.5px ; z-index: 1; display: flex"><button id="search_filter" class="btn btn-sm btn-warning btnPending">Search</button></div>

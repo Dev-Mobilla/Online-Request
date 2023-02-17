@@ -1,7 +1,4 @@
-﻿$('#MMDOpenRequest').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
-});
-$('#BMorOthers').DataTable({
+﻿$('#BMorOthers').DataTable({
     "order": [[0, "desc"]], "bSort": false, stateSave: true
 });
 $('#AMOpen').DataTable({
@@ -13,12 +10,12 @@ $('#DeptOpenReq').DataTable({
 $('#DivisionOpenReq').DataTable({
     "order": [[0, "desc"]], "bSort": false, stateSave: true
 });
-$('#GMOpen').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
-});
-$('#PresidentOpen').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
-});
+////$('#GMOpen').DataTable({
+//    "order": [[0, "desc"]], "bSort": false, stateSave: true
+//});
+//$('#PresidentOpen').DataTable({
+//    "order": [[0, "desc"]], "bSort": false, stateSave: true
+//});
 $('#RMOpen').DataTable({
     "order": [[0, "desc"]], "bSort": false, stateSave: true
 });

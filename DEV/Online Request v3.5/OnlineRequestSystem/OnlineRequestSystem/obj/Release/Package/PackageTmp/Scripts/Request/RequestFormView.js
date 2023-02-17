@@ -2,7 +2,7 @@
     $('.itemDes, .UnitQty, .UnitCost, .selectRT').prop('required', 'required');
     $('#insert-more').click(function () {
         var Length = $('#myTable tr:last').attr('id').replace('TR', '');
-        if (Length > 18) {
+        if (Length > 8) {
             bootbox.alert("You've reached the maximum limit of item requests.");
         } else {
             var xLength = parseInt(Length) + 1;
@@ -22,7 +22,6 @@
 
 function resetRowCounts() {
     xcount = $('#myTable tbody').children().length;
-
     $('#myTable tr').each(function (index) {
         $('#myTable tbody tr:eq(' + index + ')').attr('id', 'TR' + index);
         $('#TR' + index + ' .itemCount').text(index + 1)
@@ -30,8 +29,8 @@ function resetRowCounts() {
         $('#TR' + index + ' .UnitQty').attr('name', 'ReqItems[' + index + '].ItemQty').attr('id', 'reqQty' + index);
         $('#TR' + index + ' .itemUnit').attr('name', 'ReqItems[' + index + '].ItemUnit').attr('id', 'reqUnit' + index);
         index++;
-    });
 
+    });
 };
 
 $('#myTable').on('click', '#removeRow', function () {

@@ -19,6 +19,9 @@
     int divRequest = Model.isDivRequest;
     string RequestTypeName = ViewBag.requestName;
     int count = 1;
+    int i = 0;
+
+
 }
 <br />
 @using (Ajax.BeginForm("ApprovedRequest", "ApprovStat", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }))
@@ -96,8 +99,15 @@
                 <thead>
                     <tr class="ORSHeading orHeader">
                         <th style="width:3%"></th>
-                        <th class="col-md-4">Description</th>
-                        <th class="col-md-1">Item Quantity</th>
+                        <th class="col-md-2">Description</th>
+                        <th class="col-md-1"><center>Item Quantity</center></th>
+                        <th class="col-md-1"><center>Item Unit</center></th>
+
+                        @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+                        {
+                            <th class="col-md-1"><center>Item Price</center></th>
+                        }
+
                         <th class="col-md-1"><center>MMD</center></th>
                         @if (Model.isDivRequest == 0)
                         {
@@ -106,110 +116,171 @@
                         }
                         else
                         {
-                            <th class="col-md-1"><center>Division</center></th> }
+                            <th class="col-md-1"><center>Division</center></th>
+                        }
                         <th class="col-md-1"><center>Status</center></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model.ReqItems)
                     {
+                        var j = 0;
+                        var newID = "priceItem" + count;
+                        var priceNewID = "priceMMD" + count;
+                        var quantity = "itemQty" + count;
+                        var newItemDesc = "itemDesc" + count;
                         <tr>
-                            <td><center>@count</center></td>
-                            <td id="itemDesc">
+                            <td style="vertical-align:middle"><center>@count</center></td>
+                            <td id="@newItemDesc" class="itemDesc" style="vertical-align:middle">
                                 @item.ItemDescription
                             </td>
-                            <td id="itemQty">
-                                @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i>
+                            <td id="@quantity" style="vertical-align:middle">
+                                <center>@item.ItemQty</center>
                             </td>
-                            <td style="padding:1px;">
-                                @if (item.isCheckedMMD == 1)
-                                {
-                                    <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" checked />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" />
-                                }
-                                <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
-                                <span class="dropdown">
-                                    &nbsp;&nbsp;<i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
-                                    <span class="dropdown-menu itemSelect">
-                                        <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                        <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
-                                        <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger"></i>&nbsp; Cancelled</span><br />
+                            <td style="vertical-align:middle">
+                                <center> @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
+                            </td>
+
+                            @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+                            {
+                                <td style="padding: 1px; vertical-align: middle">
+                                    @if (mySession.s_MMD == 1)
+                                    {
+                                        if (Model.Sts_MMD_isProcessed == "0")
+                                        {
+                                            <center>
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off" })
+                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
+                                            </center>
+                                        }
+                                        else
+                                        {
+                                            <center>
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
+                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                            </center>
+                                        }
+
+                                    }
+                                    else if (mySession.s_task == "GMO-GENMAN" || mySession.s_usr_id == "LHUI1011873")
+                                    {
+                                        @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
+                                        <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                    }
+                                </td>
+                            }
+
+                            <td style="padding: 1px; vertical-align: middle">
+                                <center>
+                                    @if (item.isCheckedMMD == 1)
+                                    {
+                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
+                                    }
+                                    <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
+                                    <span class="dropdown">
+                                        <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
+                                        <span class="dropdown-menu itemSelect">
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger"></i>&nbsp; Cancelled</span><br />
+                                        </span>
                                     </span>
-                                </span>
+                                </center>
                             </td>
 
                             @if (Model.isDivRequest == 0)
                             {
-                                <td style="padding:1px;">
-                                    @if (item.isCheckedSDC == 1)
-                                    {
-                                        <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" checked />
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" />
-                                    }
-                                    <input type="text" @sdc class="ReqDetailsBlock" id="txtSDC" maxlength="6" value=@item.actualQtySDC />
-                                    <span class="dropdown">
-                                        &nbsp;&nbsp;<i class="@item.SDCStatus dropdown-toggle SDCSelect" style="font-size:16px;" data-toggle="@ViewBag.SDC"></i>
-                                        <span class="dropdown-menu itemSelect">
-                                            <span class="SDCOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                            <span class="SDCOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                <td style="padding: 1px; vertical-align: middle">
+                                    <center>
+                                        @if (item.isCheckedSDC == 1)
+                                        {
+                                            <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " checked />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
+                                        }
+                                        <input type="text" @sdc class="ReqDetailsBlock" id="txtSDC" maxlength="6" value=@item.actualQtySDC />
+                                        <span class="dropdown">
+                                            <i class="@item.SDCStatus dropdown-toggle SDCSelect" style="font-size:16px;" data-toggle="@ViewBag.SDC"></i>
+                                            <span class="dropdown-menu itemSelect">
+                                                <span class="SDCOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                                <span class="SDCOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            </span>
                                         </span>
-                                    </span>
+                                    </center>
                                 </td>
 
-                                <td style="padding:1px;">
-                                    @if (item.isCheckedBranch == 1)
-                                    {
-                                        <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" checked />
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" />
-                                    }
-                                    <input type="text" @branch class="ReqDetailsBlock" id="txtBranch" maxlength="6" value=@item.actualQtyBranch />
-                                    <span class="dropdown">
-                                        &nbsp;&nbsp;<i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
-                                        <span class="dropdown-menu itemSelect">
-                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                <td style="padding: 1px; vertical-align: middle">
+                                    <center>
+                                        @if (item.isCheckedBranch == 1)
+                                        {
+                                            <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " checked />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
+                                        }
+                                        <input type="text" @branch class="ReqDetailsBlock" id="txtBranch" maxlength="6" value=@item.actualQtyBranch />
+                                        <span class="dropdown">
+                                            <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
+                                            <span class="dropdown-menu itemSelect">
+                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            </span>
                                         </span>
-                                    </span>
+                                    </center>
                                 </td>
                             }
                             else
                             {
-                                <td style="padding:1px;">
-                                    @if (item.isCheckedDiv == 1)
-                                    {
-                                        <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" checked />
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" />
-                                    }
-                                    <input type="text" @div class="ReqDetailsBlock" id="txtDiv" maxlength="6" value=@item.actualQtyDiv />
-                                    <span class="dropdown">
-                                        &nbsp;&nbsp;<i class="@item.DivStatus dropdown-toggle DivSelect" style="font-size:16px;" data-toggle="@ViewBag.Division"></i>
-                                        <span class="dropdown-menu itemSelect">
-                                            <span class="DivOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                            <span class="DivOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                <td style="padding: 1px; vertical-align: middle">
+                                    <center>
+                                        @if (item.isCheckedDiv == 1)
+                                        {
+                                            <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " checked />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" @div class="ReqDetailsCheckbox" id="chkDiv" value="1" style="vertical-align: middle; margin:-4px 0 0 0" />
+                                        }
+                                        <input type="text" @div class="ReqDetailsBlock" id="txtDiv" maxlength="6" value=@item.actualQtyDiv />
+                                        <span class="dropdown">
+                                            <i class="@item.DivStatus dropdown-toggle DivSelect" style="font-size:16px;" data-toggle="@ViewBag.Division"></i>
+                                            <span class="dropdown-menu itemSelect">
+                                                <span class="DivOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                                <span class="DivOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            </span>
                                         </span>
-                                    </span>
+                                    </center>
                                 </td>
                             }
-                            <td class="status" style="text-align:center">@item.ItemStatus</td>
+                            <td class="status" style="text-align:center; vertical-align:middle">@item.ItemStatus</td>
                         </tr>
                         count++;
+                        j++;
+                        i++;
                     }
                 </tbody>
             </table>
+
+            @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+            {
+                <div class="totalPrice" style="text-align:center; font-size:18px; font-weight:bold">
+                    <label>Total: </label>
+                    @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
+                    <input type="hidden" id="_overallPrice" />
+                </div>
+            }
+
             <input hidden id="Req" value="@Model.RequestNo" />
             <div hidden><input id="divRequest" value="@Model.isDivRequest" /></div>
+
+
             <!-- Hidden Recommended Approval Values -->
             @Html.TextBoxFor(m => m.RequestType, new { @style = "display:none" })
             @if (!(new[] { "001", "002" }).Contains(Model.BranchCode))
@@ -243,14 +314,20 @@
                 { Html.RenderPartial("DetailsPartials/_GMApproval"); }
             }
 
+            @{Html.RenderPartial("DetailsPartials/_CommentSection");}
+
             @{Html.RenderPartial("DetailsPartials/_DivApproval");}
             @{Html.RenderPartial("DetailsPartials/_DivApproval2");}
             @{Html.RenderPartial("DetailsPartials/_DivApproval3");}
 
             @{Html.RenderPartial("DetailsPartials/_PresApproval");}
+            @{Html.RenderPartial("DetailsPartials/_VPO_POApproval");}
+            @{Html.RenderPartial("DetailsPartials/_Pres_POApproval");}
             <br />
             @{Html.RenderPartial("DetailsPartials/_MMDProcesses");}
             <br />
+
+
 
             @if (Model.reqCreator == mySession.s_fullname)
             {
@@ -293,19 +370,22 @@
     </div>
     <input id="isProcessed" value="@Model.Sts_MMD_isProcessed" hidden />
 }
-
-@{Html.RenderPartial("_CloseReqConfirmation");}
-@{Html.RenderPartial("_DisapproveConfirmation");}
+@{ Html.RenderPartial("DetailsPartials/_AddItemPrice"); }
+@{ Html.RenderPartial("_CloseReqConfirmation"); }
+@{ Html.RenderPartial("_DisapproveConfirmation"); }
 
 @section tableCss{
     <link rel="stylesheet" href="~/Content/bootstrap-datepicker.min.css" />
 }
 
-@section scripts{   
+@section scripts{
     <script>
         var ReqNO = $('#Req').val();
+                                        //var OverallTotal = $('#overallPrice').val();
+                                        //var OverallTotalPrice = document.getElementById("_overallPrice").value;
+                                        //console.log("p" + OverallTotal);
     </script>
-
+    <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>
     @Scripts.Render("~/bundles/requestdetails")
     @Scripts.Render("~/bundles/requestdetails_functions")
 

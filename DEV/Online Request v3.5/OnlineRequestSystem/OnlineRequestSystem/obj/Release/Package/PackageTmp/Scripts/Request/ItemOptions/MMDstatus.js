@@ -20,6 +20,8 @@ $(".MMDOptions").on('click', function () {
     var x = MMDStatus.replace('dropdown-toggle MMDSelect', '');
     var newClass = classSelector(Status.trim());
 
+    console.log(newClass);
+
     switch (x.trim()) {
         case 'fa fa-caret-square-o-down': //Open
             $(this).closest('td').find('.MMDSelect').removeClass(x)
@@ -43,6 +45,9 @@ $(".MMDOptions").on('click', function () {
     var lastChild = $(this).closest("tr").find('td:last-child');
     var Description = $(this).closest("tr").find('td:eq(1)').text();
     var Desc = Description.trim();
+
+    console.log(Desc);
+
     $.ajax({
         type: "GET",
         url: Url + '/RequestItems/MMDItemStatus',
@@ -86,11 +91,11 @@ $(".MMDOptions").on('click', function () {
                     }
                 }
             } else {
-                $.notify("Unable to process request.", { position: "bottom right", className: "error" });
+                $.notify("Unable to process request. Test", { position: "bottom right", className: "error" });
             }
         },
         error: function () {
-            $.notify("Unable to process request.", { position: "bottom right", className: "error" });
+            $.notify("Unable to process request. Test error", { position: "bottom right", className: "error" });
         }
     });
 });

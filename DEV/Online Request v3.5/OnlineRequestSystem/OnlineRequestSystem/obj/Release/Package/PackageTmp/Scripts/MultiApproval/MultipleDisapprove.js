@@ -16,15 +16,18 @@
                     closeButton: false
                 });
                 var ReqNolist = [];
+                var ForPOList = [];
                 var approver = $('#approver').val();
+
                 $(".chkBox:checkbox:checked").each(function () {
                     ReqNolist.push($(this).closest("tr").find('td:eq(3)').text());
+                    ForPOList.push($(this).closest("tr").find('td:eq(12)').text());
                 });
 
                 $.ajax({
                     type: "POST",
                     url: Url + "/MultipleApproving/MultipleDisapprove",
-                    data: { ReqNo: JSON.stringify(ReqNolist), approver: approver },
+                    data: { ReqNo: JSON.stringify(ReqNolist), ForPO: JSON.stringify(ForPOList), approver: approver },
                     success: function (result) {
                         if (result.status = true) {
                             dialog.modal('hide');
