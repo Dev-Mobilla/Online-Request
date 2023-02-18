@@ -307,6 +307,7 @@ namespace OnlineRequestSystem.Controllers
                     {
                         conn.Open();
                         cmd.CommandText = " SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.reqDate, a.TypeID , " +
+                                          "(SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                           " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.isDivRequest, a.DeptCode," +
                                           " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
                                           " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
@@ -328,6 +329,7 @@ namespace OnlineRequestSystem.Controllers
                                 o.reqDate = rdr["reqDate"].ToString().Trim();
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
                                 o.TotalItems = rdr["TotalCount"].ToString().Trim();
+                                o.itemDescription = rdr["Description"].ToString().Trim();
                                 o.TypeName = que.GetTypeName(o.TypeID);
                                 o.BranchCode = rdr["BranchCode"].ToString().Trim();
                                 o.ZoneCode = rdr["Zonecode"].ToString().Trim();

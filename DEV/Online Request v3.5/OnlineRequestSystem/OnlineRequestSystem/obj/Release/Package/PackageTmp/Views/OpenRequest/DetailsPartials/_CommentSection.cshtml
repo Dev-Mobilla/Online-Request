@@ -30,7 +30,7 @@
 
         <br />
 
-        @if (Model.ShowComments != null)
+        @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
         {
             int count = 0;
             foreach (var item in Model.ShowComments)
@@ -63,48 +63,51 @@
                     break;
                 }
             }
+            <a id="showComments" data-toggle="modal" data-target="#_ShowComments" style="font-size:15px; margin-left:72%; position:inherit; z-index:1; cursor:pointer">Show all comments</a>
         }
-        <button type="button" id="showComments" class="btn btn-success" style="margin-left:72%; position:inherit; z-index:1">Show all comments</button>
     </div>
 
-    <div id="_ShowComments" class="modal fade" role="dialog" tabindex="-1">
+    <div id="_ShowComments" onshow="scrollToEnd()" class="modal fade" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document" style="width: 750px;">
             <div class="modal-content jumbotron">
-                <div class="modal-body" style="max-height:90vh; overflow:auto">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div id="comment_body" class="modal-body" style="height:89vh; overflow:auto">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position:fixed; right:50px">
                         <span aria-hidden="true">&times;</span>
                     </button>
 
-                    @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
-                    {
-                        foreach (var item in Model.ShowComments)
+                    <div style="display: flex; flex-direction: column-reverse;">
+                        @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
                         {
-                            if (item.commCreatorID == "LHUI1011873")
+                            foreach (var item in Model.ShowComments)
                             {
-                                <div style="padding-bottom: 10px">
-                                    <b>President/CEO: @item.commCreator | @item.commcreated</b>
-                                    <br />
-                                    <h5 style="color: orangered; word-break:break-word">@item.comments</h5>
-                                    <hr style="border-bottom:1px solid #808080" />
-                                </div>
-                            }
-                            else
-                            {
-                                <div style="padding-bottom: 10px">
-                                    <b>MMD: @item.commCreator | @item.commcreated</b>
-                                    <br />
-                                    <h5 style="color: forestgreen; word-break:break-word">@item.comments</h5>
-                                    <hr style="border-bottom:1px solid #808080" />
-                                </div>
+                                if (item.commCreatorID == "LHUI1011873")
+                                {
+                                    <div style="padding-bottom: 10px">
+                                        <b>President/CEO: @item.commCreator | @item.commcreated</b>
+                                        <br />
+                                        <h5 style="color: orangered; word-break:break-word">@item.comments</h5>
+                                        <hr style="border-bottom:1px solid #808080" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div style="padding-bottom: 10px">
+                                        <b>MMD: @item.commCreator | @item.commcreated</b>
+                                        <br />
+                                        <h5 style="color: forestgreen; word-break:break-word">@item.comments</h5>
+                                        <hr style="border-bottom:1px solid #808080" />
+                                    </div>
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        <div>
-                            <h2>No comments posted.</h2>
-                        </div>
-                    }
+                        else
+                        {
+                            <div>
+                                <h2>No comments posted.</h2>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

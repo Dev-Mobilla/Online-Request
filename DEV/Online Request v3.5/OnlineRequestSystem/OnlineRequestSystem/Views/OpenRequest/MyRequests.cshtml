@@ -64,7 +64,7 @@
                 <tr class="cellspacer">
                     @if ((item.MMD_Processed == 1 && mySession.s_task == "GMO-GENMAN") || (item.MMD_Processed == 1 && mySession.s_MMD == 1 || item.MMD_Processed == 1 && mySession.s_usr_id == "LHUI1011873"))
                     {
-                        <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                        <td style="padding-left:10px;"><button class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
                     }
                     else
                     {

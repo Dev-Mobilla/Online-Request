@@ -287,6 +287,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AESEncrypt.dll" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -392,6 +393,7 @@
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\pailou.pubxml" />
+    <Content Include="MySql.Data.dll" />
     <Content Include="Scripts\bootbox.min.js.map">
       <DependentUpon>bootbox.min.js</DependentUpon>
     </Content>
@@ -531,6 +533,8 @@
     <Content Include="Views\OpenRequest\DetailsPartials\_CommentSection.cshtml" />
     <Content Include="Views\OpenRequest\OpenReqPartials\Sorting.cshtml" />
     <Content Include="Views\OpenRequest\DetailsPartials\_AddItemPrice.cshtml" />
+    <Content Include="Views\CloseRequest\DetailsPartials\_VPO_POApproval.cshtml" />
+    <Content Include="Views\CloseRequest\DetailsPartials\_Pres_POApproval.cshtml" />
     <None Include="Views\OpenRequest\OpenReqPartials\_DivisionManager" />
     <None Include="Views\OpenRequest\OpenReqPartials\_GeneralManager" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_President.cshtml" />
