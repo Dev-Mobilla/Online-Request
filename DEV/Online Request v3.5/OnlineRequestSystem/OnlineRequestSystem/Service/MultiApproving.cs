@@ -196,7 +196,7 @@ namespace OnlineRequestSystem.Service
 
                             #endregion Update Local Division Approver
 
-                            if (data[2].ToString() == ss.s_DivisionID)
+                            if (data[2].ToString() == ss.s_DivisionID && data[2].ToString() != string.Empty)
                             {
                                 #region Update Division Approver 1
 
@@ -223,7 +223,7 @@ namespace OnlineRequestSystem.Service
 
                                 #endregion Update Division Approver 1
                             }
-                            if (data[3].ToString() == ss.s_DivisionID)
+                            if (data[3].ToString() == ss.s_DivisionID && data[3].ToString() != string.Empty)
                             {
                                 #region Update Division Approver 2
 
@@ -250,7 +250,7 @@ namespace OnlineRequestSystem.Service
 
                                 #endregion Update Division Approver 2
                             }
-                            if (data[4].ToString() == ss.s_DivisionID)
+                            if (data[4].ToString() == ss.s_DivisionID && data[4].ToString() != string.Empty)
                             {
                                 #region Update Division Approver 3
 
@@ -280,7 +280,7 @@ namespace OnlineRequestSystem.Service
                         }
                         else
                         {
-                            if (data[2].ToString() == ss.s_DivisionID)
+                            if (data[2].ToString() == ss.s_DivisionID && data[2].ToString() != string.Empty)
                             {
                                 #region Update Division Approver 1
 
@@ -307,7 +307,7 @@ namespace OnlineRequestSystem.Service
 
                                 #endregion Update Division Approver 1
                             }
-                            if (data[3].ToString() == ss.s_DivisionID)
+                            if (data[3].ToString() == ss.s_DivisionID && data[3].ToString() != string.Empty)
                             {
                                 #region Update Division Approver 2
 
@@ -334,7 +334,7 @@ namespace OnlineRequestSystem.Service
 
                                 #endregion Update Division Approver 2
                             }
-                            if (data[4].ToString() == ss.s_DivisionID)
+                            if (data[4].ToString() == ss.s_DivisionID && data[4].ToString() != string.Empty)
                             {
                                 #region Update Division Approver 3
 
@@ -549,7 +549,7 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update VP
 
-                                    if (data[2].ToString() == ss.s_DivisionID)
+                                    if (data[2].ToString() == ss.s_DivisionID && data[2].ToString() != string.Empty)
                                     {
                                         #region Update Division Approver 1
 
@@ -576,7 +576,7 @@ namespace OnlineRequestSystem.Service
 
                                         #endregion Update Division Approver 1
                                     }
-                                    if (data[3].ToString() == ss.s_DivisionID)
+                                    if (data[3].ToString() == ss.s_DivisionID && data[3].ToString() != string.Empty)
                                     {
                                         #region Update Division Approver 2
 
@@ -603,7 +603,7 @@ namespace OnlineRequestSystem.Service
 
                                         #endregion Update Division Approver 2
                                     }
-                                    if (data[4].ToString() == ss.s_DivisionID)
+                                    if (data[4].ToString() == ss.s_DivisionID && data[4].ToString() != string.Empty)
                                     {
                                         #region Update Division Approver 3
 
@@ -688,7 +688,7 @@ namespace OnlineRequestSystem.Service
 
                                 #endregion Update VP Approval
 
-                                if (data[2].ToString() == ss.s_DivisionID)
+                                if (data[2].ToString() == ss.s_DivisionID && data[2].ToString() != string.Empty)
                                 {
                                     #region Update Division Approver 1
 
@@ -715,7 +715,7 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Division Approver 1
                                 }
-                                if (data[3].ToString() == ss.s_DivisionID)
+                                if (data[3].ToString() == ss.s_DivisionID && data[3].ToString() != string.Empty)
                                 {
                                     #region Update Division Approver 2
 
@@ -742,7 +742,7 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Division Approver 2
                                 }
-                                if (data[4].ToString() == ss.s_DivisionID)
+                                if (data[4].ToString() == ss.s_DivisionID && data[4].ToString() != string.Empty)
                                 {
                                     #region Update Division Approver 3
 
@@ -861,7 +861,7 @@ namespace OnlineRequestSystem.Service
                                     cmd.Parameters.AddWithValue("@ReqNo", RequestNo);
                                     cmd.Parameters.AddWithValue("@approver", ss.s_fullname);
                                     cmd.Parameters.AddWithValue("@datenow", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                                    cmd.Parameters.AddWithValue("@remarks", "Approved by Vice President.");
+                                    cmd.Parameters.AddWithValue("@remarks", "Approved by President.");
                                     cmd.CommandText = UpdateLocalDiv;
                                     cmd.ExecuteNonQuery();
                                     cmd.Parameters.Clear();
@@ -879,7 +879,7 @@ namespace OnlineRequestSystem.Service
 
                                     #endregion Update Local Division Approver
 
-                                    if (data[2].ToString() == ss.s_DivisionID)
+                                    if (data[2].ToString() == ss.s_DivisionID && data[2].ToString() != string.Empty)
                                     {
                                         #region Update Division Approver 1
 
@@ -906,7 +906,7 @@ namespace OnlineRequestSystem.Service
 
                                         #endregion Update Division Approver 1
                                     }
-                                    if (data[3].ToString() == ss.s_DivisionID)
+                                    if (data[3].ToString() == ss.s_DivisionID && data[3].ToString() != string.Empty)
                                     {
                                         #region Update Division Approver 2
 
@@ -933,7 +933,7 @@ namespace OnlineRequestSystem.Service
 
                                         #endregion Update Division Approver 2
                                     }
-                                    if (data[4].ToString() == ss.s_DivisionID)
+                                    if (data[4].ToString() == ss.s_DivisionID && data[4].ToString() != string.Empty)
                                     {
                                         #region Update Division Approver 3
 
@@ -1018,7 +1018,7 @@ namespace OnlineRequestSystem.Service
 
                                 #endregion Update President Approval
 
-                                if (data[2].ToString() == ss.s_DivisionID)
+                                if (data[2].ToString() == ss.s_DivisionID && data[2].ToString() != string.Empty)
                                 {
                                     #region Update Division Approver 1
 
@@ -1046,7 +1046,7 @@ namespace OnlineRequestSystem.Service
                                     #endregion Update Division Approver 1
                                 }
 
-                                if (data[3].ToString() == ss.s_DivisionID)
+                                if (data[3].ToString() == ss.s_DivisionID && data[3].ToString() != string.Empty)
                                 {
                                     #region Update Division Approver 2
 
@@ -1074,7 +1074,7 @@ namespace OnlineRequestSystem.Service
                                     #endregion Update Division Approver 2
                                 }
 
-                                if (data[4].ToString() == ss.s_DivisionID)
+                                if (data[4].ToString() == ss.s_DivisionID && data[4].ToString() != string.Empty)
                                 {
                                     #region Update Division Approver 3
 
