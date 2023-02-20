@@ -20,7 +20,9 @@ namespace OnlineRequestSystem.Models
         {
             try
             {
-                pathTicket = "C:\\OnlineRequestConfig\\ORConfig.ini";
+                //pathTicket = "C:\\OnlineRequestConfig\\ORConfig.ini";
+
+                pathTicket = AppDomain.CurrentDomain.BaseDirectory + "ORConfig.ini";
                 IniFile ini = new IniFile(Path);
 
                 String ServDomestic = ini.IniReadValue("ORtoMySQL", "Server");
