@@ -270,7 +270,7 @@
 
             @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
             {
-                <div class="totalPrice" style="text-align:center; font-size:18px; font-weight:bold">
+                <div class="totalPrice" style="text-align:center; font-size:13px; font-weight:bold">
                     <label>Total: </label>
                     @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
                     <input type="hidden" id="_overallPrice" />
