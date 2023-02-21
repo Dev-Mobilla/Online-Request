@@ -54,7 +54,7 @@ inputs.change(function () {
     var finalPrice
     var overallTotalPrice = 0;
     inputs.each(function () {
-        if ($(this).val() != "") {
+        if ($(this).val() != "" || $(this).val() != 'undefined' ) {
             overallTotalPrice += parseFloat($(this).val()) || 0;
             finalPrice = overallTotalPrice.toFixed(2);
         }
