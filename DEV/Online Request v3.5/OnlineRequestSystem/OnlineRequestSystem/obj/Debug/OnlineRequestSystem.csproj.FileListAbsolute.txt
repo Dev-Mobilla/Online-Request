@@ -827,9 +827,6 @@ C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\On
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\OnlineRequestSystem.pdb
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\AESEncrypt.dll
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Antlr3.Runtime.dll
-C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\CrystalDecisions.CrystalReports.Engine.dll
-C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\CrystalDecisions.ReportSource.dll
-C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\CrystalDecisions.Shared.dll
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Dapper.dll
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\EntityFramework.dll
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\EntityFramework.SqlServer.dll
