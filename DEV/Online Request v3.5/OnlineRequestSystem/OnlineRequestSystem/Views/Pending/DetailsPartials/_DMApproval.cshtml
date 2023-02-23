@@ -16,7 +16,7 @@
                     <span>Approver: </span> @Model.E_DMName
                     <br />
                     <span>Date Approved: </span> @Model.E_DMDate
-                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -24,7 +24,7 @@
                     @Html.TextBoxFor(m => m.E_DMName, new { @Value = mySession.s_fullname, @style = "display:none;" })
                     @Html.TextBoxFor(m => m.Sts_DM_isApproved, new { @Value = "1", @style = "display:none;" })
                     <label>Department Manager Approval<b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
+                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_DMDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
@@ -42,7 +42,7 @@
                     <span>Approved by: </span> @Model.E_DMName
                     <br />
                     <span>Approved Date: </span> @Model.E_DMDate
-                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -52,7 +52,7 @@
                     <span>Approved by: </span> @Model.E_DMName
                     <br />
                     <span>Approved Date: </span> @Model.E_DMDate
-                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextAreaFor(m => m.E_DMRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
 
             }

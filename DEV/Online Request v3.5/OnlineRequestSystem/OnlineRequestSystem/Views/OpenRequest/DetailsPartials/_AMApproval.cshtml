@@ -25,7 +25,7 @@
                     @Html.TextBoxFor(m => m.E_AMName, new { @Value = mySession.s_fullname, @style = "display:none;" })
                     @Html.TextBoxFor(m => m.Sts_AM_isApproved, new { @Value = "1", @style = "display:none;" })
                     <label> Area Manager Approval<b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks..", @pattern = "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_AMDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
