@@ -66,8 +66,9 @@ namespace OnlineRequestSystem.Controllers
 
 
             if (mySession.s_isDivisionApprover == 1 && mySession.s_job_title != "GMO-GENMAN" && mySession.s_usr_id != "LHUI1011873")
+            {
                 forPresident = 1;
-
+            }
 
             if (mySession.isDivRequest == 1 && Check_OnlineRequest_Department(mySession.s_costcenter) == false)
             {

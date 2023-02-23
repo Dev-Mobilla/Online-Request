@@ -481,6 +481,7 @@
     <Content Include="Scripts\Request\RequestItems\DivItems.js" />
     <Content Include="Scripts\Request\RequestItems\MMDItems.js" />
     <Content Include="Scripts\Request\RequestItems\SDCItems.js" />
+    <Content Include="Scripts\Request\RestrictInput.js" />
     <Content Include="Scripts\Request\RMButtons.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
