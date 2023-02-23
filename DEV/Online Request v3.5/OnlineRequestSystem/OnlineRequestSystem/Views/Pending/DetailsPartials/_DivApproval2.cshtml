@@ -17,7 +17,7 @@
                     <br />
                     <span>Approved Date:</span> @Model.E_Div2Date
 
-                    @Html.TextArea("DivApproval", Model.E_Div2Remarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("DivApproval", Model.E_Div2Remarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -25,7 +25,7 @@
                     @Html.TextBoxFor(m => m.E_Div2Name, new { @Value = mySession.s_fullname, @style = "display:none;" })
                     @Html.TextBoxFor(m => m.Sts_Div2_isApproved, new { @Value = "1", @style = "display:none;" })
                     <label>Division Approver's Approval 2 <b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_Div2Remarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @placeholder = "Please Provide Remarks..", @id = "Div2Remarks" })
+                    @Html.TextAreaFor(m => m.E_Div2Remarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @placeholder = "Please Provide Remarks..", @id = "Div2Remarks" })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_Div2Date, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
@@ -43,7 +43,7 @@
                     <span>Approved by: </span> @Model.E_Div2Name
                     <br />
                     <span>Approved Date: </span> @Model.E_Div2Date
-                    @Html.TextArea("DivApproval", Model.E_Div2Remarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("DivApproval", Model.E_Div2Remarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -53,7 +53,7 @@
                     <span>Approved by: </span> @Model.E_Div2Name
                     <br />
                     <span>Approved Date: </span> @Model.E_Div2Date
-                    @Html.TextArea("DivApproval", Model.E_Div2Remarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("DivApproval", Model.E_Div2Remarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
 
                 }
 
