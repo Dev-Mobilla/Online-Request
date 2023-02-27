@@ -1,4 +1,5 @@
-﻿function addPriceModal(selectedQty, selectedPrice) {
+﻿
+function addPriceModal(selectedQty, selectedPrice) {
     document.getElementById("qtySelected").value = selectedQty;
     var quantity = document.getElementById(selectedQty).innerText;
     document.getElementById("itemSelected").value = selectedPrice;
@@ -9,7 +10,7 @@
 }
 
 
- function getSelectedPrice(e) {
+function getSelectedPrice(e) {
     var selectedPrice = document.getElementById("itemSelected").value;
     var selectedQty = document.getElementById("qtySelected").value;
     var quantity = document.getElementById(selectedQty).innerText;
@@ -24,29 +25,29 @@
     //console.log("quantity:", totalQty);
     //console.log(finalTotalPrice);
 
-    document.getElementById(selectedPrice).value = finalTotalPrice; 
+    document.getElementById(selectedPrice).value = finalTotalPrice;
 
     $('#_AddItemPrice').modal('hide');
     $('#itemSearch').val('');
-     $('#itemInfo').empty();
+    $('#itemInfo').empty();
 
-     function calculatePrice() {
-         var inputs = $('input[name="pricePerItem"]')
-         var finalPrice
+    function calculatePrice() {
+        var inputs = $('input[name="pricePerItem"]')
+        var finalPrice
 
-         var overallTotalPrice = 0;
-         inputs.each(function () {
-             if ($(this).val() != "") {
-                 overallTotalPrice += parseFloat($(this).val()) || 0;
-                 finalPrice = overallTotalPrice.toFixed(2);
-             }
-         })
+        var overallTotalPrice = 0;
+        inputs.each(function () {
+            if ($(this).val() != "") {
+                overallTotalPrice += parseFloat($(this).val()) || 0;
+                finalPrice = overallTotalPrice.toFixed(2);
+            }
+        })
 
-         document.getElementById("overallPrice").value = finalPrice 
-         document.getElementById("_overallPrice").value = finalPrice;
-     }
+        document.getElementById("overallPrice").value = finalPrice
+        document.getElementById("_overallPrice").value = finalPrice;
+    }
 
-     calculatePrice();
+    calculatePrice();
 }
 
 var inputs = $('input[name="pricePerItem"]')
@@ -67,7 +68,7 @@ inputs.change(function () {
 
 $('#btnSearchID').click(function (e) {
     var searchItem = $('#itemSearch').val();
-  
+
     if (searchItem.length != 0) {
         $.ajax({
             type: "GET",
@@ -123,12 +124,6 @@ function isNumberKey(evt, element) {
   }
   return true;
 }
-
-
-$('input[name="pricePerItem"]').keydown(function () {
-    var txtQty = $(this).val().replace(/[^0-9\.]/g, '');
-    $(this).val(txtQty);
-});
 
 
 
