@@ -14,7 +14,7 @@ $('#_ShowComments').on('shown.bs.modal', function () {
 function postComment() {
 
     var reqNo = $('#Req').val();
-    var comm = $('#commTextArea').val();
+    var comm = encodeURIComponent($('#commTextArea').val());
 
     $.ajax({
         url: Url + '/MMD/StoreComments',

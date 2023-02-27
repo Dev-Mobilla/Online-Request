@@ -448,7 +448,7 @@ namespace OnlineRequestSystem.Controllers
                             while (rdr.Read())
                             {
                                 var i = new ShowAllComments();
-                                i.comments = rdr["comments"].ToString().Trim();
+                                i.comments = System.Web.HttpUtility.UrlDecode(rdr["comments"].ToString().Trim());
                                 i.commCreator = rdr["commCreator"].ToString().Trim();
                                 i.commCreatorID = rdr["commCreatorID"].ToString().Trim();
                                 i.commcreated = rdr["commcreated"].ToString().Trim();
