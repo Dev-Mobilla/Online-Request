@@ -149,7 +149,7 @@
                                         if (Model.Sts_MMD_isProcessed == "0")
                                         {
                                             <center>
-                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @onkeypress = "return /[0-9]/i.test(event.key)" })
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @min = "0", @onPaste = "return false", @maxlength = "15" })
                                                 <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
                                             </center>
                                         }
