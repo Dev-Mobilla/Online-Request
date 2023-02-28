@@ -16,7 +16,7 @@
                     <span>Approved by: </span> @Model.E_PresName
                     <br />
                     <span>Approved Date:</span> @Model.E_PresDate
-                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -25,7 +25,7 @@
                     @Html.TextBoxFor(m => m.E_PresName, new { @Value = mySession.s_fullname, @style = "display:none;" })
                     @Html.TextBoxFor(m => m.Sts_Pres_isApproved, new { @Value = "1", @style = "display:none;" })
                     <label>President Approval<b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
+                    @Html.TextAreaFor(m => m.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_PresDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
@@ -44,7 +44,7 @@
                     <span>Approved by: </span> @Model.E_PresName
                     <br />
                     <span>Approved Date:</span> @Model.E_PresDate
-                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -54,7 +54,7 @@
                     <span>Approved by: </span> @Model.E_PresName
                     <br />
                     <span>Approved Date:</span> @Model.E_PresDate
-                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
             }
             <hr style="border-bottom:1px solid #808080" />
@@ -74,7 +74,7 @@ else if (Model.forPresident == 1)
                     <span>Approved by: </span> @Model.E_PresName
                     <br />
                     <span>Approved Date:</span> @Model.E_PresDate
-                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -84,7 +84,7 @@ else if (Model.forPresident == 1)
                     @Html.TextBoxFor(m => m.Sts_Pres_isApproved, new { @Value = "1", @style = "display:none;" })
                     <input name="forPresident" value="1" style="display:none;" />
                     <label>President Approval<b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
+                    @Html.TextAreaFor(m => m.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_PresDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
@@ -102,7 +102,7 @@ else if (Model.forPresident == 1)
                     <span>Approved by: </span> @Model.E_PresName
                     <br />
                     <span>Approved Date:</span> @Model.E_PresDate
-                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -112,7 +112,7 @@ else if (Model.forPresident == 1)
                     <span>Approved by: </span> @Model.E_PresName
                     <br />
                     <span>Approved Date:</span> @Model.E_PresDate
-                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("PresApproval", Model.E_PresRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
             }
             <hr style="border-bottom:1px solid #808080" />

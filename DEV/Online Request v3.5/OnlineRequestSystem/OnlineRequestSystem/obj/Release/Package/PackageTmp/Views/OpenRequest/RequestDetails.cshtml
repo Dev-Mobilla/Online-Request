@@ -149,14 +149,14 @@
                                         if (Model.Sts_MMD_isProcessed == "0")
                                         {
                                             <center>
-                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off" })
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step=".01", @min = "0", @onPaste="return false", @maxlength = "15", @onkeypress = "return isNumberKey(event,this)" })
                                                 <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
                                             </center>
                                         }
                                         else
                                         {
                                             <center>
-                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @required = "required", @readonly = "readonly" })
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
                                                 <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
                                             </center>
                                         }
@@ -164,8 +164,10 @@
                                     }
                                     else if (mySession.s_task == "GMO-GENMAN" || mySession.s_usr_id == "LHUI1011873")
                                     {
-                                        @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
-                                        <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                            <center>
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
+                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                            </center>
                                     }
                                 </td>
                             }
@@ -270,7 +272,7 @@
 
             @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
             {
-                <div class="totalPrice" style="text-align:center; font-size:13px; font-weight:bold">
+                <div class="totalPrice" style="text-align:center; font-size:13px; font-weight:bold;">
                     <label>Total: </label>
                     @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
                     <input type="hidden" id="_overallPrice" />
@@ -381,9 +383,21 @@
 @section scripts{
     <script>
         var ReqNO = $('#Req').val();
-                                        //var OverallTotal = $('#overallPrice').val();
-                                        //var OverallTotalPrice = document.getElementById("_overallPrice").value;
-                                        //console.log("p" + OverallTotal);
+
+        $(window).load(function () {
+            $('.number').keypress(function (event) {
+                if (event.which < 46 || event.which >= 58 || event.which == 47) {
+                    event.preventDefault();
+                }
+
+                if (event.which == 46 && $(this).val().indexOf('.') != -1) {
+                    this.value = '';
+                }
+            });
+        })
+
+        
+
     </script>
     <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>
     @Scripts.Render("~/bundles/requestdetails")

@@ -1,4 +1,5 @@
-﻿function addPriceModal(selectedQty, selectedPrice) {
+﻿
+function addPriceModal(selectedQty, selectedPrice) {
     document.getElementById("qtySelected").value = selectedQty;
     var quantity = document.getElementById(selectedQty).innerText;
     document.getElementById("itemSelected").value = selectedPrice;
@@ -9,7 +10,7 @@
 }
 
 
- function getSelectedPrice(e) {
+function getSelectedPrice(e) {
     var selectedPrice = document.getElementById("itemSelected").value;
     var selectedQty = document.getElementById("qtySelected").value;
     var quantity = document.getElementById(selectedQty).innerText;
@@ -24,29 +25,29 @@
     //console.log("quantity:", totalQty);
     //console.log(finalTotalPrice);
 
-    document.getElementById(selectedPrice).value = finalTotalPrice; 
+    document.getElementById(selectedPrice).value = finalTotalPrice;
 
     $('#_AddItemPrice').modal('hide');
     $('#itemSearch').val('');
-     $('#itemInfo').empty();
+    $('#itemInfo').empty();
 
-     function calculatePrice() {
-         var inputs = $('input[name="pricePerItem"]')
-         var finalPrice
+    function calculatePrice() {
+        var inputs = $('input[name="pricePerItem"]')
+        var finalPrice
 
-         var overallTotalPrice = 0;
-         inputs.each(function () {
-             if ($(this).val() != "") {
-                 overallTotalPrice += parseFloat($(this).val()) || 0;
-                 finalPrice = overallTotalPrice.toFixed(2);
-             }
-         })
+        var overallTotalPrice = 0;
+        inputs.each(function () {
+            if ($(this).val() != "") {
+                overallTotalPrice += parseFloat($(this).val()) || 0;
+                finalPrice = overallTotalPrice.toFixed(2);
+            }
+        })
 
-         document.getElementById("overallPrice").value = finalPrice 
-         document.getElementById("_overallPrice").value = finalPrice;
-     }
+        document.getElementById("overallPrice").value = finalPrice
+        document.getElementById("_overallPrice").value = finalPrice;
+    }
 
-     calculatePrice();
+    calculatePrice();
 }
 
 var inputs = $('input[name="pricePerItem"]')
@@ -54,7 +55,7 @@ inputs.change(function () {
     var finalPrice
     var overallTotalPrice = 0;
     inputs.each(function () {
-        if ($(this).val() != "") {
+        if ($(this).val() != "" || $(this).val() != 'undefined' || $(this).val() != 'NaN' ) {
             overallTotalPrice += parseFloat($(this).val()) || 0;
             finalPrice = overallTotalPrice.toFixed(2);
         }
@@ -67,7 +68,7 @@ inputs.change(function () {
 
 $('#btnSearchID').click(function (e) {
     var searchItem = $('#itemSearch').val();
-  
+
     if (searchItem.length != 0) {
         $.ajax({
             type: "GET",
@@ -102,6 +103,27 @@ $('#btnSearchID').click(function (e) {
 });
 
 
+//Allow decimal numbers
+function isNumberKey(evt, element) {
+  var charCode = (evt.which) ? evt.which : event.keyCode
+  if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
+    return false;
+  else {
+    var len = $(element).val().length;
+    var index = $(element).val().indexOf('.');
+    if (index > 0 && charCode == 46) {
+      return false;
+    }
+    if (index > 0) {
+      var CharAfterdot = (len + 1) - index;
+      if (CharAfterdot > 3) {
+        return false;
+      }
+    }
+
+  }
+  return true;
+}
 
 
 

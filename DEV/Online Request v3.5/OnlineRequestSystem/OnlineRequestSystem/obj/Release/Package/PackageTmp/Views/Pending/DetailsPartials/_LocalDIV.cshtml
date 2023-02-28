@@ -16,7 +16,7 @@
                     <span>Approved by: </span> @Model.E_LocalDivName
                     <br />
                     <span>Approved Date:</span> @Model.E_LocalDivDate
-                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -24,7 +24,7 @@
                     @Html.TextBoxFor(m => m.E_LocalDivName, new { @Value = mySession.s_fullname, @style = "display:none;" })
                     @Html.TextBoxFor(m => m.Sts_LocalDiv_isApproved, new { @Value = "1", @style = "display:none;" })
                     <label>Division Manager Approval<b style="color:red;"> *</b></label>
-                    @Html.TextAreaFor(m => m.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @placeholder = "Please Provide Remarks.." , @required = "required" })
+                    @Html.TextAreaFor(m => m.E_LocalDivRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @placeholder = "Please Provide Remarks.." , @required = "required" })
                     <br />
                     <center>
                         @Html.TextBoxFor(m => m.E_LocalDivDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
@@ -42,7 +42,7 @@
                     <span>Approved by: </span> @Model.E_LocalDivName
                     <br />
                     <span>Approved Date: </span> @Model.E_LocalDivDate
-                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
                 else
                 {
@@ -52,7 +52,7 @@
                     <span>Approved by: </span> @Model.E_LocalDivName
                     <br />
                     <span>Approved Date: </span> @Model.E_LocalDivDate
-                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "remarks form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
                 }
             }
             <hr style="border-bottom:1px solid #808080" />
