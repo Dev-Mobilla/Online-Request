@@ -3,11 +3,21 @@
     ViewBag.Title = "ViewOpenRequest";
     var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
 
+    var ORHeading = string.Empty;
+
+    if (Model.POurl == "PO")
+    {
+        ORHeading = "ORSHeadingPO";
+    }
+    else
+    {
+        ORHeading = "ORSHeading";
+    }
 }
 <br />
 
-<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%; padding-left:0px; padding-right:0px">
-    <div class="panel-heading ORSHeading">
+<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-4.5%; padding-left:0px; padding-right:0px">
+    <div class="panel-heading @ORHeading">
         <b class="orHeader">@ViewBag.headTxt REQUESTS</b>
         @if ((new[] { "0001MMD", "0002MMD", }).Contains(mySession.s_costcenter))
         {
@@ -21,22 +31,18 @@
     @if (mySession.s_isDepartmentApprover == 1)
     {
         @Html.Partial("OpenReqPartials/_DepartmentManager", Model);
-        <input id="forFilter" type="text" value="General_usr" hidden />
     }
     else if (mySession.s_job_title == "AREA MANAGER")
     {
         @Html.Partial("OpenReqPartials/_AreaManager", Model);
-        <input id="forFilter" type="text" value="General_usr" hidden />
     }
     else if (mySession.s_job_title == "REGIONAL MAN")
     {
         @Html.Partial("OpenReqPartials/_RegionalManager", Model);
-        <input id="forFilter" type="text" value="General_usr" hidden />
     }
     else if (mySession.s_usr_id == "LHUI1011873")
     {
         @Html.Partial("OpenReqPartials/_President", Model);
-        <input id="forFilter" type="text" value="Pres" hidden />
     }
     else
     {

@@ -4,112 +4,115 @@
 
 }
 
-@if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+@if (Model.Sts_MMD_isProcessed == "1" && Model.PO_Approved != "2")
 {
-    <div class="col-md-offset-6" style="position:absolute; width:45%">
-        <br /><br />
-        @if (mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
-        {
-            <label>Comment:</label>
-            <textarea id="commTextArea" class="form-control" rows="3" style="resize: none; max-width: inherit;" placeholder="Please enter comment" maxlength="250"></textarea>
-            <br />
-            <div>
-                <span class="glyphicon glyphicon-comment" style="color:gray"></span><i style="color:forestgreen">&nbsp; @Model.ShowComments.Count Replie(s)</i>
-                <button type="button" id="comm_btn" class="btn btn-warning" style="position:absolute; left:89%">Post</button>
-            </div>
-        }
-        else
-        {
-            <label>Comment:</label>
-            <textarea id="commTextArea" class="form-control" rows="3" style="resize: none; max-width: inherit;" placeholder="Please enter comment" maxlength="250" disabled></textarea>
-            <br />
-            <div>
-                <span class="glyphicon glyphicon-comment" style="color:gray"></span><i>&nbsp; @Model.ShowComments.Count Replie(s)</i>
-            </div>
-        }
-
-        <br />
-
-        @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
-        {
-            int count = 0;
-            foreach (var item in Model.ShowComments)
+    if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+    {
+        <div class="col-md-offset-6" style="position:absolute; width:45%">
+            <br /><br />
+            @if (mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
             {
-                if (count < 2)
-                {
-                    if (item.commCreatorID == "LHUI1011873")
-                    {
-                        <div style="padding-bottom: 10px">
-                            <i>President/CEO: @item.commCreator | @item.commcreated</i>
-                            <br />
-                            <i style="color: orangered; word-break: break-word">@item.comments</i>
-                            @*<hr style="border-bottom:1px solid #808080" />*@
-                        </div>
-                    }
-                    else
-                    {
-                        <div style="padding-bottom: 10px">
-                            <i>MMD: @item.commCreator | @item.commcreated</i>
-                            <br />
-                            <i style="color: forestgreen; word-break: break-word">@item.comments</i>
-                            @*<hr style="border-bottom:1px solid #808080" />*@
-                        </div>
-                    }
-
-                    count++;
-                }
-                else
-                {
-                    break;
-                }
+                <label>Comment:</label>
+                <textarea id="commTextArea" class="form-control" rows="3" style="resize: none; max-width: inherit;" placeholder="Please enter comment" maxlength="250"></textarea>
+                <br />
+                <div>
+                    <span class="glyphicon glyphicon-comment" style="color:gray"></span><i style="color:forestgreen">&nbsp; @Model.ShowComments.Count Replie(s)</i>
+                    <button type="button" id="comm_btn" class="btn btn-warning" style="position:absolute; left:89%">Post</button>
+                </div>
             }
-            <a id="showComments" data-toggle="modal" data-target="#_ShowComments" style="font-size:15px; margin-left:72%; position:inherit; z-index:1; cursor:pointer">Show all comments</a>
-        }
-    </div>
+            else
+            {
+                <label>Comment:</label>
+                <textarea id="commTextArea" class="form-control" rows="3" style="resize: none; max-width: inherit;" placeholder="Please enter comment" maxlength="250" disabled></textarea>
+                <br />
+                <div>
+                    <span class="glyphicon glyphicon-comment" style="color:gray"></span><i>&nbsp; @Model.ShowComments.Count Replie(s)</i>
+                </div>
+            }
 
-    <div id="_ShowComments" onshow="scrollToEnd()" class="modal fade" role="dialog" tabindex="-1">
-        <div class="modal-dialog" role="document" style="width: 750px;">
-            <div class="modal-content jumbotron">
-                <div id="comment_body" class="modal-body" style="height:89vh; overflow:auto">
+            <br />
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position:fixed; right:50px">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
-                    <div style="display: flex; flex-direction: column-reverse;">
-                        @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
+            @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
+            {
+                int count = 0;
+                foreach (var item in Model.ShowComments)
+                {
+                    if (count < 2)
+                    {
+                        if (item.commCreatorID == "LHUI1011873")
                         {
-                            foreach (var item in Model.ShowComments)
-                            {
-                                if (item.commCreatorID == "LHUI1011873")
-                                {
-                                    <div style="padding-bottom: 10px">
-                                        <b>President/CEO: @item.commCreator | @item.commcreated</b>
-                                        <br />
-                                        <h5 style="color: orangered; word-break:break-word">@item.comments</h5>
-                                        <hr style="border-bottom:1px solid #808080" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div style="padding-bottom: 10px">
-                                        <b>MMD: @item.commCreator | @item.commcreated</b>
-                                        <br />
-                                        <h5 style="color: forestgreen; word-break:break-word">@item.comments</h5>
-                                        <hr style="border-bottom:1px solid #808080" />
-                                    </div>
-                                }
-                            }
+                            <div style="padding-bottom: 10px">
+                                <i>President/CEO: @item.commCreator | @item.commcreated</i>
+                                <br />
+                                <i style="color: orangered; word-break: break-word">@item.comments</i>
+                                @*<hr style="border-bottom:1px solid #808080" />*@
+                            </div>
                         }
                         else
                         {
-                            <div>
-                                <h2>No comments posted.</h2>
+                            <div style="padding-bottom: 10px">
+                                <i>MMD: @item.commCreator | @item.commcreated</i>
+                                <br />
+                                <i style="color: forestgreen; word-break: break-word">@item.comments</i>
+                                @*<hr style="border-bottom:1px solid #808080" />*@
                             </div>
                         }
+
+                        count++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                <a id="showComments" data-toggle="modal" data-target="#_ShowComments" style="font-size:15px; margin-left:72%; position:inherit; z-index:1; cursor:pointer">Show all comments</a>
+            }
+        </div>
+
+        <div id="_ShowComments" onshow="scrollToEnd()" class="modal fade" role="dialog" tabindex="-1">
+            <div class="modal-dialog" role="document" style="width: 750px;">
+                <div class="modal-content jumbotron">
+                    <div id="comment_body" class="modal-body" style="height:89vh; overflow:auto">
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position:fixed; right:50px">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                        <div style="display: flex; flex-direction: column-reverse;">
+                            @if (Model.ShowComments != null && Model.ShowComments.Count != 0)
+                            {
+                                foreach (var item in Model.ShowComments)
+                                {
+                                    if (item.commCreatorID == "LHUI1011873")
+                                    {
+                                        <div style="padding-bottom: 10px">
+                                            <b>President/CEO: @item.commCreator | @item.commcreated</b>
+                                            <br />
+                                            <h5 style="color: orangered; word-break:break-word">@item.comments</h5>
+                                            <hr style="border-bottom:1px solid #808080" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div style="padding-bottom: 10px">
+                                            <b>MMD: @item.commCreator | @item.commcreated</b>
+                                            <br />
+                                            <h5 style="color: forestgreen; word-break:break-word">@item.comments</h5>
+                                            <hr style="border-bottom:1px solid #808080" />
+                                        </div>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <div>
+                                    <h2>No comments posted.</h2>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 }

@@ -1,6 +1,9 @@
 ﻿$("#ProcessedPO").on('click', function (e) {
 
-    var OverallTotal = $('#_overallPrice').val();
+    var outOfStock = 0;
+    var inStock = 0;
+
+    var OverallTotal = $('#overallPrice').val();
     var inputsPrice = [];
     var inputsDesc = [];
 
@@ -17,7 +20,38 @@
         }
     });
 
-    if (inputsPrice.length == inputsDesc.length) {
+    $(".StockCheckbox:checkbox:checked").each(function () {
+        inStock = inStock + 1;
+    });
+
+    $('.StockCheckbox').each(function () {
+        if (!$(this).is(':checked')) {
+            outOfStock = outOfStock + 1;
+        }
+    });
+
+    if (outOfStock == inputsDesc.length) {
+
+        if (inputsPrice.length == inputsDesc.length) {
+            ProcessPO("0");
+        }
+        else {
+            var msg = "Please review and provide price for out of stock item/s.";
+            bootbox.alert(msg);
+            return;
+        }
+    }
+    else if (inStock == inputsDesc.length) {
+        ProcessPO("1");
+    }
+    else {
+        console.log(outOfStock);
+        console.log(inputsDesc.length)
+        bootbox.alert("Please split items that are out of stocks.");
+        return;
+    }
+
+    function ProcessPO(allStockStat) {
         bootbox.confirm({
             title: "Confirmation",
             message: "Are you sure you want to process PO?",
@@ -43,7 +77,7 @@
                         type: "POST",
                         url: Url + '/MMD/ProcessedPO',
                         traditional: true,
-                        data: { 'ReqNo': ReqNO, 'OverallTotal': OverallTotal, 'TotalP': inputsPrice, 'desc': inputsDesc },
+                        data: { 'ReqNo': ReqNO, 'OverallTotal': OverallTotal, 'TotalP': inputsPrice, 'desc': inputsDesc, 'allStockStat': allStockStat  },
                         success: function (result) {
                             if (result.status) {
                                 dialog.modal('hide');
@@ -73,13 +107,6 @@
                 }
             }
         });
-    }
-    else {
-        bootbox.dialog({
-            message: '<p class="text-center">Please provide price for each item.</p>',
-            closeButton: true
-        });
-        return;
     }
 
 });

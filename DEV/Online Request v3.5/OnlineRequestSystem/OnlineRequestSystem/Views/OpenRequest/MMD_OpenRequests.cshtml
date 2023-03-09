@@ -2,120 +2,297 @@
 @{
     ViewBag.Title = "ViewOpenRequest";
     var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
-    
+    var processed = ViewBag.ProcessedPO;
+    var ORHeading = string.Empty;
 
+    if (Model.POurl == "PO")
+    {
+        ORHeading = "ORSHeadingPO";
+    }
+    else
+    {
+        ORHeading = "ORSHeading";
+    }
 }
 <br />
 
-<div id="openBody" class="jumbotron boxShadow col-md-12" style="width:1300px;margin-left:-5.5%;">
-    <div class="panel-heading ORSHeading">
+<div id="openBody" class="jumbotron boxShadow col-md-12" style="width: 1300px; margin-left: -4.5%; padding-right: 0px; padding-left: 0px">
+    <div class="panel-heading @ORHeading">
         <b class="orHeader">@ViewBag.headTxt - @Model.office.ToUpper()</b>
         <div class="pull-right" style="color:black;">
-            <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "PROCESSED PO", retUrl = Model.returnUrl, office = Model.office })'"><i> Processed PO </i></button>
-            <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "RECEIVED FROM SUPPLIER", retUrl = Model.returnUrl, office = Model.office })'"><i> Received from supplier </i></button>
-            <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "IN TRANSIT-SDC", retUrl = Model.returnUrl, office = Model.office })'"><i> In-Transit </i></button>
+            @if (Model.POurl == "PO")
+            {
+                <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "PROCESSED PO", type = "PO", retUrl = Model.returnUrl, office = Model.office })'"><i> Processed PO </i></button>
+                <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "RECEIVED FROM SUPPLIER", type = "PO", retUrl = Model.returnUrl, office = Model.office })'"><i> Received from supplier </i></button>
+                <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "IN TRANSIT-SDC", type = "PO", retUrl = Model.returnUrl, office = Model.office })'"><i> In-Transit </i></button>
+            }
+            else
+            {
+                <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "PROCESSED PO", retUrl = Model.returnUrl, office = Model.office })'"><i> Processed PO </i></button>
+                <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "RECEIVED FROM SUPPLIER", retUrl = Model.returnUrl, office = Model.office })'"><i> Received from supplier </i></button>
+                <button class="mmdLoad" onclick="location.href='@Url.Action("viewMMDStatus", "MMD", new { selected = "IN TRANSIT-SDC", retUrl = Model.returnUrl, office = Model.office })'"><i> In-Transit </i></button>
+            }
         </div>
     </div>
     <div style="padding-top:7px;"></div>
 
-    @{Html.RenderPartial("~/Views/OpenRequest/OpenReqPartials/Sorting.cshtml");}
+    @if (processed == 1)
+    {
+        if (Model.POurl == "PO")
+        {
+            <table class="requestsMMD table-hover">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Select</th>
+                        <th class="col-sm-1"><center>Date Created</center></th>
+                        <th class="col-sm-2"><center>Request no.</center></th>
+                        <th class="col-sm-2"><center>Types</center></th>
+                        <th class="col-sm-1"><center>Count</center></th>
+                        <th class="col-sm-1"><center>Price</center></th>
+                        <th class="col-sm-1"><center>Description</center></th>
+                        <th class="col-sm-2"><center>Branch/Division</center></th>
+                        <th class="col-sm-2"><center>Author</center></th>
+                        <th class="col-sm-2"><center>Region</center></th>
+                        <th class="col-sm-1"><center>Post</center></th>
+                </thead>
+                <tbody style="font-size:12px;">
+                    @if (Model._OpenInfo != null)
+                    {
+                        foreach (var item in Model._OpenInfo)
+                        {
+                            decimal price = string.IsNullOrEmpty(item.OverallTotalPrice) ? 0 : decimal.Parse(item.OverallTotalPrice);
+                            string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
 
-    @*To: <input type="text" id="search_date_range" style="position: absolute; left: 57%; height: 2%;" />*@
-    <table class="requests table-hover" id="MMDOpenRequest">
-        <thead>
-            <tr>
-                <th><center>Select</center></th>
-                <th class="col-sm-1"><center>Date Created</center></th>
-                <th class="col-sm-2"><center>Request no.</center></th>
-                <th class="col-sm-2"><center>Types</center></th>
-                <th class="col-sm-1"><center>Count</center></th>
-                <th class="col-sm-1"><center>Price</center></th>
-                <th class="col-sm-1"><center>Description</center></th>
-                <th class="col-sm-2"><center>Branch/Division</center></th>
-                <th class="col-sm-2"><center>Author</center></th>
-                <th class="col-sm-3"><center>Region</center></th>
-                <th class="col-sm-1"><center>Post</center></th>
-                <th style="display:none"><center>Do not Delete</center></th>
-                <th style="display:none"><center>Do not Delete</center></th>
-                <th style="display:none"><center>Status</center></th>
-        </thead>
-        <tbody style="font-size:12px;">
-            @if (Model._OpenInfo != null)
-            {
-                foreach (var item in Model._OpenInfo)
-                {
-                    decimal price = string.IsNullOrEmpty(item.OverallTotalPrice) ? 0 : decimal.Parse(item.OverallTotalPrice);
-                    string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
-                    
-
-            <tr class="cellspacer">
-                @if (item.MMD_Processed == 1)
-                {
-                    <td><center><button class="btn btn-sm btn-warning" onclick="location.href = '@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
-                }
-                else
-                {
-                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href = '@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = item.ZoneCode , Region = item.Region, retUrl = Model.returnUrl, office = Model.office})'">Show Details</button></center></td>
-                }
-
-
-
-                <td><center>@item.reqDate</center></td>
-                <td><center>@item.reqNumber</center></td>
-                <td title="@item.TypeName"><center>@item.TypeName</center></td>
-                <td><center>@item.TotalItems</center></td>
-                <td class="reqOverallTotal" style="text-align:center">@priceVal</td>
-                <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
-                <td><center>@item.BranchName</center></td>
-                <td><center>@item.reqCreator</center></td>
-                <td>
-                    <center>
-                        @item.Region
-                        <span style="display:none;">@item.BranchCode</span>
-                    </center>
-                </td>
-                <td><center>
-                        <div class="badge-holder">
-                            <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
-                            @if (item.numOfNotifs != 0)
+                            if (item.MMD_Processed == 1)
                             {
-                                <span class="badge badge-notify">@item.numOfNotifs</span>
+                                <tr class="cellspacer">
+
+                                    <td><center><button style="background-color: firebrick" class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office })'">Show Details</button></center></td>
+                                    <td><center>@item.reqDate</center></td>
+                                    <td><center>@item.reqNumber</center></td>
+                                    <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td class="reqOverallTotal" style="text-align:center">@priceVal</td>
+                                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                                    <td><center>@item.BranchName</center></td>
+                                    <td><center>@item.reqCreator</center></td>
+                                    <td>
+                                        <center>
+                                            @item.Region
+                                            <span style="display:none;">@item.BranchCode</span>
+                                        </center>
+                                    </td>
+                                    <td>
+                                    <center>
+                                        <div class="badge-holder">
+                                        <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
+                                            @if (item.numOfNotifs != 0)
+                                            {
+                                                <span class="badge badge-notify">@item.numOfNotifs</span>
+                                            }
+                                        </div>
+                                    </center>
+                                    </td>
+                                </tr>
                             }
-                        </div>
-            </center></td>
-                <td style="display:none">Do not Delete</td>
-                <td style="display:none">Do not Delete</td>
-                @if (item.MMD_Processed == 1)
-                {
-                    <td style="display:none">PO Approval</td>
-                }
-                else
-                {
-                    <td style="display:none">Open Requests</td>
-                }
-            </tr>
-                }
-            }
+                        }
+                    }
 
-        </tbody>
-        <tfoot>
-            <tr>
-                <th>&nbsp;</th>
-                <th class="col-sm-1">&nbsp;</th>
-                <th class="col-sm-2">&nbsp;</th>
-                <th class="col-sm-2">&nbsp;</th>
-                <th><center>Total:</center></th>
-                <th class="col-sm-1"></th>
-                <th class="col-sm-1" style="width:10%">&nbsp;</th>
-                <th class="col-sm-2">&nbsp;</th>
-                <th class="col-sm-2">&nbsp;</th>
-                <th class="col-sm-3">&nbsp;</th>
-                <th class="col-sm-1">&nbsp;</th>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th class="col-sm-1">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th><center>Total:</center></th>
+                        <th class="col-sm-1"></th>
+                        <th class="col-sm-1" style="width:10%">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
 
-            </tr>
-        </tfoot>
-    </table>
-    <input id="forFilter" type="text" value="MMD" hidden />
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <table class="table-hover" id="MMDOpenRequest">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Select</th>
+                        <th class="col-sm-1"><center>Date Created</center></th>
+                        <th class="col-sm-2"><center>Request no.</center></th>
+                        <th class="col-sm-2"><center>Types</center></th>
+                        <th class="col-sm-1"><center>Count</center></th>
+                        <th class="col-sm-1"><center>Description</center></th>
+                        <th class="col-sm-2"><center>Branch/Division</center></th>
+                        <th class="col-sm-2"><center>Author</center></th>
+                        <th class="col-sm-3"><center>Region</center></th>
+                </thead>
+                <tbody style="font-size:12px;">
+                    @if (Model._OpenInfo != null)
+                    {
+                        foreach (var item in Model._OpenInfo)
+                        {
+                            if (item.MMD_Processed == 1)
+                            {
+                                <tr class="cellspacer">
+
+                                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office })'">Show Details</button></center></td>
+                                    <td><center>@item.reqDate</center></td>
+                                    <td><center>@item.reqNumber</center></td>
+                                    <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                                    <td><center>@item.BranchName</center></td>
+                                    <td><center>@item.reqCreator</center></td>
+                                    <td>
+                                        <center>
+                                            @item.Region
+                                            <span style="display:none;">@item.BranchCode</span>
+                                        </center>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                </tbody>
+            </table>
+        }
+    }
+    else
+    {
+        if (Model.POurl == "PO")
+        {
+            <table class="requestsMMD table-hover">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Select</th>
+                        <th class="col-sm-1"><center>Date Created</center></th>
+                        <th class="col-sm-2"><center>Request no.</center></th>
+                        <th class="col-sm-2"><center>Types</center></th>
+                        <th class="col-sm-1"><center>Count</center></th>
+                        <th class="col-sm-1"><center>Price</center></th>
+                        <th class="col-sm-1"><center>Description</center></th>
+                        <th class="col-sm-2"><center>Branch/Division</center></th>
+                        <th class="col-sm-2"><center>Author</center></th>
+                        <th class="col-sm-2"><center>Region</center></th>
+                        <th class="col-sm-1"><center>Post</center></th>
+                </thead>
+                <tbody style="font-size:12px;">
+                    @if (Model._OpenInfo != null)
+                    {
+                        foreach (var item in Model._OpenInfo)
+                        {
+                            decimal price = string.IsNullOrEmpty(item.OverallTotalPrice) ? 0 : decimal.Parse(item.OverallTotalPrice);
+                            string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
+
+                            if (item.MMD_Processed == 1)
+                            {
+                                <tr class="cellspacer">
+
+                                    <td><center><button style="background-color: firebrick" class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office })'">Show Details</button></center></td>
+                                    <td><center>@item.reqDate</center></td>
+                                    <td><center>@item.reqNumber</center></td>
+                                    <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td class="reqOverallTotal" style="text-align:center">@priceVal</td>
+                                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                                    <td><center>@item.BranchName</center></td>
+                                    <td><center>@item.reqCreator</center></td>
+                                    <td>
+                                        <center>
+                                            @item.Region
+                                            <span style="display:none;">@item.BranchCode</span>
+                                        </center>
+                                    </td>
+                                    <td>
+                                    <center>                                        
+                                        <div class="badge-holder">
+                                            <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
+                                            @if (item.numOfNotifs != 0)
+                                            {
+                                                <span class="badge badge-notify">@item.numOfNotifs</span>
+                                            }
+                                        </div>
+                                    </center>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th class="col-sm-1">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th><center>Total:</center></th>
+                        <th class="col-sm-1"></th>
+                        <th class="col-sm-1" style="width:10%">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                        <th class="col-sm-2">&nbsp;</th>
+
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <table class="table-hover" id="MMDOpenRequest">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Select</th>
+                        <th class="col-sm-1"><center>Date Created</center></th>
+                        <th class="col-sm-2"><center>Request no.</center></th>
+                        <th class="col-sm-2"><center>Types</center></th>
+                        <th class="col-sm-1"><center>Count</center></th>
+                        <th class="col-sm-1"><center>Description</center></th>
+                        <th class="col-sm-2"><center>Branch/Division</center></th>
+                        <th class="col-sm-2"><center>Author</center></th>
+                        <th class="col-sm-3"><center>Region</center></th>
+                </thead>
+                <tbody style="font-size:12px;">
+                    @if (Model._OpenInfo != null)
+                    {
+                        foreach (var item in Model._OpenInfo)
+                        {
+                            if (item.MMD_Processed != 1)
+                            {
+                                <tr class="cellspacer">
+
+                                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office })'">Show Details</button></center></td>
+                                    <td><center>@item.reqDate</center></td>
+                                    <td><center>@item.reqNumber</center></td>
+                                    <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                                    <td><center>@item.TotalItems</center></td>
+                                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                                    <td><center>@item.BranchName</center></td>
+                                    <td><center>@item.reqCreator</center></td>
+                                    <td>
+                                        <center>
+                                            @item.Region
+                                            <span style="display:none;">@item.BranchCode</span>
+                                        </center>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                </tbody>
+            </table>
+        }
+    }
+
 </div>
 
 @section tableCss{

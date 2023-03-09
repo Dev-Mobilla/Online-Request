@@ -11,7 +11,7 @@
     new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" },
     new { @class = "form-horizontal" }))
 {
-    <div class="jumbotron col-md-12 boxShadow">
+    <div class="jumbotron col-md-12 boxShadow" style="padding-right: 0px; padding-left: 0px">
         <div class="panel-heading ORSHeading">
             <b class="orHeader"><span>CREATE REQUEST</span>&nbsp;</b>
         </div>
@@ -79,7 +79,7 @@
             <table class="table table-bordered table-condensed" id="myTable">
                 <thead>
                     <tr class="ORSHeading orHeader">
-                        <th style="width:4%"></th>
+                        <th style="width:3%"></th>
                         <th class="col-md-4">Description</th>
                         <th class="col-md-1">Qty</th>
                         <th class="col-md-3">Unit</th>
@@ -88,7 +88,7 @@
                 </thead>
                 <tbody>
                     <tr id="TR0">
-                        <td><center><span id="reqCount0" class="itemCount">1</span></center></td>
+                        <td style="text-align:center; vertical-align:middle"><span id="reqCount0" class="itemCount">1</span></td>
                         <td class="col-md-6">
                             @Html.TextBoxFor(m => m.ReqItems[i].ItemDescription, new { @style = "max-width:inherit;", @id = "reqName0", @type = "text", @class = "form-control itemDes", @placeholder = "Enter Item Name", @autocomplete = "off" })
                         </td>
