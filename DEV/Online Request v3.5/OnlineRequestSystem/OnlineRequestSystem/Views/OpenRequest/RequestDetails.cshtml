@@ -27,6 +27,16 @@
     decimal price = string.IsNullOrEmpty(Model.OverallTotalPrice) ? 0 : decimal.Parse(Model.OverallTotalPrice);
     string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
 
+    var ORHeading = string.Empty;
+    if (Model.POurl == "PO")
+    {
+        ORHeading = "ORSHeadingPO";
+    }
+    else
+    {
+        ORHeading = "ORSHeading";
+    }
+
 }
 <br />
 @using (Ajax.BeginForm("ApprovedRequest", "ApprovStat", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }))
@@ -34,7 +44,7 @@
     <input id="returnUrl" name="returnUrl" value="@Model.returnUrl" hidden />
     <input id="office" name="office" value="@Model.office" hidden />
     <div class="jumbotron col-md-12 col-sm-12 col-xs-12 boxShadow" style="padding-right: 0px; padding-left: 0px">
-        <div class="panel-heading ORSHeading">
+        <div class="panel-heading @ORHeading">
             <div class="pull-left orHeader">
                 Requested by:&nbsp;
                 <b>@Model.reqCreator</b>
@@ -102,7 +112,7 @@
             <span style="font-size:11px;color:red;" class="pull-right"><i>Note: Please press <b>'TAB'</b> after inputting the actual items received.</i></span>
             <table class="table table-bordered table-hover table-condensed" id="myTable">
                 <thead>
-                    <tr class="ORSHeading orHeader">
+                    <tr class="@ORHeading orHeader">
                         <th style="width:3%"></th>
                         <th class="col-md-2">Description</th>
                         <th class="col-md-1"><center>Item Quantity</center></th>
@@ -193,7 +203,7 @@
                             }
 
                             <td style="padding: 1px; vertical-align: middle" class="forMMD">
-                                @if (Model.Sts_MMD_isProcessed == "0" || Model.Sts_VPO_PO_isApproved == "" || Model.Sts_Pres_PO_isApproved == "")
+                                @if (Model.Sts_MMD_isProcessed == "0")
                                 {
                                     <center>
                                         <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " disabled />

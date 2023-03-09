@@ -124,8 +124,7 @@ namespace OnlineRequestSystem.Service
                         {
                             cmd2.Parameters.Clear();
                             read.Read();
-                            item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
-                            data.Add(item);
+                            item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);                            
                         }
                     }
                 }
@@ -236,7 +235,6 @@ namespace OnlineRequestSystem.Service
                             cmd2.Parameters.Clear();
                             read.Read();
                             item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
-                            data.Add(item);
                         }
                     }
                 }

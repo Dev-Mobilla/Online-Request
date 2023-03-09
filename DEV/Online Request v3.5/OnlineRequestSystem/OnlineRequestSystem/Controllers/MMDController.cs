@@ -464,6 +464,14 @@ namespace OnlineRequestSystem.Controllers
                     }
                 }
 
+                set.SetDateModified(ReqNo, ss.s_usr_id);
+                log.Info("A request has been (PO)Processed || request no: " + ReqNo + " || Processor: " + ss.s_usr_id);
+                return Json(new
+                {
+                    status = true,
+                    rescode = "2001",
+                    msg = "Successfully saved."
+                }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception x)
             {
@@ -471,14 +479,6 @@ namespace OnlineRequestSystem.Controllers
                 ViewBag.Error = x.ToString();
                 return View("Error");
             }
-            set.SetDateModified(ReqNo, ss.s_usr_id);
-            log.Info("A request has been (PO)Processed || request no: " + ReqNo + " || Processor: " + ss.s_usr_id);
-            return Json(new
-            {
-                status = true,
-                rescode = "2001",
-                msg = "Successfully saved."
-            }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion Processed PO

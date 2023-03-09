@@ -1,4 +1,21 @@
-﻿function addPriceModal(selectedQty, selectedPrice) {
+﻿$(document).ready(function () {
+    var inputs = $('input[name="pricePerItem"]')
+    var finalPrice
+    var overallTotalPrice = 0;
+    inputs.each(function () {
+        if ($(this).val() != "" || $(this).val() != 'undefined' || $(this).val() != 'NaN') {
+            overallTotalPrice += parseFloat($(this).val()) || 0;
+            finalPrice = overallTotalPrice.toFixed(2);
+        }
+    })
+
+    finalPrice = finalPrice == "0.00" ? "" : finalPrice;
+
+    document.getElementById("overallPrice").value = finalPrice;
+    document.getElementById("_overallPrice").value = finalPrice;
+});
+
+function addPriceModal(selectedQty, selectedPrice) {
     document.getElementById("qtySelected").value = selectedQty;
     var quantity = document.getElementById(selectedQty).innerText;
     document.getElementById("itemSelected").value = selectedPrice;
