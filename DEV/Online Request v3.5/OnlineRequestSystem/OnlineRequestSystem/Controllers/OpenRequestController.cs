@@ -873,7 +873,7 @@ namespace OnlineRequestSystem.Controllers
                 var que = new OpenQueries();
                 var Info = new OpenReqInfo();
                 ViewBag.headTxt = "HEAD OFFICE REQUESTS";
-                Info = que.MMD_HORequests(ss);
+                Info = que.MMD_HORequests(ss, "");
                 Info.office = "division";
                 Info.returnUrl = "mmd-ho-requests";
                 return View("MMD_OpenRequests", Info);
@@ -896,7 +896,7 @@ namespace OnlineRequestSystem.Controllers
                 var que = new OpenQueries();
                 var Info = new OpenReqInfo();
                 ViewBag.headTxt = "HEAD OFFICE PO REQUESTS";
-                Info = que.MMD_HORequests(ss);
+                Info = que.MMD_HORequests(ss, "PO");
                 Info.office = "division";
                 Info.returnUrl = "mmd-ho-PO-requests";
                 Info.POurl = "PO";
