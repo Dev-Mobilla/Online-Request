@@ -773,7 +773,7 @@ namespace OnlineRequestSystem.Controllers
                 var Info = new OpenReqInfo();
                 var OpenReqList = new List<OpenReqViewModel>();
                 Info._OpenInfo = OpenReqList;
-                Info = que.MyRequests(ss);
+                Info = que.MyRequests(ss, "");
                 ViewBag.headTxt = "MY REQUESTS";
                 Info.returnUrl = "my-requests";
                 return View("MyRequests", Info);
@@ -798,7 +798,7 @@ namespace OnlineRequestSystem.Controllers
                 var Info = new OpenReqInfo();
                 var OpenReqList = new List<OpenReqViewModel>();
                 Info._OpenInfo = OpenReqList;
-                Info = que.MyRequests(ss);
+                Info = que.MyRequests(ss, "PO");
                 ViewBag.headTxt = "MY PO REQUESTS";
                 Info.returnUrl = "my-PO-requests";
                 Info.POurl = "PO";
@@ -1075,7 +1075,7 @@ namespace OnlineRequestSystem.Controllers
                 var Info = new OpenReqInfo();
                 var OpenReqList = new List<OpenReqViewModel>();
                 Info._OpenInfo = OpenReqList;
-                Info = que.LocalRequests(ss, a);
+                Info = que.LocalRequests(ss, a, "");
                 Info.approver = a;
                 Info.returnUrl = "local-open-requests";
                 return View("LocalRequests", Info);
@@ -1112,7 +1112,7 @@ namespace OnlineRequestSystem.Controllers
                 var Info = new OpenReqInfo();
                 var OpenReqList = new List<OpenReqViewModel>();
                 Info._OpenInfo = OpenReqList;
-                Info = que.LocalRequests(ss, a);
+                Info = que.LocalRequests(ss, a, "PO");
                 Info.approver = a;
                 Info.returnUrl = "local-PO-requests";
                 Info.POurl = "PO";

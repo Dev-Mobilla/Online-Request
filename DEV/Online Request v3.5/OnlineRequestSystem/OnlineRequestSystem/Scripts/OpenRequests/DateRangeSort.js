@@ -81,7 +81,7 @@
                 }, 0);
 
             // Update footer
-            $(api.column(index).footer()).html(total == 0.00 ? 0 : total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            $(api.column(index).footer()).html(total == 0.00 ? '' : total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         },
     });
 

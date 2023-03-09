@@ -174,7 +174,6 @@ $("#ForDelivery").on('click', function (e) {
 });
 
 $("#InTransit").on('click', function (e) {
-
     var hasCheck = [];
     var hasPrice = [];
     var hasStatus = [];

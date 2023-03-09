@@ -4,14 +4,14 @@
     var overallTotalPrice = 0;
     inputs.each(function () {
         if ($(this).val() != "" || $(this).val() != 'undefined' || $(this).val() != 'NaN') {
-            overallTotalPrice += parseFloat($(this).val()) || 0;
+            overallTotalPrice += parseFloat(document.getElementById(this.id).value.replace(/,/g, "")) || 0;
             finalPrice = overallTotalPrice.toFixed(2);
         }
     })
 
     finalPrice = finalPrice == "0.00" ? "" : finalPrice;
 
-    document.getElementById("overallPrice").value = finalPrice;
+    document.getElementById("overallPrice").value = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
     document.getElementById("_overallPrice").value = finalPrice;
 });
 
@@ -111,7 +111,7 @@ $('.priceTotal').blur(function (e) {
     if ($(priceId).val() != "" || typeof $(priceId).val() === 'undefined' || $(priceId).val() == 'NaN') {
 
         var price = parseFloat(document.getElementById(priceId).value.replace(/,/g, ""));
-        console.log(price);
+        //console.log(price);
         if (isNaN(price)) {
             return;
         }

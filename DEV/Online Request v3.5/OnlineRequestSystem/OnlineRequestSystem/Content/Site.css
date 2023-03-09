@@ -361,3 +361,7 @@ div.pager span {
     color: white;
     background-color: red;
 }
+
+input.input-validation-error {
+    border: 1px solid #ccc;
+}

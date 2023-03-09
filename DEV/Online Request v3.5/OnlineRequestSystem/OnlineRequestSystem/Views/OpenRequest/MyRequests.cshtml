@@ -61,7 +61,7 @@
                         if (item.MMD_Processed == 1)
                         {
                             <tr class="cellspacer">
-                                <td style="padding-left:10px;"><button style="background-color: firebrick" class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                                <td style="padding-left:10px;"><button style="background-color: firebrick" class="btn btn-sm btn-warning" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl,  PO = "PO"})'">Show Details</button></td>
                                 <td><center>@item.reqDate</center></td>
                                 <td><center>@item.reqNumber</center></td>
                                 <td title="@item.TypeName"><center>@item.TypeName</center></td>
