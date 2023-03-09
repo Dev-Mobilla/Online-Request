@@ -31,6 +31,8 @@
         {
             foreach (var item in Model._OpenInfo)
             {
+                decimal price = string.IsNullOrEmpty(item.OverallTotalPrice) ? 0 : decimal.Parse(item.OverallTotalPrice);
+                string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
                 if (item.reqStatus == "OPEN")
                 {
                     if (item.isDivRequest == "0")
@@ -62,7 +64,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td><center>@item.OverallTotalPrice</center></td>
+                                    <td><center>@priceVal</center></td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -72,7 +74,13 @@
                                             <span style="display:none;">@item.BranchCode</span>
                                         </center>
                                     </td>
-                                    <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                                    <td><center><div class="badge-holder">
+                                    <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                    @if (item.numOfNotifs != 0)
+                                    {
+                                        <span class="badge badge-notify">@item.numOfNotifs</span>
+                                    }
+                                </div></center></td>
                                     <td style="display:none">0</td>
                                     <td style="display:none">Open Requests</td>
                                 </tr>
@@ -103,7 +111,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td style="text-align:center">@item.OverallTotalPrice</td>
+                                    <td style="text-align:center">@priceVal</td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -113,7 +121,13 @@
                                             <span style="display:none;">@item.BranchCode</span>
                                         </center>
                                     </td>
-                                    <td><center><span class="glyphicon glyphicon-comment"  style="color:gray"></span></center></td>
+                                    <td><center><div class="badge-holder">
+                                    <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                    @if (item.numOfNotifs != 0)
+                                    {
+                                        <span class="badge badge-notify">@item.numOfNotifs</span>
+                                    }
+                                </div></center></td>
                                     <td style="display:none">1</td>
                                     <td style="display:none">PO Approval</td>
                                 </tr>
@@ -142,7 +156,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td style="text-align:center">@item.OverallTotalPrice</td>
+                                    <td style="text-align:center">@priceVal</td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -152,7 +166,13 @@
                                             <span style="display:none;">@item.BranchCode</span>
                                         </center>
                                     </td>
-                                    <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                                    <td><center><div class="badge-holder">
+                                    <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                    @if (item.numOfNotifs != 0)
+                                    {
+                                        <span class="badge badge-notify">@item.numOfNotifs</span>
+                                    }
+                                </div></center></td>
                                     <td style="display:none">0</td>
                                     <td style="display:none">Open Requests</td>
                                 </tr>
@@ -173,7 +193,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td style="text-align:center">@item.OverallTotalPrice</td>
+                                    <td style="text-align:center">@priceVal</td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -183,7 +203,13 @@
                                             <span style="display:none;">@item.BranchCode</span>
                                         </center>
                                     </td>
-                                    <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                                    <td><center><div class="badge-holder">
+                                    <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                    @if (item.numOfNotifs != 0)
+                                    {
+                                        <span class="badge badge-notify">@item.numOfNotifs</span>
+                                    }
+                                </div></center></td>
                                     <td style="display:none">0</td>
                                     <td style="display:none">Open Requests</td>
                                 </tr>
@@ -206,7 +232,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td style="text-align:center">@item.OverallTotalPrice</td>
+                                    <td style="text-align:center">@priceVal</td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -216,7 +242,13 @@
                                             <span style="display:none;">@item.BranchCode</span>
                                         </center>
                                     </td>
-                                    <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                                    <td><center><div class="badge-holder">
+                                    <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                    @if (item.numOfNotifs != 0)
+                                        {
+                                            <span class="badge badge-notify">@item.numOfNotifs</span>
+                                        }
+                                    </div></center></td>
                                     <td style="display:none">1</td>
                                     <td style="display:none">PO Approval</td>
                                 </tr>

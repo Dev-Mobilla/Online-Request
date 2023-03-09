@@ -179,9 +179,31 @@ namespace OnlineRequestSystem.Controllers
 
                                 OpenReqList.Add(o);
                             }
+                            rdr.Close();
+                            conn.Close();
                         }
-                        Info._OpenInfo = OpenReqList;
                     }
+
+                    if (ss.s_usr_id == "LHUI1011873")
+                    {
+                        var cmd2 = conn.CreateCommand();
+                        conn.Open();
+
+                        foreach (var item in OpenReqList.ToList())
+                        {
+                            cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator <> 'Michael L. Lhuillier'";
+                            cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                            cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                            using (var read = cmd2.ExecuteReader())
+                            {
+                                cmd2.Parameters.Clear();
+                                read.Read();
+                                item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                                OpenReqList.Add(item);
+                            }
+                        }
+                    }
+                    Info._OpenInfo = OpenReqList;
                 }
 
                 ViewBag.headTxt = "OPEN";
@@ -329,6 +351,12 @@ namespace OnlineRequestSystem.Controllers
                                 model.Sts_RM_Transitor = rdr["RM_Transitor"].ToString().Trim();
                                 model.Sts_RM_Transit_Date = rdr["RM_Transit_Date"].ToString().Trim();
                                 model.Sts_RM_isTransit = rdr["isRMTransit"].ToString().Trim();
+
+                                if (model.Sts_MMD_isProcessed == "1")
+                                {
+
+                                }
+
 
                                 #endregion Read Approver Status
                             }
@@ -481,6 +509,9 @@ namespace OnlineRequestSystem.Controllers
                                 model.DivCode3 = rdr["DivCode3"].ToString().Trim();
                                 model.isPresidentApproval = Convert.ToInt32(rdr["isPresidentApproval"]);
                             }
+
+                            con.Close();
+                            rdr.Close();
                         }
                         model.ReqItems = itemLists;
                         TempData["reqItems"] = itemLists;
@@ -535,6 +566,34 @@ namespace OnlineRequestSystem.Controllers
                             ViewBag.Branch = "";
                         }
 
+                        if (ss.s_usr_id == "LHUI1011873" || ss.s_MMD == 1)
+                        {
+                            string commCreator = "";
+                            cmd.CommandText = "SELECT commCreator FROM storedComments WHERE reqNumber = @ReqNo AND isViewedBy IS NULL";
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                            con.Open();
+
+                            using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                            {
+                                if (rdr.HasRows)
+                                {
+                                    rdr.Read();
+                                    commCreator = rdr["commCreator"].ToString();
+
+                                }
+                                con.Close();
+                                rdr.Close();
+                            }
+
+                            if (commCreator != ss.s_fullname)
+                            {
+                                if (commCreator != "Michael L. Lhuillier" && ss.s_MMD == 0)
+                                {
+                                    UpdateCommentViewed(ReqNo);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1014,6 +1073,33 @@ namespace OnlineRequestSystem.Controllers
             {
                 log.Fatal(x.Message, x);
                 throw;
+            }
+        }
+
+
+        public string UpdateCommentViewed(string reqNumber)
+        {
+            var ss = (ORSession)Session["UserSession"];
+            var db = new ORtoMySql();
+            try
+            {
+                using (var conn = db.getConnection())
+                {
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "UPDATE OnlineRequest.storedComments SET isViewedOn = @isViewedOn, isViewedBy = @viewer where reqNumber = @reqNumber";
+                    cmd.Parameters.AddWithValue("@reqNumber", reqNumber);
+                    cmd.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                    cmd.Parameters.AddWithValue("@isViewedOn", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                return "Success!";
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                return "Failed!";
+
             }
         }
     }

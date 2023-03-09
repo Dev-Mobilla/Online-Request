@@ -1,4 +1,27 @@
 ﻿$(document).ready(function () {
+    $.ajax({
+        type: "GET",
+        url: Url + "/Request/CheckRequest",
+        data: { reqCreator: reqCreator },
+        success: function (result) {
+            if (result.status == true) {
+                bootbox.alert({
+                    message: result.msg,
+                    callback: function () {
+                        var dialog = bootbox.dialog({
+                            message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Redirecting..</p>',
+                            closeButton: false
+                        });
+                        window.location.href = Url + '/open-requests';
+                    }
+                })
+            }
+        },
+        error: function () {
+            console.log("something went wrong")
+        }
+    })
+
     $('.itemDes, .UnitQty, .UnitCost, .selectRT').prop('required', 'required');
     $('#insert-more').click(function () {
         var Length = $('#myTable tr:last').attr('id').replace('TR', '');
@@ -142,3 +165,20 @@ function onCreateFail(jqXHR, exception) {
 $("#attDiagnostic").on('click', function () {
     alert("sadfasd");
 });
+
+
+//$(window).load(function () {
+//    $.ajax({
+//        type: "GET",
+//        url: Url + "/Request/CheckRequest",
+//        data: { reqCreator: reqCreator },
+//        success: function (result) {
+//            if (result.status == true) {
+//                console.log(result.msg);
+//            }
+//        },
+//        error: function () {
+//            console.log("something went wrong")
+//        }
+//    })
+//})

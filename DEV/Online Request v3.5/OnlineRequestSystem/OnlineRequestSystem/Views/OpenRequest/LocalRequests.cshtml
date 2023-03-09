@@ -71,6 +71,8 @@
             {
                 foreach (var item in Model._OpenInfo)
                 {
+                    decimal price = string.IsNullOrEmpty(item.OverallTotalPrice) ? 0 : decimal.Parse(item.OverallTotalPrice);
+                    string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
                     if (Model.approver == "dept")
                     {
                         <tr class="cellspacer">
@@ -89,7 +91,7 @@
 
                             @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1)
                             {
-                                <td style="text-align:center">@item.OverallTotalPrice</td>
+                                <td style="text-align:center">@priceVal</td>
                             }
 
                             <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>

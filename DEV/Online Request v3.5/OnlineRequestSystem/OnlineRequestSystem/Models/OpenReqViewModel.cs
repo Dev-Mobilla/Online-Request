@@ -1,9 +1,12 @@
-﻿namespace OnlineRequestSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OnlineRequestSystem.Models
 {
     public class OpenReqViewModel
     {
         #region Open Request View Models
 
+        public int numOfNotifs { get; set; }
         public string reqNumber { get; set; }
         public string reqCreator { get; set; }
         public string reqDescription { get; set; }
@@ -70,6 +73,9 @@
 
         public int VPO_PO_Approved { get; set; }
         public int Pres_PO_Approved { get; set; }
+
+        public string MMDCurrentTime { get; set; }
+        public string CEOCurrentTime { get; set; }
     }
 
     public class Finalresult

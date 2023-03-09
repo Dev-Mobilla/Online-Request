@@ -809,7 +809,6 @@ E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.Google.xml
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.Twitter.xml
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Release\OnlineRequestSystem.csprojAssemblyReference.cache
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Release\OnlineRequestSystem.csproj.CoreCompileInputs.cache
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Release\OnlineRequestSystem.csproj.CopyComplete
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Release\OnlineRequestSystem.dll

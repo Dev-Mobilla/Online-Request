@@ -58,7 +58,8 @@ $(document).ready(function () {
 
             // Remove the formatting to get integer data for summation
             var intVal = function (i) {
-                let val = i === '' && typeof i === 'string' ? 0 : parseFloat(i);
+                var priceVal = i.toString().replace(/,/g, '');
+                let val = priceVal === '' && typeof priceVal === 'string' ? 0 : parseFloat(priceVal);
                 return val
             };
 
@@ -67,7 +68,7 @@ $(document).ready(function () {
             tbl.each(function () {
                 if ($(this).text() == "Price") {
                     tbl.index(this);
-                    console.log(tbl.index(this));
+                    //console.log(tbl.index(this));
                     index = tbl.index(this);
                 }
             })
@@ -81,7 +82,7 @@ $(document).ready(function () {
                 }, 0);
 
             // Update footer
-            $(api.column(index).footer()).html(total == 0.00 ? 0 : total.toFixed(2));
+            $(api.column(index).footer()).html(total == 0.00 ? '' : total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         },
     });
 
@@ -96,7 +97,7 @@ $(document).ready(function () {
 
     var getUser = $('#forFilter').val();
 
-    console.log(getUser);
+    //console.log(getUser);
 
     if (getUser == "Pres" || getUser == "VPO" || getUser == "MMD" || getUser == "VPO_local") {
         custom_search();
