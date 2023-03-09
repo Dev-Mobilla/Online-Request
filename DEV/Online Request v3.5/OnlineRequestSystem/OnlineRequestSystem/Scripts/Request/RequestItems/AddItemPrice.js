@@ -89,28 +89,38 @@ $('#btnSearchID').click(function (e) {
 });
 
 
-//$('.priceTotal').blur(function (e) {
-//    var priceId = this.id;
-//    if ($(priceId).val() != "" || $(priceId).val() == 'undefined' || $(priceId).val() == 'NaN') {
-//        var price = parseFloat(document.getElementById(priceId).value.replace(/,/g, ""));
-//        var finalvalue = addDecimals(price.toFixed(2));
-//        return $(this).val(finalvalue);
-//    }
-//});
+$('.priceTotal').blur(function (e) {
+    var priceId = this.id;
+    if ($(priceId).val() != "" || typeof $(priceId).val() === 'undefined' || $(priceId).val() == 'NaN') {
 
-$('.priceTotal').on('blur', function () {
-    // Get the input value
-    var inputValue = $(this).val();
+        var price = parseFloat(document.getElementById(priceId).value.replace(/,/g, ""));
+        console.log(price);
+        if (isNaN(price)) {
+            return;
+        }
 
-    // Convert the input value to a number
-    var numberValue = parseFloat(inputValue).toFixed(2);
-    if (isNaN(numberValue) || inputValue === '') {
-        numberValue = '';
+        var finalvalue = addDecimals(price.toFixed(2));
+
+        return $(this).val(finalvalue);
     }
 
-    // Update the input value with the number value
-    $(this).val(numberValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 });
+
+//$('.priceTotal').on('blur', function () {
+//    // Get the input value
+//    var inputValue = $(this).val();
+
+//    // Convert the input value to a number
+//    var numberValue = parseFloat(inputValue).toFixed(2);
+//    if (isNaN(numberValue) || inputValue === '') {
+//        numberValue = '';
+//    }
+//    console.log("Ni trigger ang BLURRR");
+
+//    // Update the input value with the number value
+//    $(this).val(numberValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+//});
 
 
 function addDecimals(value) {
@@ -140,9 +150,9 @@ $('.priceTotal').on('change', function () {
         if (val != "" || val != 'undefined' || val != 'NaN') {
             overallTotalPrice += parseFloat(val) || 0;
             finalPrice = overallTotalPrice.toFixed(2);
-            
         }
     })
+    /*    console.log("Ni trigger ang onchange");*/
 
     var formatPrice = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     document.getElementById("overallPrice").value = formatPrice;
