@@ -173,19 +173,16 @@ $("#ForDelivery").on('click', function (e) {
     });
 });
 
-
-var hasCheck = [];
-var hasPrice = [];
-var hasStatus = [];
-
 $("#InTransit").on('click', function (e) {
+
+    var hasCheck = [];
+    var hasPrice = [];
+    var hasStatus = [];
+
     $('.forMMD').each(function () {
         var isChecked = $(this).find('input[type=checkbox]').is(':checked');
-        if (isChecked == true) {
             hasCheck.push(isChecked)
-        }
     })
-    console.log(hasCheck)
 
     $('.mmdPrice').each(function () {
         var val = $(this).val()
@@ -194,18 +191,15 @@ $("#InTransit").on('click', function (e) {
         }
     });
 
-    console.log(hasPrice);
-
     $('.forMMD').each(function () {
         var selectedValue = $(this).find('i').attr('class');
-        if (selectedValue === "fa fa-check-circle txtSuccess dropdown-toggle MMDSelect" || selectedValue === "fa fa-check-circle txtWarning dropdown-toggle MMDSelect" || selectedValue === "fa fa-check-circle txtDanger dropdown-toggle MMDSelect") {
+        if (selectedValue.includes("txtSuccess") || selectedValue.includes("txtWarning") || selectedValue.includes("txtDanger")) {
             hasStatus.push(selectedValue)
         }
 
     });
-    console.log(hasStatus);
 
-    if ((hasCheck.length == hasPrice.length) && (hasPrice.length == hasStatus.length)) {
+    if ((hasCheck.length === hasPrice.length) && (hasPrice.length === hasStatus.length)) {
         bootbox.confirm({
             title: "Confirmation",
             message: "Are you sure you received the item/s?",

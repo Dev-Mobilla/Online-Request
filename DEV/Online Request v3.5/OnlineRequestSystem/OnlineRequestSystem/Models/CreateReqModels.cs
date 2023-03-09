@@ -10,6 +10,7 @@ namespace OnlineRequestSystem.Models
     {
         #region Create request models
 
+        public string POurl { get; set; }
         public string returnUrl { get; set; }
         public string RequestNo { get; set; }
         public string Author { get; set; }

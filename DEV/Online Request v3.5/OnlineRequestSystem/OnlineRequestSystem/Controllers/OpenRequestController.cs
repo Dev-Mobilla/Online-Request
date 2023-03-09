@@ -328,7 +328,6 @@ namespace OnlineRequestSystem.Controllers
                                     cmd2.Parameters.Clear();
                                     read.Read();
                                     item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
-                                    OpenReqList.Add(item);
                                 }
                             }
                         }
@@ -352,7 +351,7 @@ namespace OnlineRequestSystem.Controllers
 
 
         [Route("request-details")]
-        public ActionResult RequestDetails(string Region, string ZoneCode, string ReqNo, string BranchCode, CreateReqModels model, string retUrl, string office)
+        public ActionResult RequestDetails(string Region, string ZoneCode, string ReqNo, string BranchCode, CreateReqModels model, string retUrl, string office, string PO)
         {
             ViewBag.ReqNo = ReqNo;
             var ss = (ORSession)Session["UserSession"];
@@ -758,6 +757,7 @@ namespace OnlineRequestSystem.Controllers
             }
             model.office = office;
             model.returnUrl = retUrl;
+            model.POurl = PO;
             return View(model);
         }
 
