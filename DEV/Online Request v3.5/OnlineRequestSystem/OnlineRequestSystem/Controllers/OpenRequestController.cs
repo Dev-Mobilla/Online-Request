@@ -920,7 +920,7 @@ namespace OnlineRequestSystem.Controllers
                 var que = new OpenQueries();
                 var Info = new OpenReqInfo();
                 ViewBag.headTxt = "BRANCH REQUESTS";
-                Info = que.MMD_BranchRequests(ss);
+                Info = que.MMD_BranchRequests(ss, "");
                 Info.returnUrl = "mmd-branch-requests";
                 Info.office = "branch";
                 return View("MMD_OpenRequests", Info);
@@ -943,7 +943,7 @@ namespace OnlineRequestSystem.Controllers
                 var que = new OpenQueries();
                 var Info = new OpenReqInfo();
                 ViewBag.headTxt = "BRANCH PO REQUESTS";
-                Info = que.MMD_BranchRequests(ss);
+                Info = que.MMD_BranchRequests(ss, "PO");
                 Info.returnUrl = "mmd-branch-PO-requests";
                 Info.office = "branch";
                 Info.POurl = "PO";

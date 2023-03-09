@@ -16,7 +16,7 @@ namespace OnlineRequestSystem.Service
         private OpenRequestController openRequest_Method = new OpenRequestController();
         private Helper help = new Helper();
 
-        public OpenReqInfo MMD_BranchRequests(ORSession ss)
+        public OpenReqInfo MMD_BranchRequests(ORSession ss, string PO)
         {
             var toTC = new CultureInfo("en-US", false).TextInfo;
             var data = new List<OpenReqViewModel>();
@@ -110,20 +110,23 @@ namespace OnlineRequestSystem.Service
                     }
                 }
 
-                conn.Open();
-                var cmd2 = conn.CreateCommand();
-
-                foreach (var item in data.ToList())
+                if (PO == "PO")
                 {
-                    cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
-                    cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
-                    cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
-                    using (var read = cmd2.ExecuteReader())
+                    conn.Open();
+                    var cmd2 = conn.CreateCommand();
+
+                    foreach (var item in data.ToList())
                     {
-                        cmd2.Parameters.Clear();
-                        read.Read();
-                        item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
-                        data.Add(item);
+                        cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
+                        cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                        cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                        using (var read = cmd2.ExecuteReader())
+                        {
+                            cmd2.Parameters.Clear();
+                            read.Read();
+                            item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                            data.Add(item);
+                        }
                     }
                 }
             }
