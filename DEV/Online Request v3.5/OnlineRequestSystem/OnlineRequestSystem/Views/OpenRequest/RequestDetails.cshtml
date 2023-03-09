@@ -168,7 +168,7 @@
                                                 else
                                                 {
                                                     <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
-                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15", @onkeypress = "return isNumberKey(event,this)" })
+                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15" })
                                                 }
 
                                             </center>
@@ -480,6 +480,7 @@
 @section scripts{
     <script>
         var ReqNO = $('#Req').val();
+
     </script>
     <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>
     @Scripts.Render("~/bundles/requestdetails")

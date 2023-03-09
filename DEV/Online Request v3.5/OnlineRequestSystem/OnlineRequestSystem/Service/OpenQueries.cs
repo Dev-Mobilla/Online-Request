@@ -621,23 +621,23 @@ namespace OnlineRequestSystem.Service
 
         internal OpenReqInfo MyRequests(ORSession ss)
         {
-            var Info = new OpenReqInfo();
             var toTC = new CultureInfo("en-US", false).TextInfo;
+            var Info = new OpenReqInfo();
+            var OpenReqList = new List<OpenReqViewModel>();
             var db = new ORtoMySql();
             var que = new OpenQueries();
             var intZone = ZoneSelector(ss.s_zonecode);
             using (var conn = db.getConnection())
             {
-                var OpenReqList = new List<OpenReqViewModel>();
-                var cmd = conn.CreateCommand();
-
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "openReq_MyRequests";
-                cmd.Parameters.AddWithValue("@_usrid", ss.s_usr_id);
-
-                conn.Open();
-                using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                using (var cmd = conn.CreateCommand())
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "openReq_MyRequests";
+                    cmd.Parameters.AddWithValue("@_usrid", ss.s_usr_id);
+
+                    conn.Open();
+                    var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
                     while (rdr.Read())
                     {
                         #region Read data from database
@@ -714,130 +714,173 @@ namespace OnlineRequestSystem.Service
 
                         OpenReqList.Add(o);
                     }
+                    conn.Close();
+                    rdr.Close();
+                }
+                conn.Open();
+                var cmd2 = conn.CreateCommand();
+
+                foreach (var item in OpenReqList.ToList())
+                {
+                    cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
+                    cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                    cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                    using (var read = cmd2.ExecuteReader())
+                    {
+                        cmd2.Parameters.Clear();
+                        read.Read();
+                        item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                        OpenReqList.Add(item);
+                    }
                 }
                 Info._OpenInfo = OpenReqList;
-            }
-            return new OpenReqInfo { _OpenInfo = Info._OpenInfo };
+                return new OpenReqInfo { _OpenInfo = Info._OpenInfo };
         }
+    }
 
         public OpenReqInfo LocalRequests(ORSession ss, string div_dept)
         {
             var Info = new OpenReqInfo();
+            var OpenReqList = new List<OpenReqViewModel>();
             var toTC = new CultureInfo("en-US", false).TextInfo;
             var db = new ORtoMySql();
             var que = new OpenQueries();
             var intZone = ZoneSelector(ss.s_zonecode);
             using (var conn = db.getConnection())
             {
-                var OpenReqList = new List<OpenReqViewModel>();
-                var cmd = conn.CreateCommand();
-                string storedProc = "";
 
-                if (div_dept == "div")
+                using (var cmd = conn.CreateCommand())
                 {
-                    storedProc = "openReq_LocalRequests";
-                }
-                else if (div_dept == "dept")
-                {
-                    storedProc = "openReq_LocalRequestsDept";
-                }
+                    string storedProc = "";
 
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = storedProc;
-                cmd.Parameters.AddWithValue("@_costcenter", ss.s_costcenter);
-                cmd.Parameters.AddWithValue("@_zonecode", intZone);
-                if (ss.s_DivisionID == null)
-                {
-                    ss.s_DivisionID = string.Empty;
-                }
-                cmd.Parameters.AddWithValue("@_divId", ss.s_DivisionID);
-
-                conn.Open();
-                using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                {
-                    while (rdr.Read())
+                    if (div_dept == "div")
                     {
-                        #region Read data from database
+                        storedProc = "openReq_LocalRequests";
+                    }
+                    else if (div_dept == "dept")
+                    {
+                        storedProc = "openReq_LocalRequestsDept";
+                    }
 
-                        var o = new OpenReqViewModel();
-                        o.reqNumber = rdr["reqNumber"].ToString().Trim();
-                        o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
-                        o.reqDescription = rdr["reqDescription"].ToString().Trim();
-                        o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
-                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
-                        o.TypeID = rdr["TypeID"].ToString().Trim();
-                        o.TotalItems = rdr["TotalCount"].ToString().Trim();
-                        o.itemDescription = rdr["Description"].ToString().Trim();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = storedProc;
+                    cmd.Parameters.AddWithValue("@_costcenter", ss.s_costcenter);
+                    cmd.Parameters.AddWithValue("@_zonecode", intZone);
+                    if (ss.s_DivisionID == null)
+                    {
+                        ss.s_DivisionID = string.Empty;
+                    }
+                    cmd.Parameters.AddWithValue("@_divId", ss.s_DivisionID);
 
-                        string typeName = "";
-                        typeName = help.GetTypeName(o.TypeID);
-                        if (typeName.Length > 17)
+                    conn.Open();
+                    using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        while (rdr.Read())
                         {
-                            o.TypeName = typeName.Substring(0, 17) + "..";
-                        }
-                        else
-                        {
-                            o.TypeName = typeName;
-                        }
+                            #region Read data from database
 
-                        o.BranchCode = rdr["BranchCode"].ToString().Trim();
-                        o.ZoneCode = rdr["Zonecode"].ToString().Trim();
-                        o.isDivRequest = rdr["isDivRequest"].ToString().Trim();
-                        o.reqStatus = rdr["reqStatus"].ToString().Trim();
-                        o.DeptCode = rdr["DeptCode"].ToString().Trim();
-                        o.Region = rdr["Region"].ToString().Trim().ToUpper();
-                        if (o.Region == "HO")
-                        {
-                            o.Region = openRequest_Method.GetOR_DivisionName(o.DeptCode).ToUpper();
-                        }
-                        o.forPresident = rdr["forPresident"].ToString().Trim();
-                        if (o.isDivRequest == "1")
-                        {
-                            o.BranchName = getBranchname(o.BranchCode, "HO", o.ZoneCode);
-                        }
-                        else
-                        {
-                            o.BranchName = toTC.ToTitleCase(getBranchname(o.BranchCode, o.Region, o.ZoneCode).ToLower()).Replace("Ml ", "ML ");
-                        }
+                            var o = new OpenReqViewModel();
+                            o.reqNumber = rdr["reqNumber"].ToString().Trim();
+                            o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
+                            o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                            o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
+                            o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                            o.TypeID = rdr["TypeID"].ToString().Trim();
+                            o.TotalItems = rdr["TotalCount"].ToString().Trim();
+                            o.itemDescription = rdr["Description"].ToString().Trim();
 
-                        if (!(new[] { "001", "002" }).Contains(o.BranchCode))
-                        {
-                            o.isApprovedAM = Convert.ToInt32(rdr["isApprovedAM"]);
-                            o.isApprovedRM = Convert.ToInt32(rdr["isApprovedRM"]);
-                            o.reqAM = Convert.ToInt32(rdr["isAMApproval"]);
-                            o.reqRM = Convert.ToInt32(rdr["isRMApproval"]);
+                            string typeName = "";
+                            typeName = help.GetTypeName(o.TypeID);
+                            if (typeName.Length > 17)
+                            {
+                                o.TypeName = typeName.Substring(0, 17) + "..";
+                            }
+                            else
+                            {
+                                o.TypeName = typeName;
+                            }
+
+                            o.BranchCode = rdr["BranchCode"].ToString().Trim();
+                            o.ZoneCode = rdr["Zonecode"].ToString().Trim();
+                            o.isDivRequest = rdr["isDivRequest"].ToString().Trim();
+                            o.reqStatus = rdr["reqStatus"].ToString().Trim();
+                            o.DeptCode = rdr["DeptCode"].ToString().Trim();
+                            o.Region = rdr["Region"].ToString().Trim().ToUpper();
+                            if (o.Region == "HO")
+                            {
+                                o.Region = openRequest_Method.GetOR_DivisionName(o.DeptCode).ToUpper();
+                            }
+                            o.forPresident = rdr["forPresident"].ToString().Trim();
+                            if (o.isDivRequest == "1")
+                            {
+                                o.BranchName = getBranchname(o.BranchCode, "HO", o.ZoneCode);
+                            }
+                            else
+                            {
+                                o.BranchName = toTC.ToTitleCase(getBranchname(o.BranchCode, o.Region, o.ZoneCode).ToLower()).Replace("Ml ", "ML ");
+                            }
+
+                            if (!(new[] { "001", "002" }).Contains(o.BranchCode))
+                            {
+                                o.isApprovedAM = Convert.ToInt32(rdr["isApprovedAM"]);
+                                o.isApprovedRM = Convert.ToInt32(rdr["isApprovedRM"]);
+                                o.reqAM = Convert.ToInt32(rdr["isAMApproval"]);
+                                o.reqRM = Convert.ToInt32(rdr["isRMApproval"]);
+                            }
+                            o.isApprovedLocalDiv = Convert.ToInt32(rdr["isApprovedLocalDiv"]);
+                            o.isApprovedDM = Convert.ToInt32(rdr["isApprovedDM"]);
+                            o.isApprovedGM = Convert.ToInt32(rdr["isApprovedGM"]);
+                            o.isApprovedVPAssistant = Convert.ToInt32(rdr["isApprovedVPAssistant"]);
+                            o.isApprovedDiv1 = Convert.ToInt32(rdr["isApprovedDiv1"]);
+                            o.isApprovedDiv2 = Convert.ToInt32(rdr["isApprovedDiv2"]);
+                            o.isApprovedDiv3 = Convert.ToInt32(rdr["isApprovedDiv3"]);
+                            o.isApprovedPres = Convert.ToInt32(rdr["isApprovedPres"]);
+
+                            o.DivCode1 = rdr["DivCode1"].ToString().Trim();
+                            o.DivCode2 = rdr["DivCode2"].ToString().Trim();
+                            o.DivCode3 = rdr["DivCode3"].ToString().Trim();
+                            o.reqDM = Convert.ToInt32(rdr["isDMApproval"]);
+                            o.reqGM = Convert.ToInt32(rdr["isGMApproval"]);
+                            o.reqDiv1 = Convert.ToInt32(rdr["isDivManApproval"]);
+                            o.reqDiv2 = Convert.ToInt32(rdr["isDivManApproval2"]);
+                            o.reqDiv3 = Convert.ToInt32(rdr["isDivManApproval3"]);
+                            o.reqPres = Convert.ToInt32(rdr["isPresidentApproval"]);
+                            o.MMD_Processed = Convert.ToInt32(rdr["isMMDProcessed"]);
+                            o.MMD_ForDelivery = Convert.ToInt32(rdr["isDelivered"]);
+                            o.MMD_InTransit = Convert.ToInt32(rdr["isMMDTransit"]);
+
+                            #endregion Read data from database
+
+                            OpenReqList.Add(o);
                         }
-                        o.isApprovedLocalDiv = Convert.ToInt32(rdr["isApprovedLocalDiv"]);
-                        o.isApprovedDM = Convert.ToInt32(rdr["isApprovedDM"]);
-                        o.isApprovedGM = Convert.ToInt32(rdr["isApprovedGM"]);
-                        o.isApprovedVPAssistant = Convert.ToInt32(rdr["isApprovedVPAssistant"]);
-                        o.isApprovedDiv1 = Convert.ToInt32(rdr["isApprovedDiv1"]);
-                        o.isApprovedDiv2 = Convert.ToInt32(rdr["isApprovedDiv2"]);
-                        o.isApprovedDiv3 = Convert.ToInt32(rdr["isApprovedDiv3"]);
-                        o.isApprovedPres = Convert.ToInt32(rdr["isApprovedPres"]);
-
-                        o.DivCode1 = rdr["DivCode1"].ToString().Trim();
-                        o.DivCode2 = rdr["DivCode2"].ToString().Trim();
-                        o.DivCode3 = rdr["DivCode3"].ToString().Trim();
-                        o.reqDM = Convert.ToInt32(rdr["isDMApproval"]);
-                        o.reqGM = Convert.ToInt32(rdr["isGMApproval"]);
-                        o.reqDiv1 = Convert.ToInt32(rdr["isDivManApproval"]);
-                        o.reqDiv2 = Convert.ToInt32(rdr["isDivManApproval2"]);
-                        o.reqDiv3 = Convert.ToInt32(rdr["isDivManApproval3"]);
-                        o.reqPres = Convert.ToInt32(rdr["isPresidentApproval"]);
-                        o.MMD_Processed = Convert.ToInt32(rdr["isMMDProcessed"]);
-                        o.MMD_ForDelivery = Convert.ToInt32(rdr["isDelivered"]);
-                        o.MMD_InTransit = Convert.ToInt32(rdr["isMMDTransit"]);
-
-                        #endregion Read data from database
-
-                        OpenReqList.Add(o);
+                        conn.Close();
+                        rdr.Close();
                     }
                 }
-                Info._OpenInfo = OpenReqList;
+
+                conn.Open();
+                var cmd2 = conn.CreateCommand();
+
+                foreach (var item in OpenReqList.ToList())
+                {
+                    cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
+                    cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                    cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                    using (var read = cmd2.ExecuteReader())
+                    {
+                        cmd2.Parameters.Clear();
+                        read.Read();
+                        item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                        OpenReqList.Add(item);
+                    }
+                }
             }
+
+            Info._OpenInfo = OpenReqList;
             return new OpenReqInfo { _OpenInfo = Info._OpenInfo };
         }
+            
+
 
         private string ZoneSelector(string zone)
         {
