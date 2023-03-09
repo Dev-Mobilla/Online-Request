@@ -1579,7 +1579,7 @@ namespace OnlineRequestSystem.Controllers
                 {
                     var cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO OnlineRequest.storedComments (reqNumber, comments, commCreator, commCreatorID, commcreated)" +
-                        "VALUES (@reqNumber, @comments, @commCreator, @commCreatorID, @commcreated)";
+                        "VALUES (@reqNumber, @comments, @commCreator, @commCreatorID, @commcreated )";
                     cmd.Parameters.AddWithValue("@reqNumber", ReqNo);
                     cmd.Parameters.AddWithValue("@comments", comment);
                     cmd.Parameters.AddWithValue("@commCreator", ss.s_fullname);

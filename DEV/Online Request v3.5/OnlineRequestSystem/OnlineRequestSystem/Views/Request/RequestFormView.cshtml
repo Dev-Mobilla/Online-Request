@@ -20,7 +20,7 @@
         <div class="container">
             <div class="col-md-3">
                 <label>Author</label>
-                @Html.TextBoxFor(m => m.Author, new { @Value = mySession.s_fullname, @class = "form-control", @readonly = "readonly", @style = "cursor:no-drop;" })
+                @Html.TextBoxFor(m => m.Author, new { @Value = mySession.s_fullname, @class = "form-control", @readonly = "readonly", @style = "cursor:no-drop;", @id = "reqCreator" })
                 <label>Job title</label>
                 @Html.TextBoxFor(m => m.Jobtitle, new { @Value = mySession.s_job_title, @class = "form-control", @readonly = "readonly", @style = "cursor:no-drop;" })
             </div>
@@ -49,7 +49,7 @@
                 @Html.TextBoxFor(m => m.RequestNo, new { @Value = ViewBag.RequestNo, @class = "form-control", @readonly = "readonly", @style = "cursor:no-drop;" })
                 <label>Date</label>
                 <input class="form-control" style="cursor:no-drop;" readonly value="@DateTime.Now.ToLongDateString()" />
-                <label hidden >@Html.TextBoxFor(m => m.ReqDate, new { @Value = DateTime.Now.ToString("yyyy-MM-dd"), @class = "form-control", @readonly = "readonly", @style = "cursor:no-drop;" })</label>
+                <label hidden>@Html.TextBoxFor(m => m.ReqDate, new { @Value = DateTime.Now.ToString("yyyy-MM-dd"), @class = "form-control", @readonly = "readonly", @style = "cursor:no-drop;" })</label>
             </div>
         </div>
 
@@ -90,7 +90,7 @@
                     <tr id="TR0">
                         <td style="text-align:center; vertical-align:middle"><span id="reqCount0" class="itemCount">1</span></td>
                         <td class="col-md-6">
-                           @Html.TextBoxFor(m => m.ReqItems[i].ItemDescription, new { @style = "max-width:inherit;", @id = "reqName0", @type = "text", @class = "form-control itemDes", @placeholder = "Enter Item Name", @autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.ReqItems[i].ItemDescription, new { @style = "max-width:inherit;", @id = "reqName0", @type = "text", @class = "form-control itemDes", @placeholder = "Enter Item Name", @autocomplete = "off" })
                         </td>
                         <td class="col-md-1">
                             @Html.TextBoxFor(m => m.ReqItems[i].ItemQty, new { @style = "max-width:inherit;", @id = "reqQty0", @class = "form-control UnitQty", @placeholder = "0", @maxlength = "6", @onkeypress = "AlphaNumeric()", @autocomplete = "off" })
@@ -189,8 +189,14 @@
 
 }
 @section scripts{
+    <script>
+        var reqCreator = $('#reqCreator').val();
+
+    </script>
+
 
     @Scripts.Render("~/bundles/createformview_libraries");
- 
+
     @Scripts.Render("~/bundles/createformview_methods");
+
 }

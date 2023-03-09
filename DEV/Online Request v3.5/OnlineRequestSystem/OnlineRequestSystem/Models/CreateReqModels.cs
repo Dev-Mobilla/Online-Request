@@ -30,6 +30,7 @@ namespace OnlineRequestSystem.Models
         public string RequestType { get; set; }
         public string Description { get; set; }
         public String reqTotal { get; set; }
+
         public string OverallTotalPrice { get; set; }
 
         public string Approver { get; set; }

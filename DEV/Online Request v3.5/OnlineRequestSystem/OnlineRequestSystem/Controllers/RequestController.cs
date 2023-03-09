@@ -546,6 +546,40 @@ namespace OnlineRequestSystem.Controllers
            );
         }
 
+        public ActionResult CheckRequest(string reqCreator)
+        {
+            ORSession mySession = (ORSession)Session["UserSession"];
+            var db = new ORtoMySql();
+            using (var conn = db.getConnection())
+            {
+                var cmd = conn.CreateCommand();
+
+                cmd.CommandText = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE reqCreator = @reqCreator AND reqStatus = 'OPEN'";
+                cmd.Parameters.AddWithValue("@reqCreator", reqCreator.ToString().Trim());
+                cmd.CommandTimeout = 0;
+                conn.Open();
+                using (var read = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    if (read.HasRows)
+                    {
+                        return Json(new
+                        {
+                            status = true,
+                            msg = "Unable to create new request. Please advise to close your recent requests."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            status = false,
+                            msg = "Able to create request."
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+        }
+
 
     }
 }

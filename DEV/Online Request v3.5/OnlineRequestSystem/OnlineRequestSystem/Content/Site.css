@@ -346,3 +346,18 @@ div.pager span {
 #itemSearch {
     width: 400px;
 }
+
+.badge-holder {
+    position: relative;
+    display: inline-block;
+    
+}
+
+.badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 10px;
+    color: white;
+    background-color: red;
+}

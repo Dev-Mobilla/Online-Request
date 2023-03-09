@@ -25,81 +25,110 @@ namespace OnlineRequestSystem.Service
 
             using (var conn = db.getConnection())
             {
-                var cmd = conn.CreateCommand();
-                var intZone = ZoneSelector(ss.s_zonecode);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "openReq_MMD_Branch";
-                cmd.Parameters.AddWithValue("@_zone", intZone);
+                using (var cmd = conn.CreateCommand())
+                {
+                    var intZone = ZoneSelector(ss.s_zonecode);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "openReq_MMD_Branch";
+                    cmd.Parameters.AddWithValue("@_zone", intZone);
+
+                    conn.Open();
+
+                    using (var read = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        cmd.Parameters.Clear();
+
+                        while (read.Read())
+                        {
+                            #region Read data
+                            var o = new OpenReqViewModel();
+                            string typeName = "";
+
+                            o.reqNumber = read["reqNumber"].ToString().Trim();
+                            o.reqCreator = read["reqCreator"].ToString().Trim();
+                            o.reqDescription = read["reqDescription"].ToString().Trim();
+                            o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
+                            o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                            o.TypeID = read["TypeID"].ToString().Trim();
+                            o.TotalItems = read["TotalCount"].ToString().Trim();
+                            o.itemDescription = read["Description"].ToString().Trim();
+                            typeName = help.GetTypeName(o.TypeID);
+                            if (typeName.Length > 17)
+                            {
+                                o.TypeName = typeName.Substring(0, 17) + "..";
+                            }
+                            else
+                            {
+                                o.TypeName = typeName;
+                            }
+                            o.BranchCode = read["BranchCode"].ToString().Trim();
+                            o.reqStatus = read["reqStatus"].ToString().Trim();
+                            o.ZoneCode = read["Zonecode"].ToString().Trim();
+                            o.isDivRequest = read["isDivRequest"].ToString().Trim();
+                            o.DeptCode = read["DeptCode"].ToString().Trim();
+                            o.Region = read["Region"].ToString().Trim();
+
+                            o.forPresident = read["forPresident"].ToString().Trim();
+
+                            if (!(new[] { "001", "002" }).Contains(o.BranchCode))
+                            {
+                                o.result_AM = Convert.ToInt32(read["AM"].ToString().Trim());
+                                o.result_RM = Convert.ToInt32(read["RM"].ToString().Trim());
+                            }
+
+                            o.result_Div1 = Convert.ToInt32(read["Div1"]);
+                            o.result_Div2 = Convert.ToInt32(read["Div2"]);
+                            o.result_Div3 = Convert.ToInt32(read["Div3"]);
+                            o.result_GM = Convert.ToInt32(read["GM"]);
+                            o.result_Pres = Convert.ToInt32(read["President"]);
+                            o.MMD_Processed = Convert.ToInt32(read["isMMDProcessed"]);
+                            o.MMD_ForDelivery = Convert.ToInt32(read["isDelivered"]);
+                            o.MMD_InTransit = Convert.ToInt32(read["isMMDTransit"]);
+                            o.isApprovedAM = Convert.ToInt32(read["isApprovedAM"]);
+                            o.isApprovedRM = Convert.ToInt32(read["isApprovedRM"]);
+                            o.isApprovedPres = Convert.ToInt32(read["isApprovedPres"].ToString().Trim());
+                            o.reqAM = Convert.ToInt32(read["isAMApproval"]);
+                            o.reqRM = Convert.ToInt32(read["isRMApproval"]);
+                            o.isApprovedDiv1 = Convert.ToInt32(read["isApprovedDiv1"]);
+                            o.isApprovedDiv2 = Convert.ToInt32(read["isApprovedDiv2"]);
+                            o.isApprovedDiv3 = Convert.ToInt32(read["isApprovedDiv3"]);
+                            o.reqDiv1 = Convert.ToInt32(read["isDivManApproval"]);
+                            o.reqDiv2 = Convert.ToInt32(read["isDivManApproval2"]);
+                            o.reqDiv3 = Convert.ToInt32(read["isDivManApproval3"]);
+                            o.DivCode1 = read["DivCode1"].ToString().Trim();
+                            o.DivCode2 = read["DivCode2"].ToString().Trim();
+                            o.DivCode3 = read["DivCode3"].ToString().Trim();
+
+                            o.BranchName = toTC.ToTitleCase(getBranchname(o.BranchCode, o.Region, o.ZoneCode).ToLower()).Replace("Ml ", "ML ");
+                            data.Add(o);
+
+                            #endregion
+
+                        }
+                        conn.Close();
+                        read.Close();
+                    }
+                }
 
                 conn.Open();
-                var read = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                while (read.Read())
+                var cmd2 = conn.CreateCommand();
+
+                foreach (var item in data.ToList())
                 {
-                    #region Read data
-                    var o = new OpenReqViewModel();
-                    string typeName = "";
-                    o.reqNumber = read["reqNumber"].ToString().Trim();
-                    o.reqCreator = read["reqCreator"].ToString().Trim();
-                    o.reqDescription = read["reqDescription"].ToString().Trim();
-                    o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
-                    o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
-                    o.TypeID = read["TypeID"].ToString().Trim();
-                    o.TotalItems = read["TotalCount"].ToString().Trim();
-                    o.itemDescription = read["Description"].ToString().Trim();
-                    typeName = help.GetTypeName(o.TypeID);
-                    if (typeName.Length > 17)
+                    cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
+                    cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                    cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                    using (var read = cmd2.ExecuteReader())
                     {
-                        o.TypeName = typeName.Substring(0, 17) + "..";
+                        cmd2.Parameters.Clear();
+                        read.Read();
+                        item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                        data.Add(item);
                     }
-                    else
-                    {
-                        o.TypeName = typeName;
-                    }
-                    o.BranchCode = read["BranchCode"].ToString().Trim();
-                    o.reqStatus = read["reqStatus"].ToString().Trim();
-                    o.ZoneCode = read["Zonecode"].ToString().Trim();
-                    o.isDivRequest = read["isDivRequest"].ToString().Trim();
-                    o.DeptCode = read["DeptCode"].ToString().Trim();
-                    o.Region = read["Region"].ToString().Trim();
-
-                    o.forPresident = read["forPresident"].ToString().Trim();
-
-                    if (!(new[] { "001", "002" }).Contains(o.BranchCode))
-                    {
-                        o.result_AM = Convert.ToInt32(read["AM"].ToString().Trim());
-                        o.result_RM = Convert.ToInt32(read["RM"].ToString().Trim());
-                    }
-                    
-                    o.result_Div1 = Convert.ToInt32(read["Div1"]);
-                    o.result_Div2 = Convert.ToInt32(read["Div2"]);
-                    o.result_Div3 = Convert.ToInt32(read["Div3"]);
-                    o.result_GM = Convert.ToInt32(read["GM"]);
-                    o.result_Pres = Convert.ToInt32(read["President"]);
-                    o.MMD_Processed = Convert.ToInt32(read["isMMDProcessed"]);
-                    o.MMD_ForDelivery = Convert.ToInt32(read["isDelivered"]);
-                    o.MMD_InTransit = Convert.ToInt32(read["isMMDTransit"]);
-                    o.isApprovedAM = Convert.ToInt32(read["isApprovedAM"]);
-                    o.isApprovedRM = Convert.ToInt32(read["isApprovedRM"]);
-                    o.isApprovedPres = Convert.ToInt32(read["isApprovedPres"].ToString().Trim());
-                    o.reqAM = Convert.ToInt32(read["isAMApproval"]);
-                    o.reqRM = Convert.ToInt32(read["isRMApproval"]);
-                    o.isApprovedDiv1 = Convert.ToInt32(read["isApprovedDiv1"]);
-                    o.isApprovedDiv2 = Convert.ToInt32(read["isApprovedDiv2"]);
-                    o.isApprovedDiv3 = Convert.ToInt32(read["isApprovedDiv3"]);
-                    o.reqDiv1 = Convert.ToInt32(read["isDivManApproval"]);
-                    o.reqDiv2 = Convert.ToInt32(read["isDivManApproval2"]);
-                    o.reqDiv3 = Convert.ToInt32(read["isDivManApproval3"]);
-                    o.DivCode1 = read["DivCode1"].ToString().Trim();
-                    o.DivCode2 = read["DivCode2"].ToString().Trim();
-                    o.DivCode3 = read["DivCode3"].ToString().Trim();
-
-                    o.BranchName = toTC.ToTitleCase(getBranchname(o.BranchCode, o.Region, o.ZoneCode).ToLower()).Replace("Ml ", "ML ");
-                    data.Add(o);
-
-                    #endregion
                 }
-                Info._OpenInfo = data;
             }
+
+            Info._OpenInfo = data;
             return Info;
         }
 
@@ -108,84 +137,107 @@ namespace OnlineRequestSystem.Service
             var Info = new OpenReqInfo();
             var db = new ORtoMySql();
             var intZone = ZoneSelector(ss.s_zonecode);
+            var data = new List<OpenReqViewModel>();
 
             using (var conn = db.getConnection())
             {
-                var toTC = new CultureInfo("en-US", false).TextInfo;
-                var cmd = conn.CreateCommand();
-                var data = new List<OpenReqViewModel>();
-
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "openReq_MMD_HOrequests";
-                cmd.Parameters.AddWithValue("@_zone", intZone);
-                cmd.Parameters.AddWithValue("@_costcenter", ss.s_costcenter);
-                conn.Open();
-                var read = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                while (read.Read())
+                using (var cmd = conn.CreateCommand())
                 {
-                    #region Read data
-                    var o = new OpenReqViewModel();
-                    o.reqNumber = read["reqNumber"].ToString().Trim();
-                    o.reqCreator = read["reqCreator"].ToString().Trim();
-                    o.reqDescription = read["reqDescription"].ToString().Trim();
-                    o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
-                    o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
-                    o.TypeID = read["TypeID"].ToString().Trim();
-                    o.TotalItems = read["TotalCount"].ToString().Trim();
-                    o.itemDescription = read["Description"].ToString().Trim();
-                    string typeName = "";
-                    typeName = help.GetTypeName(o.TypeID);
-                    if (typeName.Length > 17)
+                    var toTC = new CultureInfo("en-US", false).TextInfo;
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "openReq_MMD_HOrequests";
+                    cmd.Parameters.AddWithValue("@_zone", intZone);
+                    cmd.Parameters.AddWithValue("@_costcenter", ss.s_costcenter);
+                    conn.Open();
+                    var read = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    while (read.Read())
                     {
-                        o.TypeName = typeName.Substring(0, 17) + "..";
+                        #region Read data
+                        var o = new OpenReqViewModel();
+                        o.reqNumber = read["reqNumber"].ToString().Trim();
+                        o.reqCreator = read["reqCreator"].ToString().Trim();
+                        o.reqDescription = read["reqDescription"].ToString().Trim();
+                        o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
+                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                        o.TypeID = read["TypeID"].ToString().Trim();
+                        o.TotalItems = read["TotalCount"].ToString().Trim();
+                        o.itemDescription = read["Description"].ToString().Trim();
+                        string typeName = "";
+                        typeName = help.GetTypeName(o.TypeID);
+                        if (typeName.Length > 17)
+                        {
+                            o.TypeName = typeName.Substring(0, 17) + "..";
+                        }
+                        else
+                        {
+                            o.TypeName = typeName;
+                        }
+                        o.BranchCode = read["BranchCode"].ToString().Trim();
+                        o.reqStatus = read["reqStatus"].ToString().Trim();
+                        o.ZoneCode = read["Zonecode"].ToString().Trim();
+                        o.isDivRequest = read["isDivRequest"].ToString().Trim();
+                        o.DeptCode = read["DeptCode"].ToString().Trim();
+                        o.Region = read["Region"].ToString().Trim();
+                        o.Region = openRequest_Method.GetOR_DivisionName(o.DeptCode).ToUpper();
+                        o.forPresident = read["forPresident"].ToString().Trim();
+                        o.result_DM = Convert.ToInt32(read["DM"]);
+                        o.isApprovedLocalDiv = Convert.ToInt32(read["isApprovedLocalDiv"]);
+
+                        o.result_Div1 = Convert.ToInt32(read["Div1"]);
+                        o.result_Div2 = Convert.ToInt32(read["Div2"]);
+                        o.result_Div3 = Convert.ToInt32(read["Div3"]);
+                        o.result_Pres = Convert.ToInt32(read["President"]);
+
+                        o.MMD_Processed = Convert.ToInt32(read["isMMDProcessed"]);
+                        o.MMD_ForDelivery = Convert.ToInt32(read["isDelivered"]);
+                        o.MMD_InTransit = Convert.ToInt32(read["isMMDTransit"]);
+
+                        o.isApprovedDM = Convert.ToInt32(read["isApprovedDM"]);
+                        o.isApprovedPres = Convert.ToInt32(read["isApprovedPres"].ToString().Trim());
+
+                        o.reqDM = Convert.ToInt32(read["isDMApproval"]);
+                        o.isApprovedDiv1 = Convert.ToInt32(read["isApprovedDiv1"]);
+                        o.isApprovedDiv2 = Convert.ToInt32(read["isApprovedDiv2"]);
+                        o.isApprovedDiv3 = Convert.ToInt32(read["isApprovedDiv3"]);
+
+                        o.reqDiv1 = Convert.ToInt32(read["isDivManApproval"]);
+                        o.reqDiv2 = Convert.ToInt32(read["isDivManApproval2"]);
+                        o.reqDiv3 = Convert.ToInt32(read["isDivManApproval3"]);
+
+                        o.DivCode1 = read["DivCode1"].ToString().Trim();
+                        o.DivCode2 = read["DivCode2"].ToString().Trim();
+                        o.DivCode3 = read["DivCode3"].ToString().Trim();
+                        o.BranchName = getBranchname(o.BranchCode, "HO", o.ZoneCode);
+                        data.Add(o);
+                        #endregion
                     }
-                    else
-                    {
-                        o.TypeName = typeName;
-                    }
-                    o.BranchCode = read["BranchCode"].ToString().Trim();
-                    o.reqStatus = read["reqStatus"].ToString().Trim();
-                    o.ZoneCode = read["Zonecode"].ToString().Trim();
-                    o.isDivRequest = read["isDivRequest"].ToString().Trim();
-                    o.DeptCode = read["DeptCode"].ToString().Trim();
-                    o.Region = read["Region"].ToString().Trim();
-                    o.Region = openRequest_Method.GetOR_DivisionName(o.DeptCode).ToUpper();
-                    o.forPresident = read["forPresident"].ToString().Trim();
-                    o.result_DM = Convert.ToInt32(read["DM"]);
-                    o.isApprovedLocalDiv = Convert.ToInt32(read["isApprovedLocalDiv"]);
 
-                    o.result_Div1 = Convert.ToInt32(read["Div1"]);
-                    o.result_Div2 = Convert.ToInt32(read["Div2"]);
-                    o.result_Div3 = Convert.ToInt32(read["Div3"]);
-                    o.result_Pres = Convert.ToInt32(read["President"]);
-
-                    o.MMD_Processed = Convert.ToInt32(read["isMMDProcessed"]);
-                    o.MMD_ForDelivery = Convert.ToInt32(read["isDelivered"]);
-                    o.MMD_InTransit = Convert.ToInt32(read["isMMDTransit"]);
-
-                    o.isApprovedDM = Convert.ToInt32(read["isApprovedDM"]);
-                    o.isApprovedPres = Convert.ToInt32(read["isApprovedPres"].ToString().Trim());
-
-                    o.reqDM = Convert.ToInt32(read["isDMApproval"]);
-                    o.isApprovedDiv1 = Convert.ToInt32(read["isApprovedDiv1"]);
-                    o.isApprovedDiv2 = Convert.ToInt32(read["isApprovedDiv2"]);
-                    o.isApprovedDiv3 = Convert.ToInt32(read["isApprovedDiv3"]);
-
-                    o.reqDiv1 = Convert.ToInt32(read["isDivManApproval"]);
-                    o.reqDiv2 = Convert.ToInt32(read["isDivManApproval2"]);
-                    o.reqDiv3 = Convert.ToInt32(read["isDivManApproval3"]);
-
-                    o.DivCode1 = read["DivCode1"].ToString().Trim();
-                    o.DivCode2 = read["DivCode2"].ToString().Trim();
-                    o.DivCode3 = read["DivCode3"].ToString().Trim();
-                    o.BranchName = getBranchname(o.BranchCode, "HO", o.ZoneCode);
-                    data.Add(o);
-                    #endregion
+                    conn.Close();
+                    read.Close();
                 }
+
+                conn.Open();
+                var cmd2 = conn.CreateCommand();
+
+                foreach (var item in data.ToList())
+                {
+                    cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
+                    cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                    cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                    using (var read = cmd2.ExecuteReader())
+                    {
+                        cmd2.Parameters.Clear();
+                        read.Read();
+                        item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                        data.Add(item);
+                    }
+                }
+
                 Info._OpenInfo = data;
+                return Info;
             }
-            return Info;
         }
 
         internal OpenReqInfo GMO_BranchRequests(ORSession ss)

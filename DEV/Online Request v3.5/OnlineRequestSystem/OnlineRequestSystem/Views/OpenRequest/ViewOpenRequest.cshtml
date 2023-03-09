@@ -71,7 +71,7 @@
                             if (item.reqCreator == mySession.s_fullname && item.reqStatus == "OPEN")
                             {
                                 <tr class="cellspacer" style="cursor:pointer;">
-                                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></center></td>
+                                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href = '@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></center></td>
                                     <td><center>@item.reqDate</center></td>
                                     <td><center>@item.reqNumber</center></td>
                                     <td><center>@item.TypeName</center></td>
@@ -108,27 +108,27 @@
     @Scripts.Render("~/bundles/openrequestlibraries")
 
     @Scripts.Render("~/bundles/openrequests")
-    <script>
-        $('.chkBox').each(function () {
-            this.checked = false;
-        });
+<script>
+    $('.chkBox').each(function () {
+        this.checked = false;
+    });
 
-        var clssCount = $('.chkBox').length;
-        $(document).ready(function () {
-            $(".checkAll").click(function () {
-                $('.chkBox:checkbox').not(this).prop('checked', this.checked);
-            });
+    var clssCount = $('.chkBox').length;
+    $(document).ready(function () {
+        $(".checkAll").click(function () {
+            $('.chkBox:checkbox').not(this).prop('checked', this.checked);
         });
+    });
 
-//$('#BMorOthers tr').click(function () {
-//    var reqno = $(this).closest("tr").find('td:eq(1)').text();
-//    var region = $(this).closest("tr").find('#region').text();
-//    var bcode = $(this).closest("tr").find('#bcode').text();
-//    var zonecode = $(this).closest("tr").find('#zonecode').text();
-//    window.location.href = Url + '/request-details?ReqNo=' + reqno + '&BranchCode=' + bcode + '&ZoneCode=' + zonecode + '&Region=' + region;
-//    // Sample URL
-// http://localhost:61746/request-details?ReqNo=OR-HO-01P-0918-00019&BranchCode=001&ZoneCode=VISMIN&Region=PRESIDENT%20OFFICE&retUrl=head-office-open-requests
-//});
+    //$('#BMorOthers tr').click(function () {
+    //    var reqno = $(this).closest("tr").find('td:eq(1)').text();
+    //    var region = $(this).closest("tr").find('#region').text();
+    //    var bcode = $(this).closest("tr").find('#bcode').text();
+    //    var zonecode = $(this).closest("tr").find('#zonecode').text();
+    //    window.location.href = Url + '/request-details?ReqNo=' + reqno + '&BranchCode=' + bcode + '&ZoneCode=' + zonecode + '&Region=' + region;
+    //    // Sample URL
+    // http://localhost:61746/request-details?ReqNo=OR-HO-01P-0918-00019&BranchCode=001&ZoneCode=VISMIN&Region=PRESIDENT%20OFFICE&retUrl=head-office-open-requests
+    //});
 
     </script>
 }

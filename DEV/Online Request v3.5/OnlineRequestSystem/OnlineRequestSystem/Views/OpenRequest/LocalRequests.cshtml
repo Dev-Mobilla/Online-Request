@@ -64,6 +64,8 @@
                 {
                     foreach (var item in Model._OpenInfo)
                     {
+                        decimal price = string.IsNullOrEmpty(item.OverallTotalPrice) ? 0 : decimal.Parse(item.OverallTotalPrice);
+                        string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
                         if (item.MMD_Processed == 1)
                         {
                             if (Model.approver == "dept")
@@ -74,7 +76,7 @@
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
-                                    <td style="text-align:center">@item.OverallTotalPrice</td>
+                                    <td style="text-align:center">@priceVal</td>
                                     <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                     <td><center>@item.BranchName</center></td>
                                     <td><center>@item.reqCreator</center></td>
@@ -97,7 +99,7 @@
                                         <td><center>@item.reqNumber</center></td>
                                         <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                         <td><center>@item.TotalItems</center></td>
-                                        <td style="text-align:center">@item.OverallTotalPrice</td>
+                                        <td style="text-align:center">@priceVal</td>
                                         <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                         <td><center>@item.BranchName</center></td>
                                         <td><center>@item.reqCreator</center></td>
@@ -120,7 +122,7 @@
                                             <td><center>@item.reqNumber</center></td>
                                             <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                             <td><center>@item.TotalItems</center></td>
-                                            <td style="text-align:center">@item.OverallTotalPrice</td>
+                                            <td style="text-align:center">@priceVal</td>
                                             <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                             <td><center>@item.BranchName</center></td>
                                             <td><center>@item.reqCreator</center></td>
@@ -141,7 +143,7 @@
                                             <td><center>@item.reqNumber</center></td>
                                             <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                             <td><center>@item.TotalItems</center></td>
-                                            <td style="text-align:center">@item.OverallTotalPrice</td>
+                                            <td style="text-align:center">@priceVal</td>
                                             <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                             <td><center>@item.BranchName</center></td>
                                             <td><center>@item.reqCreator</center></td>
@@ -162,7 +164,7 @@
                                             <td><center>@item.reqNumber</center></td>
                                             <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                             <td><center>@item.TotalItems</center></td>
-                                            <td style="text-align:center">@item.OverallTotalPrice</td>
+                                            <td style="text-align:center">@priceVal</td>
                                             <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
                                             <td><center>@item.BranchName</center></td>
                                             <td><center>@item.reqCreator</center></td>

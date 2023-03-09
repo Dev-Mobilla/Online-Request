@@ -15,7 +15,8 @@
 
             // Remove the formatting to get integer data for summation
             var intVal = function (i) {
-                let val = i === '' && typeof i === 'string' ? 0 : parseFloat(i);
+                var priceVal = i.toString().replace(/,/g, '');
+                let val = priceVal === '' && typeof priceVal === 'string' ? 0 : parseFloat(priceVal);
                 return val
             };
 
@@ -24,7 +25,7 @@
             tbl.each(function () {
                 if ($(this).text() == "Price") {
                     tbl.index(this);
-                    console.log(tbl.index(this));
+                    //console.log(tbl.index(this));
                     index = tbl.index(this);
                 }
             })
@@ -38,7 +39,7 @@
                 }, 0);
 
             // Update footer
-            $(api.column(index).footer()).html(total == 0.00 ? 0 : total.toFixed(2));
+            $(api.column(index).footer()).html(total == 0.00 ? '' : total.toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         },
     });
     $(".requestsMMD").DataTable({
@@ -87,7 +88,67 @@
 
 //var minDate, maxDate;
 
-//Date.prototype.addHours = function (h) {
-//    this.setTime(this.getTime() + (h * 60 * 60 * 1000));
-//    return this;
-//}
+    //console.log(getUser);
+
+//     if (getUser == "Pres" || getUser == "VPO" || getUser == "MMD" || getUser == "VPO_local") {
+//         custom_search();
+//     }
+
+//     function custom_search() {
+//         $.fn.dataTable.ext.search.push(
+//             function (settings, data, dataIndex) {
+
+//                 var index;
+
+//                 if ($('#forFilter').val() == "Pres" || $('#forFilter').val() == "VPO") {
+//                     index = 2;
+//                 }
+//                 else {
+//                     index = 1;
+//                 }
+
+//                 var min = minDate.val();
+//                 var max = maxDate.val();
+//                 var date = new Date(data[index]).addHours(8);
+//                 var dataStatus = data[13];
+//                 var stat = document.getElementById("filter_Status").value;
+
+//                 if (stat === "All Requests") {
+//                     if (
+//                         (min === null && max === null) ||
+//                         (min === null && date <= max) ||
+//                         (min <= date && max === null) ||
+//                         (min <= date && date <= max)
+//                     ) {
+//                         return true;
+//                     }
+//                 }
+
+//                 else if (stat === "Open Requests" && dataStatus === stat) {
+//                     if (
+//                         (min === null && max === null) ||
+//                         (min === null && date <= max) ||
+//                         (min <= date && max === null) ||
+//                         (min <= date && date <= max)
+//                     ) {
+//                         return true;
+//                     }
+//                 }
+
+//                 else if (stat === "PO Approval" && dataStatus === stat) {
+//                     if (
+//                         (min === null && max === null) ||
+//                         (min === null && date <= max) ||
+//                         (min <= date && max === null) ||
+//                         (min <= date && date <= max)
+//                     ) {
+//                         return true;
+//                     }
+//                 }
+
+//                 return false;
+//             }
+//         );
+//     }
+
+// });

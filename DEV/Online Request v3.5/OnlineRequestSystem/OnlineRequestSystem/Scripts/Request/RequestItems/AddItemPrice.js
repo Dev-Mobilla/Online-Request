@@ -34,50 +34,37 @@ function getSelectedPrice(e) {
     var totalQty = parseInt(quantity);
     var totalPrice = price * totalQty;
     var finalTotalPrice = totalPrice.toFixed(2);
+    var formatPrice = finalTotalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     //console.log(price);
     //console.log(quantity);
     //console.log("quantity:", totalQty);
     //console.log(finalTotalPrice);
 
-    document.getElementById(selectedPrice).value = finalTotalPrice;
+    document.getElementById(selectedPrice).value = formatPrice;
 
     $('#_AddItemPrice').modal('hide');
     $('#itemSearch').val('');
     $('#itemInfo').empty();
 
     function calculatePrice() {
-        var inputs = $('input[name="pricePerItem"]')
         var finalPrice
-
         var overallTotalPrice = 0;
-        inputs.each(function () {
-            if ($(this).val() != "") {
-                overallTotalPrice += parseFloat($(this).val()) || 0;
+        $('.priceTotal').each(function () {
+            var val = $(this).val().replace(/,/g, '');
+            if (val != "" || val != 'undefined' || val != 'NaN') {
+                overallTotalPrice += parseFloat(val) || 0;
                 finalPrice = overallTotalPrice.toFixed(2);
+
             }
         })
 
-        document.getElementById("overallPrice").value = finalPrice
+        var formatPrice = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        document.getElementById("overallPrice").value = formatPrice;
         document.getElementById("_overallPrice").value = finalPrice;
     }
 
     calculatePrice();
 }
-
-var inputs = $('input[name="pricePerItem"]')
-inputs.change(function () {
-    var finalPrice
-    var overallTotalPrice = 0;
-    inputs.each(function () {
-        if ($(this).val() != "" || $(this).val() != 'undefined' || $(this).val() != 'NaN' ) {
-            overallTotalPrice += parseFloat($(this).val()) || 0;
-            finalPrice = overallTotalPrice.toFixed(2);
-        }
-    })
-
-    document.getElementById("overallPrice").value = finalPrice;
-    document.getElementById("_overallPrice").value = finalPrice;
-})
 
 
 $('#btnSearchID').click(function (e) {
@@ -117,37 +104,94 @@ $('#btnSearchID').click(function (e) {
 });
 
 
-//Allow decimal numbers
-function isNumberKey(evt, element) {
-  var charCode = (evt.which) ? evt.which : event.keyCode
-  if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
-    return false;
-  else {
-    var len = $(element).val().length;
-    var index = $(element).val().indexOf('.');
-    if (index > 0 && charCode == 46) {
-      return false;
-    }
-    if (index > 0) {
-      var CharAfterdot = (len + 1) - index;
-      if (CharAfterdot > 3) {
-        return false;
-      }
+//$('.priceTotal').blur(function (e) {
+//    var priceId = this.id;
+//    if ($(priceId).val() != "" || $(priceId).val() == 'undefined' || $(priceId).val() == 'NaN') {
+//        var price = parseFloat(document.getElementById(priceId).value.replace(/,/g, ""));
+//        var finalvalue = addDecimals(price.toFixed(2));
+//        return $(this).val(finalvalue);
+//    }
+//});
+
+$('.priceTotal').on('blur', function () {
+    // Get the input value
+    var inputValue = $(this).val();
+
+    // Convert the input value to a number
+    var numberValue = parseFloat(inputValue).toFixed(2);
+    if (isNaN(numberValue) || inputValue === '') {
+        numberValue = '';
     }
 
-  }
-  return true;
+    // Update the input value with the number value
+    $(this).val(numberValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+});
+
+
+function addDecimals(value) {
+    if (value === "") {
+        return value = "";
+    }
+    var noDecimal;
+    if (value.includes(',')) {
+        noDecimal = value.replace(',', "");
+    }
+    else {
+        noDecimal = value;
+    }
+
+    var number = parseFloat(noDecimal);
+    var addDecimal = number.toFixed(2);
+    var format = addDecimal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return format;
 }
 
 
+$('.priceTotal').on('change', function () {
+    var finalPrice
+    var overallTotalPrice = 0;
+    $('.priceTotal').each(function () {
+        var val = $(this).val().replace(/,/g, '');
+        if (val != "" || val != 'undefined' || val != 'NaN') {
+            overallTotalPrice += parseFloat(val) || 0;
+            finalPrice = overallTotalPrice.toFixed(2);
+            
+        }
+    })
+
+    var formatPrice = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.getElementById("overallPrice").value = formatPrice;
+    document.getElementById("_overallPrice").value = finalPrice;
+})
+
+
+//Allow numbers and decimal point only in price input
+$('.priceTotal').on('keypress', function (event) {
+    // Get the entered key code
+    var keycode = event.which;
+
+    // Allow numbers and decimal point
+    if ((keycode >= 48 && keycode <= 57) || keycode == 46) {
+        return true;
+    }
+
+    // Disallow all other keys
+    return false;
+})
 
 
 
+$('input[name="pricePerItem"]').on('input', function () {
+    // Get the input value
+    var inputValue = $(this).val();
 
-
-
-
-
+    // Validate the input using a regular expression
+    var decimalRegex = /^(\d+)?(\.\d{0,2})?$/;
+    if (!decimalRegex.test(inputValue)) {
+        // If the input value is not valid, remove the last character
+        $(this).val(inputValue.slice(0, -1));
+    }
+});
 
 
 

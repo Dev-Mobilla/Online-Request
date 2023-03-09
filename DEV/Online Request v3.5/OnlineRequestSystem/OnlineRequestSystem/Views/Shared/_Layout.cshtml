@@ -63,7 +63,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a style="color:black;" onclick="loadClick('Normal')" href="@Url.Action("RequestFormView", "Request")">Create Request</a>
+                        <a id="create-req" style="color:black;" onclick="loadClick('Normal')" href="@Url.Action("RequestFormView", "Request")">Create Request</a>
                     </li>
                     @if (Session["OpenRequest"] == "Div")
                     {
@@ -161,5 +161,7 @@
     @RenderSection("scripts", required: false)
     @RenderSection("tableCss", required: false)
     <script src="~/Scripts/Loaders/loaders.js"></script>
+
+ 
 </body>
 </html>
