@@ -69,7 +69,17 @@
                                                     <span style="display:none;">@item.BranchCode</span>
                                                 </center>
                                             </td>
-                                            <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                                            <td>
+                                                <center>
+                                                    <div class="badge-holder">
+                                                        <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                                        @if (item.numOfNotifs != 0)
+                                                        {
+                                                            <span class="badge badge-notify">@item.numOfNotifs</span>
+                                                        }
+                                                    </div>
+                                                </center>
+                                            </td>
                                         </tr>
                                     }
 
@@ -100,15 +110,17 @@
                                                     <span style="display:none;">@item.BranchCode</span>
                                                 </center>
                                             </td>
-                                            <td><center>
-                                            <div class="badge-holder">
-                                                <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
-                                                    @if (item.numOfNotifs != 0)
-                                                    {
-                                                        <span class="badge badge-notify">@item.numOfNotifs</span>
-                                                    }
-                                             </div>
-                                             </center></td>
+                                            <td>
+                                                <center>
+                                                    <div class="badge-holder">
+                                                        <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                                        @if (item.numOfNotifs != 0)
+                                                        {
+                                                            <span class="badge badge-notify">@item.numOfNotifs</span>
+                                                        }
+                                                    </div>
+                                                </center>
+                                            </td>
                                         </tr>
                                     }
                                 }
@@ -145,15 +157,17 @@
                                                     <span style="display:none;">@item.BranchCode</span>
                                                 </center>
                                             </td>
-                                            <td><center>
-                                            <div class="badge-holder">
-                                                <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
-                                                    @if (item.numOfNotifs != 0)
-                                                    {
-                                                        <span class="badge badge-notify">@item.numOfNotifs</span>
-                                                    }
-                                             </div>
-                                            </center></td>
+                                            <td>
+                                                <center>
+                                                    <div class="badge-holder">
+                                                        <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                                        @if (item.numOfNotifs != 0)
+                                                        {
+                                                            <span class="badge badge-notify">@item.numOfNotifs</span>
+                                                        }
+                                                    </div>
+                                                </center>
+                                            </td>
                                         </tr>
                                     }
 
@@ -184,15 +198,17 @@
                                                     <span style="display:none;">@item.BranchCode</span>
                                                 </center>
                                             </td>
-                                            <td><center>
-                                            <div class="badge-holder">
-                                                <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
-                                                    @if (item.numOfNotifs != 0)
-                                                    {
-                                                        <span class="badge badge-notify">@item.numOfNotifs</span>
-                                                    }
-                                             </div>
-                                            </center></td>
+                                            <td>
+                                                <center>
+                                                    <div class="badge-holder">
+                                                        <span class="glyphicon glyphicon-comment" style="font-size: 17px; color:grey"></span>
+                                                        @if (item.numOfNotifs != 0)
+                                                        {
+                                                            <span class="badge badge-notify">@item.numOfNotifs</span>
+                                                        }
+                                                    </div>
+                                                </center>
+                                            </td>
                                         </tr>
                                     }
                                 }

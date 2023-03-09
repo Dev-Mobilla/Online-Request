@@ -182,25 +182,6 @@ namespace OnlineRequestSystem.Controllers
                         }
                     }
 
-                    if (ss.s_usr_id == "LHUI1011873")
-                    {
-                        var cmd2 = conn.CreateCommand();
-                        conn.Open();
-
-                        foreach (var item in OpenReqList.ToList())
-                        {
-                            cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator <> 'Michael L. Lhuillier'";
-                            cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
-                            cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
-                            using (var read = cmd2.ExecuteReader())
-                            {
-                                cmd2.Parameters.Clear();
-                                read.Read();
-                                item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
-                                OpenReqList.Add(item);
-                            }
-                        }
-                    }
                     Info._OpenInfo = OpenReqList;
                 }
 
@@ -332,6 +313,26 @@ namespace OnlineRequestSystem.Controllers
                             }
                         }
 
+                        if (ss.s_usr_id == "LHUI1011873")
+                        {
+                            var cmd2 = conn.CreateCommand();
+                            conn.Open();
+
+                            foreach (var item in OpenReqList.ToList())
+                            {
+                                cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator <> 'Michael L. Lhuillier'";
+                                cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                                cmd2.Parameters.AddWithValue("@viewer", ss.s_fullname);
+                                using (var read = cmd2.ExecuteReader())
+                                {
+                                    cmd2.Parameters.Clear();
+                                    read.Read();
+                                    item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                                    OpenReqList.Add(item);
+                                }
+                            }
+                        }
+
                         Info._OpenInfo = OpenReqList;
                     }
                 }
@@ -402,7 +403,7 @@ namespace OnlineRequestSystem.Controllers
 
                                 string req = model.RequestNo;
                                 string reqq = req[req.Length - 2].ToString() + req[req.Length - 1].ToString();
-                                if(reqq  == "-A")
+                                if (reqq == "-A")
                                 {
                                     model.reqTrigger = "1";
                                 }
@@ -734,9 +735,13 @@ namespace OnlineRequestSystem.Controllers
 
                             if (commCreator != ss.s_fullname)
                             {
-                                if (commCreator != "Michael L. Lhuillier" && ss.s_MMD == 0)
+                                if (ss.s_MMD == 0)
                                 {
-                                    UpdateCommentViewed(ReqNo);
+                                    UpdateCommentViewed(ReqNo, "pres");
+                                }
+                                else
+                                {
+                                    UpdateCommentViewed(ReqNo, "mmd");
                                 }
                             }
                         }
@@ -1385,16 +1390,29 @@ namespace OnlineRequestSystem.Controllers
         }
 
 
-        public string UpdateCommentViewed(string reqNumber)
+        public string UpdateCommentViewed(string reqNumber, string user)
         {
             var ss = (ORSession)Session["UserSession"];
             var db = new ORtoMySql();
+            var userr = string.Empty;
+
             try
             {
+                switch (user)
+                {
+                    case "pres":
+                        userr = "UPDATE OnlineRequest.storedComments SET isViewedOn = @isViewedOn, isViewedBy = @viewer where reqNumber = @reqNumber";
+                        break;
+
+                    case "mmd":
+                        userr = "UPDATE OnlineRequest.storedComments SET isViewedOn = @isViewedOn, isViewedBy = @viewer where reqNumber = @reqNumber AND commCreator = 'Michael L. Lhuillier'";
+                        break;
+                };
+
                 using (var conn = db.getConnection())
                 {
                     var cmd = conn.CreateCommand();
-                    cmd.CommandText = "UPDATE OnlineRequest.storedComments SET isViewedOn = @isViewedOn, isViewedBy = @viewer where reqNumber = @reqNumber";
+                    cmd.CommandText = userr;
                     cmd.Parameters.AddWithValue("@reqNumber", reqNumber);
                     cmd.Parameters.AddWithValue("@viewer", ss.s_fullname);
                     cmd.Parameters.AddWithValue("@isViewedOn", syscreated.ToString(format, CultureInfo.InvariantCulture));

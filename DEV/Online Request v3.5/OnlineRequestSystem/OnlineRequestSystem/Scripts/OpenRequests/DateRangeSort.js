@@ -48,7 +48,7 @@
         /*"bSort": false,*/
         "order": [[1, "desc"]],
         columns: [
-            { orderable: false },null, null, null, null, null, null, null, null, null,
+            { orderable: false }, null, null, null, null, null, null, null, null, null,
             { orderable: false }
         ],
         stateSave: true,
@@ -57,7 +57,8 @@
 
             // Remove the formatting to get integer data for summation
             var intVal = function (i) {
-                let val = i === '' && typeof i === 'string' ? 0 : parseFloat(i);
+                var priceVal = i.toString().replace(/,/g, '');
+                let val = priceVal === '' && typeof priceVal === 'string' ? 0 : parseFloat(priceVal);
                 return val
             };
 
@@ -80,7 +81,7 @@
                 }, 0);
 
             // Update footer
-            $(api.column(index).footer()).html(total == 0.00 ? 0 : total.toFixed(2));
+            $(api.column(index).footer()).html(total == 0.00 ? 0 : total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
         },
     });
 
