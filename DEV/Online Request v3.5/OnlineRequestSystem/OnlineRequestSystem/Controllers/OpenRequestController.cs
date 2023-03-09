@@ -105,8 +105,6 @@ namespace OnlineRequestSystem.Controllers
                                 o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
 
-
-
                                 string typeName = "";
                                 typeName = help.GetTypeName(o.TypeID);
                                 if (typeName.Length > 17)
@@ -196,6 +194,139 @@ namespace OnlineRequestSystem.Controllers
             }
         }
 
+        [Route("PO-requests")]
+        public ActionResult ViewPORequest()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+
+            try
+            {
+                string baseReturnurl = "PO-requests";
+                var Info = new OpenReqInfo();
+                var Culture = new CultureInfo("en-US", false).TextInfo;
+                var db = new ORtoMySql();
+                var que = new OpenQueries();
+                using (var conn = db.getConnection())
+                {
+                    var OpenReqList = new List<OpenReqViewModel>();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        if (ss.s_usr_id == "LHUI1011873")
+                        {
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = "openReq_Pres";
+                        }
+                        else
+                        {
+                            string errMsg = "User: " + ss.s_usr_id + " is not recognized as PO approver.";
+                            log.Fatal(errMsg);
+                            ViewBag.Error = errMsg;
+                            return View("Error");
+                        }
+
+                        cmd.Parameters.AddWithValue("@_fullname", ss.s_fullname);
+                        cmd.Parameters.AddWithValue("@_zonecode", ss.s_zonecode);
+                        conn.Open();
+                        using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                var o = new OpenReqViewModel();
+
+                                o.reqNumber = rdr["reqNumber"].ToString().Trim();
+                                o.reqCreator = Culture.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
+                                o.reqDescription = rdr["reqDescription"].ToString().Trim();
+                                o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
+                                o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                o.TypeID = rdr["TypeID"].ToString().Trim();
+
+                                string typeName = "";
+                                typeName = help.GetTypeName(o.TypeID);
+                                if (typeName.Length > 17)
+                                {
+                                    o.TypeName = typeName.Substring(0, 17) + "..";
+                                }
+                                else
+                                {
+                                    o.TypeName = typeName;
+                                }
+
+                                o.TotalItems = Convert.ToString(rdr["TotalCount"].ToString().Trim());
+                                o.itemDescription = rdr["Description"].ToString().Trim();
+                                o.BranchCode = rdr["BranchCode"].ToString().Trim();
+                                o.ZoneCode = rdr["Zonecode"].ToString().Trim();
+                                o.isDivRequest = rdr["isDivRequest"].ToString().Trim();
+                                o.reqStatus = rdr["reqStatus"].ToString().Trim();
+                                o.DeptCode = rdr["DeptCode"].ToString().Trim();
+                                o.Region = rdr["Region"].ToString().Trim().ToUpper();
+                                if (o.Region == "HO")
+                                {
+                                    o.Region = GetOR_DivisionName(o.DeptCode).ToUpper();
+                                }
+                                o.forPresident = rdr["forPresident"].ToString().Trim();
+                                if (o.isDivRequest == "1")
+                                {
+                                    o.BranchName = getBranchname(o.BranchCode, "HO", o.ZoneCode);
+                                }
+                                else
+                                {
+                                    o.BranchName = Culture.ToTitleCase(getBranchname(o.BranchCode, o.Region, o.ZoneCode).ToLower()).Replace("Ml ", "ML ");
+                                }
+
+                                if (!(new[] { "001", "002" }).Contains(o.BranchCode))
+                                {
+                                    o.isApprovedAM = Convert.ToInt32(rdr["isApprovedAM"]);
+                                    o.isApprovedRM = Convert.ToInt32(rdr["isApprovedRM"]);
+                                    o.reqAM = Convert.ToInt32(rdr["isAMApproval"]);
+                                    o.reqRM = Convert.ToInt32(rdr["isRMApproval"]);
+                                }
+
+                                o.isApprovedLocalDiv = Convert.ToInt32(rdr["isApprovedLocalDiv"]);
+                                o.isApprovedDM = Convert.ToInt32(rdr["isApprovedDM"]);
+                                o.isApprovedGM = Convert.ToInt32(rdr["isApprovedGM"]);
+                                o.isApprovedVPAssistant = Convert.ToInt32(rdr["isApprovedVPAssistant"]);
+                                o.isApprovedDiv1 = Convert.ToInt32(rdr["isApprovedDiv1"]);
+                                o.isApprovedDiv2 = Convert.ToInt32(rdr["isApprovedDiv2"]);
+                                o.isApprovedDiv3 = Convert.ToInt32(rdr["isApprovedDiv3"]);
+                                o.isApprovedPres = Convert.ToInt32(rdr["isApprovedPres"]);
+
+                                o.DivCode1 = rdr["DivCode1"].ToString().Trim();
+                                o.DivCode2 = rdr["DivCode2"].ToString().Trim();
+                                o.DivCode3 = rdr["DivCode3"].ToString().Trim();
+                                o.reqDM = Convert.ToInt32(rdr["isDMApproval"]);
+                                o.reqGM = Convert.ToInt32(rdr["isGMApproval"]);
+                                o.reqDiv1 = Convert.ToInt32(rdr["isDivManApproval"]);
+                                o.reqDiv2 = Convert.ToInt32(rdr["isDivManApproval2"]);
+                                o.reqDiv3 = Convert.ToInt32(rdr["isDivManApproval3"]);
+                                o.reqPres = Convert.ToInt32(rdr["isPresidentApproval"]);
+                                o.MMD_Processed = Convert.ToInt32(rdr["isMMDProcessed"]);
+                                o.MMD_ForDelivery = Convert.ToInt32(rdr["isDelivered"]);
+                                o.MMD_InTransit = Convert.ToInt32(rdr["isMMDTransit"]);
+                                o.VPO_PO_Approved = (rdr["isVPO_PO_Approved"] is DBNull) ? 0 : Convert.ToInt32(rdr["isVPO_PO_Approved"]);
+                                o.Pres_PO_Approved = (rdr["isPres_PO_Approved"] is DBNull) ? 0 : Convert.ToInt32(rdr["isPres_PO_Approved"]);
+
+                                OpenReqList.Add(o);
+                            }
+                        }
+
+                        Info._OpenInfo = OpenReqList;
+                    }
+                }
+
+                ViewBag.headTxt = "PO";
+                Info.returnUrl = baseReturnurl;
+                Info.POurl = "PO";
+                return View("ViewOpenRequest", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
 
         [Route("request-details")]
         public ActionResult RequestDetails(string Region, string ZoneCode, string ReqNo, string BranchCode, CreateReqModels model, string retUrl, string office)
@@ -210,6 +341,7 @@ namespace OnlineRequestSystem.Controllers
                 var commLists = new List<ShowAllComments>();
                 var db = new ORtoMySql();
                 var toTC = new CultureInfo("en-US", false).TextInfo;
+                var MMD = new MMDController();
 
                 using (var con = db.getConnection())
                 {
@@ -245,6 +377,17 @@ namespace OnlineRequestSystem.Controllers
                                 model.Bednrm = GetRequestDetails_DivOrBranchName(model.isDivRequest, model.BranchCode, Region, ZoneCode, model.req_DeptCode);
                                 model.forPresident = Convert.ToInt32(rdr["forPresident"]);
                                 model.hasDiagnostic = help.DiagnosticCheck(ReqNo);
+
+                                string req = model.RequestNo;
+                                string reqq = req[req.Length - 2].ToString() + req[req.Length - 1].ToString();
+                                if(reqq  == "-A")
+                                {
+                                    model.reqTrigger = "1";
+                                }
+                                else
+                                {
+                                    model.reqTrigger = "0";
+                                }
 
                                 #endregion Read Online Request Open
                             }
@@ -381,6 +524,9 @@ namespace OnlineRequestSystem.Controllers
                                 i.SDCStatus = FontAwesomeSelector(rdr["SDCStatus"].ToString().Trim());
                                 i.BranchStatus = FontAwesomeSelector(rdr["BranchStatus"].ToString().Trim());
                                 i.DivStatus = FontAwesomeSelector(rdr["DivStatus"].ToString().Trim());
+
+                                i.StatusOfStock = rdr["StatusOfStock"].ToString();
+
                                 itemLists.Add(i);
                             }
                             con.Close();
@@ -537,6 +683,8 @@ namespace OnlineRequestSystem.Controllers
 
                     }
                 }
+
+                model.reqStat = MMD.GetInStockStat(ReqNo);
             }
             catch (Exception x)
             {
@@ -564,6 +712,32 @@ namespace OnlineRequestSystem.Controllers
                 Info = que.MyRequests(ss);
                 ViewBag.headTxt = "MY REQUESTS";
                 Info.returnUrl = "my-requests";
+                return View("MyRequests", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
+        [Route("my-PO-requests")]
+        public ActionResult MyPORequests()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+
+            try
+            {
+                var que = new OpenQueries();
+                var Info = new OpenReqInfo();
+                var OpenReqList = new List<OpenReqViewModel>();
+                Info._OpenInfo = OpenReqList;
+                Info = que.MyRequests(ss);
+                ViewBag.headTxt = "MY PO REQUESTS";
+                Info.returnUrl = "my-PO-requests";
+                Info.POurl = "PO";
                 return View("MyRequests", Info);
             }
             catch (Exception x)
@@ -648,6 +822,30 @@ namespace OnlineRequestSystem.Controllers
             }
         }
 
+        [Route("mmd-ho-PO-requests")]
+        public ActionResult MMD_HO_PORequests()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+            try
+            {
+                var que = new OpenQueries();
+                var Info = new OpenReqInfo();
+                ViewBag.headTxt = "HEAD OFFICE PO REQUESTS";
+                Info = que.MMD_HORequests(ss);
+                Info.office = "division";
+                Info.returnUrl = "mmd-ho-PO-requests";
+                Info.POurl = "PO";
+                return View("MMD_OpenRequests", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
         [Route("mmd-branch-requests")]
         public ActionResult MMD_BranchRequests()
         {
@@ -661,6 +859,30 @@ namespace OnlineRequestSystem.Controllers
                 Info = que.MMD_BranchRequests(ss);
                 Info.returnUrl = "mmd-branch-requests";
                 Info.office = "branch";
+                return View("MMD_OpenRequests", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
+        [Route("mmd-branch-PO-requests")]
+        public ActionResult MMD_Branch_PORequests()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+            try
+            {
+                var que = new OpenQueries();
+                var Info = new OpenReqInfo();
+                ViewBag.headTxt = "BRANCH PO REQUESTS";
+                Info = que.MMD_BranchRequests(ss);
+                Info.returnUrl = "mmd-branch-PO-requests";
+                Info.office = "branch";
+                Info.POurl = "PO";
                 return View("MMD_OpenRequests", Info);
             }
             catch (Exception x)
@@ -694,6 +916,30 @@ namespace OnlineRequestSystem.Controllers
             }
         }
 
+        [Route("gmo-branch-PO-requests")]
+        public ActionResult GMO_BranchPORequests()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+            try
+            {
+                var que = new OpenQueries();
+                var Info = new OpenReqInfo();
+                ViewBag.headTxt = "BRANCH PO REQUESTS";
+                Info = que.GMO_BranchRequests(ss);
+                Info.returnUrl = "gmo-branch-PO-requests";
+                Info.office = "branch";
+                Info.POurl = "PO";
+                return View("GMO_OpenRequests", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
         [Route("gmo-ho-requests")]
         public ActionResult GMO_HORequests()
         {
@@ -707,6 +953,30 @@ namespace OnlineRequestSystem.Controllers
                 Info = que.GMO_HORequests(ss);
                 Info.returnUrl = "gmo-ho-requests";
                 Info.office = "branch";
+                return View("GMO_OpenRequests", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
+        [Route("gmo-ho-PO-requests")]
+        public ActionResult GMO_HOPORequests()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+            try
+            {
+                var que = new OpenQueries();
+                var Info = new OpenReqInfo();
+                ViewBag.headTxt = "HEAD OFFICE PO REQUESTS";
+                Info = que.GMO_HORequests(ss);
+                Info.returnUrl = "gmo-ho-PO-requests";
+                Info.office = "branch";
+                Info.POurl = "PO";
                 return View("GMO_OpenRequests", Info);
             }
             catch (Exception x)
@@ -744,6 +1014,44 @@ namespace OnlineRequestSystem.Controllers
                 Info = que.LocalRequests(ss, a);
                 Info.approver = a;
                 Info.returnUrl = "local-open-requests";
+                return View("LocalRequests", Info);
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                ViewBag.Error = x.ToString();
+                return View("Error");
+            }
+        }
+
+        [Route("local-PO-requests")]
+        public ActionResult LocalPORequests()
+        {
+            var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
+            try
+            {
+                string a = "";
+                int b = ss.s_isDepartmentApprover;
+                int c = ss.s_isDivisionApprover;
+
+                if (b == 1)
+                {
+                    a = "dept";
+                }
+                else if (c == 1)
+                {
+                    a = "div";
+                }
+
+                var que = new OpenQueries();
+                var Info = new OpenReqInfo();
+                var OpenReqList = new List<OpenReqViewModel>();
+                Info._OpenInfo = OpenReqList;
+                Info = que.LocalRequests(ss, a);
+                Info.approver = a;
+                Info.returnUrl = "local-PO-requests";
+                Info.POurl = "PO";
                 return View("LocalRequests", Info);
             }
             catch (Exception x)

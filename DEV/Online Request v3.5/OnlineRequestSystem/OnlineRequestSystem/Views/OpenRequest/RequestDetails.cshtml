@@ -28,7 +28,7 @@
 {
     <input id="returnUrl" name="returnUrl" value="@Model.returnUrl" hidden />
     <input id="office" name="office" value="@Model.office" hidden />
-    <div class="jumbotron col-md-12 col-sm-12 col-xs-12 boxShadow">
+    <div class="jumbotron col-md-12 col-sm-12 col-xs-12 boxShadow" style="padding-right: 0px; padding-left: 0px">
         <div class="panel-heading ORSHeading">
             <div class="pull-left orHeader">
                 Requested by:&nbsp;
@@ -119,6 +119,11 @@
                             <th class="col-md-1"><center>Division</center></th>
                         }
                         <th class="col-md-1"><center>Status</center></th>
+                        @if (mySession.s_MMD == 1)
+                        {
+                            <th class="col-md-1"><center>In-Stock</center></th>
+                        }
+
                     </tr>
                 </thead>
                 <tbody>
@@ -131,9 +136,7 @@
                         var newItemDesc = "itemDesc" + count;
                         <tr>
                             <td style="vertical-align:middle"><center>@count</center></td>
-                            <td id="@newItemDesc" class="itemDesc" style="vertical-align:middle">
-                                @item.ItemDescription
-                            </td>
+                            <td id="@newItemDesc" class="itemDesc" style="vertical-align:middle">@item.ItemDescription</td>
                             <td id="@quantity" style="vertical-align:middle">
                                 <center>@item.ItemQty</center>
                             </td>
@@ -149,25 +152,34 @@
                                         if (Model.Sts_MMD_isProcessed == "0")
                                         {
                                             <center>
-                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step=".01", @min = "0", @onPaste="return false", @maxlength = "15", @onkeypress = "return isNumberKey(event,this)" })
-                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
+                                                @if (item.StatusOfStock == "1")
+                                                {
+                                                    <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
+                                                }
+                                                else
+                                                {
+                                                    <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
+                                                    @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15", @onkeypress = "return isNumberKey(event,this)" })
+                                                }
+
                                             </center>
                                         }
                                         else
                                         {
                                             <center>
-                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
                                                 <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
                                             </center>
                                         }
 
                                     }
                                     else if (mySession.s_task == "GMO-GENMAN" || mySession.s_usr_id == "LHUI1011873")
                                     {
-                                            <center>
-                                                @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:82px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
-                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                            </center>
+                                        <center>
+                                            <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                            @Html.TextBoxFor(m => m.ReqItems[i].TotalPrice, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @readonly = "readonly" })
+                                        </center>
                                     }
                                 </td>
                             }
@@ -262,22 +274,79 @@
                                 </td>
                             }
                             <td class="status" style="text-align:center; vertical-align:middle">@item.ItemStatus</td>
+                            @if (mySession.s_MMD == 1)
+                            {
+                        <td style="padding: 1px; vertical-align: middle; text-align:center">
+
+                            <input type="hidden" class="statOfStock" value="@item.StatusOfStock" />
+
+                            @if (item.StatusOfStock == "1")
+                            {
+                                <i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>
+                                <input id="chkStock" type="checkbox" class="StockCheckbox" checked hidden />
+
+                            }
+                            else if (item.StatusOfStock == "0")
+                            {
+                                <i style="font-size:16px" class="fa fa-window-close txtDanger"></i>
+                                <input id="chkStock" type="checkbox" class="StockCheckbox" hidden />
+                            }
+                            else
+                            {
+                                <input id="chkStock" type="checkbox" class="StockCheckbox" style="vertical-align: middle; margin: -4px 0 0 0 " />
+                            }
+
+                        </td>
+                            }
                         </tr>
                         count++;
                         j++;
                         i++;
                     }
                 </tbody>
-            </table>
+                <tfoot>
+                    <tr>
+                        <th style="width:3%"></th>
+                        <th class="col-md-2"></th>
+                        <th class="col-md-1"></th>
+                        @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+                        {
+                            <th class="col-md-1" style="text-align:right">
+                                Total:
+                            </th>
+                        }
 
-            @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
-            {
-                <div class="totalPrice" style="text-align:center; font-size:13px; font-weight:bold;">
-                    <label>Total: </label>
-                    @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; background-color:transparent; width: 150px; outline: 0;", @readonly = "readonly" })
-                    <input type="hidden" id="_overallPrice" />
-                </div>
-            }
+                        @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
+                        {
+                            <th class="col-md-1" style="text-align: center">
+                                @Html.TextBoxFor(m => m.OverallTotalPrice, new { @value = Model.OverallTotalPrice.ToString(), @id = "overallPrice", @style = "border: 0; text-align: center; background-color:transparent; width: 100%; outline: 0;", @readonly = "readonly" })
+                                <input type="hidden" id="_overallPrice" />
+                            </th>
+                        }
+
+                        <th class="col-md-1"></th>
+                        @if (Model.isDivRequest == 0)
+                        {
+                            <th class="col-md-1"></th>
+                            <th class="col-md-1"></th>
+                        }
+                        else
+                        {
+                            <th class="col-md-1"></th>
+                        }
+                        <th class="col-md-1"></th>
+                        @if (mySession.s_MMD == 1 && Model.Sts_MMD_isProcessed == "0")
+                        {
+                            <th class="col-md-1" style="text-align:center">
+                                @if (Model.reqTrigger == "0" && Model.reqStat == "FALSE")
+                                {
+                                    <button type="button" id="split-Req" class="btn btn-primary" style="padding:5px 5px">Split Request</button>
+                                }
+                            </th>
+                        }
+                    </tr>
+                </tfoot>
+            </table>
 
             <input hidden id="Req" value="@Model.RequestNo" />
             <div hidden><input id="divRequest" value="@Model.isDivRequest" /></div>
@@ -371,6 +440,7 @@
         <span>&nbsp;</span>
     </div>
     <input id="isProcessed" value="@Model.Sts_MMD_isProcessed" hidden />
+    <input id="reqTrigger" value="@Model.reqTrigger" hidden />
 }
 @{ Html.RenderPartial("DetailsPartials/_AddItemPrice"); }
 @{ Html.RenderPartial("_CloseReqConfirmation"); }
@@ -384,19 +454,17 @@
     <script>
         var ReqNO = $('#Req').val();
 
-        $(window).load(function () {
-            $('.number').keypress(function (event) {
-                if (event.which < 46 || event.which >= 58 || event.which == 47) {
-                    event.preventDefault();
-                }
+                                                    //$(window).load(function () {
+                                                    //    $('.number').keypress(function (event) {
+                                                    //        if (event.which < 46 || event.which >= 58 || event.which == 47) {
+                                                    //            event.preventDefault();
+                                                    //        }
 
-                if (event.which == 46 && $(this).val().indexOf('.') != -1) {
-                    this.value = '';
-                }
-            });
-        })
-
-        
+                                                    //        if (event.which == 46 && $(this).val().indexOf('.') != -1) {
+                                                    //            this.value = '';
+                                                    //        }
+                                                    //    });
+                                                    //})
 
     </script>
     <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>

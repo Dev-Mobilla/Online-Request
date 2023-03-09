@@ -482,6 +482,7 @@
     <Content Include="Scripts\Request\RequestItems\MMDItems.js" />
     <Content Include="Scripts\Request\RequestItems\SDCItems.js" />
     <Content Include="Scripts\Request\RMButtons.js" />
+    <Content Include="Scripts\Request\SplitRequests.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\SourceNotAllowed.js" />
@@ -535,13 +536,10 @@
     <Content Include="Views\OpenRequest\DetailsPartials\_AddItemPrice.cshtml" />
     <Content Include="Views\CloseRequest\DetailsPartials\_VPO_POApproval.cshtml" />
     <Content Include="Views\CloseRequest\DetailsPartials\_Pres_POApproval.cshtml" />
-    <None Include="Views\OpenRequest\OpenReqPartials\_DivisionManager" />
-    <None Include="Views\OpenRequest\OpenReqPartials\_GeneralManager" />
     <Content Include="Views\OpenRequest\OpenReqPartials\_President.cshtml" />
     <Content Include="Views\Reports\ReportsMenu.cshtml" />
     <Content Include="Views\MMD\viewMMDStatus.cshtml" />
     <Content Include="Views\OpenRequest\DetailsPartials\_MMDProcesses.cshtml" />
-    <None Include="Views\OpenRequest\OpenReqPartials\_MMDOpenRequests" />
     <Content Include="Views\Shared\_CloseReqConfirmation.cshtml" />
     <Content Include="Views\CloseRequest\closeRequestDetails.cshtml" />
     <Content Include="Views\CloseRequest\DetailsPartials\_AMApproval.cshtml" />

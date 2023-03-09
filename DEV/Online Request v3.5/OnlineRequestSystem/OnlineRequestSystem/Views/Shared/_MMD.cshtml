@@ -69,6 +69,7 @@
                     <li>
                         <a style="color:black;" onclick="loadClick('Normal')" href="@Url.Action("RequestFormView", "Request")">Request</a>
                     </li>
+
                     <li class="menu-item dropdown">
                         <a href="#" style="color:black;" class="dropdown-toggle" data-toggle="dropdown">
                             Open Requests&nbsp;<b class="caret"></b>
@@ -91,10 +92,32 @@
                                 <a onclick="loadClick('Normal')" href="@Url.Action("MyRequests", "OpenRequest")"> My Requests</a>
                             </li>
                         </ul>
-
-
-
                     </li>
+
+                    <li class="menu-item dropdown">
+                        <a href="#" style="color:black;" class="dropdown-toggle" data-toggle="dropdown">
+                            PO Requests&nbsp;<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a onclick="loadClick('PO')" href="@Url.Action("MMD_Branch_PORequests", "OpenRequest")"> Branch Requests</a>
+                            </li>
+                            <li>
+                                <a onclick="loadClick('PO')" href="@Url.Action("MMD_HO_PORequests", "OpenRequest")"> Head Office Requests</a>
+                            </li>
+
+                            @if (mySession.s_isDivisionApprover == 1 || mySession.s_isDepartmentApprover == 1)
+                            {
+                                <li>
+                                    <a onclick="loadClick('PO')" href="@Url.Action("LocalPORequests", "OpenRequest")"> @Session["DivName"] Requests</a>
+                                </li>
+                            }
+                            <li>
+                                <a onclick="loadClick('PO')" href="@Url.Action("MyPORequests", "OpenRequest")"> My Requests</a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li>
                         <a style="color:black;" onclick="loadClick('Pending')" href="@Url.Action("PendingRequests", "Pending")">Pending Requests</a>
                     </li>

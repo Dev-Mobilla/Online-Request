@@ -24,6 +24,8 @@ namespace OnlineRequestSystem.Models
         public string ZoneCode { get; set; }
         public string ReqDate { get; set; }
         public int hasDiagnostic { get; set; }
+        public string reqTrigger { get; set; }
+        public string reqStat { get; set; }
 
         public string RequestType { get; set; }
         public string Description { get; set; }
@@ -61,7 +63,12 @@ namespace OnlineRequestSystem.Models
         public string TotalQty { get; set; }
         public string TotalUnitCost { get; set; }
         public string OverallTotalCost { get; set; }
-        
+        public int isApproved { get; set; }
+        public string sysCreated { get; set; }
+        public string sysCreator { get; set; }
+        public string sysModified { get; set; }
+        public string sysModifier { get; set; }
+
 
 
         #endregion for Request Items Model
@@ -190,6 +197,8 @@ namespace OnlineRequestSystem.Models
         public string SDCStatus { get; set; }
         public string BranchStatus { get; set; }
         public string DivStatus { get; set; }
+        public string StatusOfStock { get; set; }
+
 
         #endregion Request items
     }

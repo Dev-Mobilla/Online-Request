@@ -515,15 +515,15 @@ namespace OnlineRequestSystem.Controllers
                             if (Aprv.ForPO == 1)
                             {
                                 cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET VPO_PO_Approver = @Approver, VPO_PO_Approved_Date = @Date , isVPO_PO_Approved = @isVPO_PO_Approved WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@isVPO_PO_Approved", Aprv.Sts_VPO_PO_isApproved);
-                                break;
+                                cmd.Parameters.AddWithValue("@isVPO_PO_Approved", Aprv.Sts_VPO_PO_isApproved);    
                             }
                             else
                             {
                                 cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET GM_Approver = @Approver, GM_Approved_Date = @Date , isApprovedGM = @isApprovedGM WHERE reqNumber = @ReqNo";
-                                cmd.Parameters.AddWithValue("@isApprovedGM", Aprv.Sts_GM_isApproved);
-                                break;
+                                cmd.Parameters.AddWithValue("@isApprovedGM", Aprv.Sts_GM_isApproved); 
                             }
+
+                            break;
 
                         case "Div1":
                             cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET Div_Approver1 = @Approver , DivCode1 = @DivCode , Div_Approved_Date1 = @Date , isApprovedDiv1 = @isApprovedDiv1 WHERE reqNumber = @ReqNo";

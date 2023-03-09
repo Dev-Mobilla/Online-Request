@@ -1,8 +1,8 @@
 ﻿// MMD
 $(".SDCOptions").on('click', function () {
     var Status = $(this).text().trim();
-    var lastChild = $(this).closest("tr").find('td:last-child');
-    if ($(this).closest("tr").find('td:last-child').text().trim() == 'Cancelled') {
+    var lastChild = $(this).closest("tr").find('td:nth-last-child(2)');
+    if ($(this).closest("tr").find('td:nth-last-child(2)').text().trim() == 'Cancelled') {
         $.notify("Cannot update status if item is already cancelled.", { position: "bottom right", className: "error" });
     } else {
         var SDC = $(this).closest('tr').find('.SDCSelect');

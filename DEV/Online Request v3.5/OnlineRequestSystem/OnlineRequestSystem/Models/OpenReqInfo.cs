@@ -8,6 +8,7 @@ namespace OnlineRequestSystem.Models
         public string returnUrl { get; set; }
         public string office { get; set; }
         public string approver { get; set; }
+        public string POurl { get; set; }
     }
 
     public class CloseReqInfo

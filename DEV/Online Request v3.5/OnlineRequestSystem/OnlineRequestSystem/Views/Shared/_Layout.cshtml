@@ -78,6 +78,13 @@
                         <li>
                             <a style="color:black;" onclick="loadClick('Open')" href="@Url.Action("ViewOpenRequest", "OpenRequest")">Open Requests</a>
                         </li>
+
+                        if ((Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_usr_id == "LHUI1011873")
+                        {
+                            <li>
+                                <a style="color:black;" onclick="loadClick('PO')" href="@Url.Action("ViewPORequest", "OpenRequest")">PO Requests</a>
+                            </li>
+                        }
                     }
                     <li>
                         <a style="color:black;" onclick="loadClick('Pending')" href="@Url.Action("PendingRequests", "Pending")">Pending Requests</a>

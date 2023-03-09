@@ -30,7 +30,7 @@ namespace OnlineRequestSystem.Controllers
 
         #region Display MMD Status
 
-        public ActionResult viewMMDStatus(string selected, string retUrl, string office)
+        public ActionResult viewMMDStatus(string selected, string type, string retUrl, string office)
         {
             var mySession = (ORSession)Session["UserSession"];
             if (mySession == null) return RedirectToAction("Logout", "Userlogin");
@@ -46,137 +46,286 @@ namespace OnlineRequestSystem.Controllers
                     var cmd = conn.CreateCommand();
 
                     conn.Open();
-                    if ((new[] { "VISMIN", "VISAYAS", "MINDANAO" }).Contains(mySession.s_zonecode))
+                    if (type == "PO")
                     {
-                        switch (selected)
+                        if ((new[] { "VISMIN", "VISAYAS", "MINDANAO" }).Contains(mySession.s_zonecode))
                         {
-                            case "PROCESSED PO":
+                            switch (selected)
+                            {
+                                case "PROCESSED PO":
 
-                                #region PP Query
+                                    #region PP Query
 
-                                cmd.CommandText = "SELECT a.reqNumber, a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
-                              " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
-                              " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
-                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                    cmd.CommandText = "SELECT a.reqNumber, a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
+                                  " AND b.isPO_Approved = 1 " +
+                                  " AND b.isDelivered = 0 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
-                              " INNER JOIN requestType c  ON a.TypeID = c.TypeID  " +
-                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
-                              " AND b.isPO_Approved = 1" +
-                              " AND b.isDelivered = 0 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
-                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+                                    #endregion PP Query
 
-                                #endregion PP Query
+                                    break;
 
-                                break;
+                                case "RECEIVED FROM SUPPLIER":
 
-                            case "RECEIVED FROM SUPPLIER":
+                                    #region RFS Query
 
-                                #region RFS Query
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
+                                  " AND b.isPO_Approved = 1 " +
+                                  " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
-                              " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
-                              " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
-                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
-                              " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
-                              " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
-                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+                                    #endregion RFS Query
 
-                                #endregion RFS Query
+                                    break;
 
-                                break;
+                                case "IN TRANSIT-SDC":
 
-                            case "IN TRANSIT-SDC":
+                                    #region ITS Query
 
-                                #region ITS Query
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
+                                  " AND b.isPO_Approved = 1 " +
+                                  " AND b.isDelivered = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
-                              " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
-                              " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
-                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
-                              " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
-                              " AND b.isDelivered = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
-                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+                                    #endregion ITS Query
 
-                                #endregion ITS Query
+                                    break;
 
-                                break;
-
-                            default:
-                                break;
+                                default:
+                                    break;
+                            }
                         }
+                        else
+                        {
+                            switch (selected) // LUZON
+                            {
+                                case "PROCESSED PO":
+
+                                    #region PP Query
+
+                                    cmd.CommandText = "SELECT a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount,  a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
+                                  " AND b.isPO_Approved = 1 " +
+                                  " AND b.isDelivered = 0 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+
+                                    #endregion PP Query
+
+                                    break;
+
+                                case "RECEIVED FROM SUPPLIER":
+
+                                    #region RFS Query
+
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
+                                  " AND b.isPO_Approved = 1 " +
+                                  " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+
+                                    #endregion RFS Query
+
+                                    break;
+
+                                case "IN TRANSIT-SDC":
+
+                                    #region ITS Query
+
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
+                                  " AND b.isPO_Approved = 1 " +
+                                  " AND b.isDelivered = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+
+                                    #endregion ITS Query
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+
+                        Info.POurl = "PO";
+
                     }
                     else
                     {
-                        switch (selected) // LUZON
+                        if ((new[] { "VISMIN", "VISAYAS", "MINDANAO" }).Contains(mySession.s_zonecode))
                         {
-                            case "PROCESSED PO":
+                            switch (selected)
+                            {
+                                case "PROCESSED PO":
 
-                                #region PP Query
+                                    #region PP Query
 
-                                cmd.CommandText = "SELECT a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount,  a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
-                              " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
-                              " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
-                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
-                              " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
-                              " AND b.isPO_Approved = 1" +
-                              " AND b.isDelivered = 0 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
-                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+                                    cmd.CommandText = "SELECT a.reqNumber, a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
 
-                                #endregion PP Query
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID  " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
+                                  " AND b.isPO_Approved = 2 " +
+                                  " AND b.isDelivered = 0 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
-                                break;
+                                    #endregion PP Query
 
-                            case "RECEIVED FROM SUPPLIER":
+                                    break;
 
-                                #region RFS Query
+                                case "RECEIVED FROM SUPPLIER":
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
-                              " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
-                              " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
-                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
-                              " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
-                              " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
-                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+                                    #region RFS Query
 
-                                #endregion RFS Query
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE  a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
+                                  " AND b.isPO_Approved = 2 " +
+                                  " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
-                                break;
+                                    #endregion RFS Query
 
-                            case "IN TRANSIT-SDC":
+                                    break;
 
-                                #region ITS Query
+                                case "IN TRANSIT-SDC":
 
-                                cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
-                              " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
-                              " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
-                              " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
-                              " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
-                              " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
-                              " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
-                              " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
-                              " AND b.isDelivered = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
-                              " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+                                    #region ITS Query
 
-                                #endregion ITS Query
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
+                                  " AND b.isPO_Approved = 2 " +
+                                  " AND b.isDelivered = 1 AND (a.ZoneCode = 'VISMIN' OR a.ZoneCode = 'VISAYAS' OR a.ZoneCode = 'MINDANAO') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
 
-                                break;
+                                    #endregion ITS Query
 
-                            default:
-                                break;
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (selected) // LUZON
+                            {
+                                case "PROCESSED PO":
+
+                                    #region PP Query
+
+                                    cmd.CommandText = "SELECT a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount,  a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDProcessed = 1 AND b.isMMDTransit = 0 " +
+                                  " AND b.isPO_Approved = 2 " +
+                                  " AND b.isDelivered = 0 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+
+                                    #endregion PP Query
+
+                                    break;
+
+                                case "RECEIVED FROM SUPPLIER":
+
+                                    #region RFS Query
+
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isDelivered = 0 AND b.isMMDTransit = 1 " +
+                                  " AND b.isPO_Approved = 2 " +
+                                  " AND b.isMMDProcessed = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+
+                                    #endregion RFS Query
+
+                                    break;
+
+                                case "IN TRANSIT-SDC":
+
+                                    #region ITS Query
+
+                                    cmd.CommandText = "SELECT  a.reqNumber,  a.reqCreator, COUNT(d.itemDescription) AS TotalCount, a.reqDescription, a.OverallTotalPrice, a.reqDate, a.TypeID , " +
+                                  " (SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
+                                  " a.reqTotal, a.BranchCode, a.Region, a.DivCode,  a.Zonecode, a.reqStatus, a.TotalQty, a.isDivRequest, a.DeptCode, " +
+                                  " b.isMMDProcessed, b.isDelivered, b.isMMDTransit, b.isRMReceived, b.isRMTransit FROM onlineRequest_Open a   " +
+                                  " INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber  " +
+                                  " INNER JOIN requestType c  ON a.TypeID = c.TypeID " +
+                                  " INNER JOIN requestItems d ON d.reqNumber = a.reqNumber " +
+                                  " WHERE a.isDivRequest = @office AND b.isMMDTransit = 1 AND b.isMMDProcessed = 1 " +
+                                  " AND b.isPO_Approved = 2 " +
+                                  " AND b.isDelivered = 1 AND (a.ZoneCode = 'LUZON' OR a.ZoneCode = 'LNCR' OR a.ZoneCode = 'NCR') " +
+                                  " GROUP BY a.reqNumber ORDER BY a.syscreated ASC ";
+
+                                    #endregion ITS Query
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
                         }
                     }
 
@@ -237,6 +386,8 @@ namespace OnlineRequestSystem.Controllers
                 }
                 ViewBag.Msg = selected;
                 ViewBag.headTxt = selected + " REQUESTS";
+                ViewBag.ProcessedPO = 1;
+
                 return View("~/Views/OpenRequest/MMD_OpenRequests.cshtml", Info);
             }
             catch (Exception x)
@@ -251,7 +402,7 @@ namespace OnlineRequestSystem.Controllers
 
         #region Processed PO
 
-        public ActionResult ProcessedPO(string ReqNo, string OverallTotal, List<string> TotalP, List<string> desc)
+        public ActionResult ProcessedPO(string ReqNo, string OverallTotal, List<string> TotalP, List<string> desc, string allStockStat)
         {
             var ss = (ORSession)Session["UserSession"];
             var db = new ORtoMySql();
@@ -262,37 +413,55 @@ namespace OnlineRequestSystem.Controllers
             {
                 using (var conn = db.getConnection())
                 {
-                    var cmd = conn.CreateCommand();
-                    conn.Open();
-
-                    for (var i = 0; i < TotalP.Count; i++)
+                    if(allStockStat == "0")
                     {
+                        var cmd = conn.CreateCommand();
+                        conn.Open();
 
-                        var totalP = Convert.ToDecimal(TotalP[i]);
-                        var descc = desc[i].ToString().Trim();
+                        for (var i = 0; i < TotalP.Count; i++)
+                        {
 
-                        cmd.CommandText = "UPDATE OnlineRequest.requestItems SET TotalPrice = @TotalPrice WHERE reqNumber = @reqNumber1 AND itemDescription = @desc";
-                        cmd.Parameters.AddWithValue("@TotalPrice", totalP);
-                        cmd.Parameters.AddWithValue("@desc", descc);
-                        cmd.Parameters.AddWithValue("@reqNumber1", ReqNo);
+                            var totalP = Convert.ToDecimal(TotalP[i]);
+                            var descc = desc[i].ToString().Trim();
+
+                            cmd.CommandText = "UPDATE OnlineRequest.requestItems SET TotalPrice = @TotalPrice WHERE reqNumber = @reqNumber1 AND itemDescription = @desc";
+                            cmd.Parameters.AddWithValue("@TotalPrice", totalP);
+                            cmd.Parameters.AddWithValue("@desc", descc);
+                            cmd.Parameters.AddWithValue("@reqNumber1", ReqNo);
+                            cmd.ExecuteNonQuery();
+                            cmd.Parameters.Clear();
+                        }
+
+                        cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Open SET OverallTotalPrice = @OverallTotalPrice WHERE reqNumber = @reqNumber2";
+                        cmd.Parameters.AddWithValue("@OverallTotalPrice", Convert.ToDecimal(OverallTotal));
+                        cmd.Parameters.AddWithValue("@reqNumber2", ReqNo);
                         cmd.ExecuteNonQuery();
                         cmd.Parameters.Clear();
+
+                        cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed WHERE reqNumber = @ReqNo3";
+                        cmd.Parameters.AddWithValue("@ReqNo3", ReqNo);
+                        cmd.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
+                        cmd.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                        cmd.Parameters.AddWithValue("@isMMDProcessed", 1);
+                        cmd.ExecuteNonQuery();
+
+                        conn.Close();
                     }
+                    else
+                    {
+                        var cmd = conn.CreateCommand();
+                        conn.Open();
 
-                    cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Open SET OverallTotalPrice = @OverallTotalPrice WHERE reqNumber = @reqNumber2";
-                    cmd.Parameters.AddWithValue("@OverallTotalPrice", Convert.ToDecimal(OverallTotal));
-                    cmd.Parameters.AddWithValue("@reqNumber2", ReqNo);
-                    cmd.ExecuteNonQuery();
-                    cmd.Parameters.Clear();
+                        cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed, isPO_Approved = @isPO_Approved WHERE reqNumber = @ReqNo3";
+                        cmd.Parameters.AddWithValue("@ReqNo3", ReqNo);
+                        cmd.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
+                        cmd.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                        cmd.Parameters.AddWithValue("@isMMDProcessed", 1);
+                        cmd.Parameters.AddWithValue("@isPO_Approved", 2);
+                        cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed WHERE reqNumber = @ReqNo3";
-                    cmd.Parameters.AddWithValue("@ReqNo3", ReqNo);
-                    cmd.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
-                    cmd.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
-                    cmd.Parameters.AddWithValue("@isMMDProcessed", 1);
-                    cmd.ExecuteNonQuery();
-
-                    conn.Close();
+                        conn.Close();
+                    }
                 }
 
             }
@@ -1472,6 +1641,524 @@ namespace OnlineRequestSystem.Controllers
                     msg = "Unable to process request."
                 }, JsonRequestBehavior.AllowGet);
                 throw;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SplitRequest(string ReqNo, List<string> PricePerItem, string InStock, string OutOfStock)
+        {
+            var ss = (ORSession)Session["UserSession"];
+            CreateReqModels model = new CreateReqModels();
+
+            try
+            {
+                var InStockObj = JsonConvert.DeserializeObject<List<object>>(InStock);
+                var OutOfStockObj = JsonConvert.DeserializeObject<List<object>>(OutOfStock);
+                var db = new ORtoMySql();
+                var toTC = new CultureInfo("en-US", false).TextInfo;
+                string[] tbl = { "OROpen", "RAS", "OREscalation" };
+                var table_Name = string.Empty;
+
+                var newReqNo = ReqNo + "-A";
+
+                using (var con = db.getConnection())
+                {
+                    if (InStockObj.Count != 0 && OutOfStockObj.Count != 0)
+                    {
+                        using (MySqlCommand cmd = con.CreateCommand())
+                        {
+                            con.Open();
+
+                            try
+                            {
+                                for (int i = 0; i < OutOfStockObj.Count; i++)
+                                {
+                                    string desc = OutOfStockObj[i].ToString();
+                                    var totalP = Convert.ToDecimal(PricePerItem[i]);
+
+                                    cmd.CommandText = "UPDATE OnlineRequest.requestItems " +
+                                                      "SET reqNumber = @newReqNo, TotalPrice = @TotalPrice, StatusOfStock = @StatusOfStock " +
+                                                      "WHERE reqNumber = @ReqNo AND itemDescription = @desc";
+
+                                    cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                                    cmd.Parameters.AddWithValue("@newReqNo", newReqNo);
+                                    cmd.Parameters.AddWithValue("@desc", desc);
+                                    cmd.Parameters.AddWithValue("@TotalPrice", totalP);
+                                    cmd.Parameters.AddWithValue("@StatusOfStock", 0);
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+                                }
+
+                                for (int j = 0; j < InStockObj.Count; j++)
+                                {
+                                    string desc = InStockObj[j].ToString();
+
+                                    cmd.CommandText = "UPDATE OnlineRequest.requestItems " +
+                                                      "SET StatusOfStock = @StatusOfStock " +
+                                                      "WHERE reqNumber = @ReqNo2 AND itemDescription = @desc";
+
+                                    cmd.Parameters.AddWithValue("@ReqNo2", ReqNo);
+                                    cmd.Parameters.AddWithValue("@desc", desc);
+                                    cmd.Parameters.AddWithValue("@StatusOfStock", 1);
+                                    cmd.ExecuteNonQuery();
+                                    cmd.Parameters.Clear();
+                                }
+
+                                con.Close();
+                            }
+                            catch (MySqlException x)
+                            {
+                                log.Fatal(x.Message, x);
+                                con.Close();
+
+                                return Json(new
+                                {
+                                    status = false,
+                                    msg = x.Message
+                                }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                        using (MySqlCommand cmd2 = con.CreateCommand())
+                        {
+                            con.Open();
+
+                            try
+                            {
+                                for (var i = 0; i < tbl.Length; i++)
+                                {
+                                    if (tbl[i] == "OROpen")
+                                    {
+                                        table_Name = "OnlineRequest.onlineRequest_Open";
+                                    }
+                                    else if (tbl[i] == "RAS")
+                                    {
+                                        table_Name = "OnlineRequest.requestApproverStatus";
+                                    }
+                                    else
+                                    {
+                                        table_Name = "OnlineRequest.onlineRequest_Escalation";
+                                    }
+
+                                    cmd2.CommandText = "INSERT INTO " + table_Name + " ( " + SplitReqQueries(tbl[i]) + " ) " +
+                                                      "SELECT CONCAT( reqNumber , '-A') AS " + SplitReqQueries(tbl[i]) +
+                                                      " FROM " + table_Name + " WHERE reqNumber = @ReqNo2";
+
+                                    cmd2.Parameters.AddWithValue("@ReqNo2", ReqNo);
+                                    cmd2.ExecuteNonQuery();
+                                    cmd2.Parameters.Clear();
+                                }
+
+                                con.Close();
+
+                                return Json(new
+                                {
+                                    status = true,
+                                    msg = "Success"
+                                }, JsonRequestBehavior.AllowGet);
+                            }
+                            catch (MySqlException x)
+                            {
+                                log.Fatal(x.Message, x);
+                                con.Close();
+
+                                return Json(new
+                                {
+                                    status = false,
+                                    msg = x.Message
+                                }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
+
+                        //using (MySqlCommand cmd3 = con.CreateCommand())
+                        //{
+                        //    con.Open();
+
+                        //    try
+                        //    {
+                        //        cmd3.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed, isPO_Approved = @isPO_Approved WHERE reqNumber = @ReqNo3";
+                        //        cmd3.Parameters.AddWithValue("@ReqNo3", ReqNo);
+                        //        cmd3.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
+                        //        cmd3.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                        //        cmd3.Parameters.AddWithValue("@isMMDProcessed", 1);
+                        //        cmd3.Parameters.AddWithValue("@isPO_Approved", 2);
+
+                        //        cmd3.ExecuteNonQuery();
+                        //        cmd3.Parameters.Clear();
+
+                        //        con.Close();
+
+                        //        return Json(new
+                        //        {
+                        //            status = true,
+                        //            msg = "Success"
+                        //        }, JsonRequestBehavior.AllowGet);
+                        //    }
+                        //    catch (MySqlException x)
+                        //    {
+                        //        log.Fatal(x.Message, x);
+                        //        con.Close();
+
+                        //        return Json(new
+                        //        {
+                        //            status = false,
+                        //            msg = x.Message
+                        //        }, JsonRequestBehavior.AllowGet);
+                        //    }
+                        //}
+                    }
+                    //else if (InStockObj.Count == 0 && OutOfStockObj.Count != 0)
+                    //{
+                    //    using (MySqlCommand cmd = con.CreateCommand())
+                    //    {
+                    //        con.Open();
+
+                    //        try
+                    //        {
+                    //            for (int i = 0; i < OutOfStockObj.Count; i++)
+                    //            {
+                    //                string desc = OutOfStockObj[i].ToString();
+                    //                cmd.CommandText = "UPDATE OnlineRequest.requestItems " +
+                    //                                  "SET reqNumber = CONCAT(reqNumber, '-A') " +
+                    //                                  "WHERE reqNumber = @ReqNo AND itemDescription = @desc";
+
+                    //                cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                    //                cmd.Parameters.AddWithValue("@desc", desc);
+                    //                cmd.ExecuteNonQuery();
+                    //                cmd.Parameters.Clear();
+                    //            }
+
+                    //            con.Close();
+                    //        }
+                    //        catch (MySqlException x)
+                    //        {
+                    //            log.Fatal(x.Message, x);
+                    //            con.Close();
+
+                    //            return Json(new
+                    //            {
+                    //                status = false,
+                    //                msg = x.Message
+                    //            }, JsonRequestBehavior.AllowGet);
+                    //        }
+
+                    //    }
+                    //    using (MySqlCommand cmd2 = con.CreateCommand())
+                    //    {
+                    //        con.Open();
+
+                    //        try
+                    //        {
+                    //            cmd2.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed WHERE reqNumber = @ReqNo2";
+                    //            cmd2.Parameters.AddWithValue("@ReqNo2", ReqNo);
+                    //            cmd2.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
+                    //            cmd2.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                    //            cmd2.Parameters.AddWithValue("@isMMDProcessed", 1);
+
+                    //            cmd2.ExecuteNonQuery();
+                    //            cmd2.Parameters.Clear();
+
+                    //            con.Close();
+                    //        }
+                    //        catch (MySqlException x)
+                    //        {
+                    //            log.Fatal(x.Message, x);
+                    //            con.Close();
+
+                    //            return Json(new
+                    //            {
+                    //                status = false,
+                    //                msg = x.Message
+                    //            }, JsonRequestBehavior.AllowGet);
+                    //        }
+                    //    }
+                    //    using (MySqlCommand cmd3 = con.CreateCommand())
+                    //    {
+                    //        con.Open();
+
+                    //        try
+                    //        {
+                    //            for (var i = 0; i < tbl.Length; i++)
+                    //            {
+                    //                if (tbl[i] == "OROpen")
+                    //                {
+                    //                    table_Name = "OnlineRequest.onlineRequest_Open";
+                    //                }
+                    //                else if (tbl[i] == "RAS")
+                    //                {
+                    //                    table_Name = "OnlineRequest.requestApproverStatus";
+                    //                }
+                    //                else
+                    //                {
+                    //                    table_Name = "OnlineRequest.onlineRequest_Escalation";
+                    //                }
+
+                    //                cmd3.CommandText = "UPDATE " + table_Name + " " +
+                    //                                   "SET reqNumber = CONCAT(reqNumber, '-A') " +
+                    //                                   "WHERE reqNumber = @ReqNo3";
+
+                    //                cmd3.Parameters.AddWithValue("@ReqNo3", ReqNo);
+                    //                cmd3.ExecuteNonQuery();
+                    //                cmd3.Parameters.Clear();
+                    //            }
+
+                    //            con.Close();
+
+                    //            return Json(new
+                    //            {
+                    //                status = true,
+                    //                msg = "Success"
+                    //            }, JsonRequestBehavior.AllowGet);
+                    //        }
+                    //        catch (MySqlException x)
+                    //        {
+                    //            log.Fatal(x.Message, x);
+                    //            con.Close();
+
+                    //            return Json(new
+                    //            {
+                    //                status = false,
+                    //                msg = x.Message
+                    //            }, JsonRequestBehavior.AllowGet);
+                    //        }
+                    //    }
+                    //}
+                    //else if (InStockObj.Count != 0 && OutOfStockObj.Count == 0)
+                    //{
+                    //    using (MySqlCommand cmd = con.CreateCommand())
+                    //    {
+                    //        con.Open();
+
+                    //        try
+                    //        {
+                    //            cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed, isPO_Approved = @isPO_Approved WHERE reqNumber = @ReqNo";
+                    //            cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                    //            cmd.Parameters.AddWithValue("@MMDProcessor", ss.s_usr_id);
+                    //            cmd.Parameters.AddWithValue("@ProcessedDate", syscreated.ToString(format, CultureInfo.InvariantCulture));
+                    //            cmd.Parameters.AddWithValue("@isMMDProcessed", 1);
+                    //            cmd.Parameters.AddWithValue("@isPO_Approved", 2);
+
+                    //            cmd.ExecuteNonQuery();
+                    //            cmd.Parameters.Clear();
+
+                    //            con.Close();
+
+                    //            return Json(new
+                    //            {
+                    //                status = true,
+                    //                msg = "Success"
+                    //            }, JsonRequestBehavior.AllowGet);
+                    //        }
+                    //        catch (MySqlException x)
+                    //        {
+                    //            log.Fatal(x.Message, x);
+                    //            con.Close();
+
+                    //            return Json(new
+                    //            {
+                    //                status = false,
+                    //                msg = x.Message
+                    //            }, JsonRequestBehavior.AllowGet);
+                    //        }
+
+                    //    }
+                    //}
+                    else
+                    {
+                        string err = "Unable to process request.";
+                        log.Fatal(err);
+                        return Json(new
+                        {
+                            status = false,
+                            msg = err
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                return Json(new
+                {
+                    status = false,
+                    msg = "Unable to process request."
+                }, JsonRequestBehavior.AllowGet);
+                throw;
+            }
+
+        }
+
+        public string GetID(string table, string desc, string ReqNo)
+        {
+            string id = string.Empty;
+            var db = new ORtoMySql();
+            try
+            {
+                using (MySqlConnection con = db.getConnection())
+                {
+                    con.Open();
+
+                    switch (table)
+                    {
+                        case "OROpen":
+                            using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM OnlineRequest.onlineRequest_Open WHERE reqNumber = @ReqNo", con))
+                            {
+                                cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                                MySqlDataReader rdr = cmd.ExecuteReader();
+                                rdr.Read();
+                                id = rdr["id"].ToString();
+                            }
+                            break;
+
+                        case "RAS":
+                            using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM OnlineRequest.requestApproverStatus WHERE reqNumber = @ReqNo", con))
+                            {
+                                cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                                MySqlDataReader rdr = cmd.ExecuteReader();
+                                rdr.Read();
+                                id = rdr["id"].ToString();
+                            }
+                            break;
+
+                        case "OREscalation":
+                            using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM OnlineRequest.onlineRequest_Escalation WHERE reqNumber = @ReqNo", con))
+                            {
+                                cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                                MySqlDataReader rdr = cmd.ExecuteReader();
+                                rdr.Read();
+                                id = rdr["id"].ToString();
+                            }
+                            break;
+
+                        case "reqItems":
+                            using (MySqlCommand cmd = new MySqlCommand("SELECT id FROM OnlineRequest.requestItems WHERE reqNumber = @ReqNo", con))
+                            {
+                                cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                                MySqlDataReader rdr = cmd.ExecuteReader();
+                                rdr.Read();
+                                id = rdr["id"].ToString();
+                            }
+                            break;
+                    }
+                    con.Close();
+                }
+
+                return id;
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message, x);
+                return x.Message;
+            }
+        }
+        public string SplitReqQueries(string table)
+        {
+            string query = string.Empty;
+
+            switch (table)
+            {
+                case "OROpen":
+                    query = "reqNumber,reqDate,reqCreator,TypeID,reqDescription,OverallTotalPrice,reqTotal, " +
+                            "BranchCode,Region,Area,AreaCode,DivCode,Zonecode,reqStatus,isApproved,syscreated,syscreator,sysmodified, " +
+                            "sysmodifier,isDivRequest,TotalQty,TotalQty_MMD,TotalQty_SDC,TotalQty_Branch,TotalQty_Div,DeptCode,issuanceNo, " +
+                            "forPresident,pendingDate,pendingDateExpire";
+                    break;
+
+                case "RAS":
+                    query = "reqNumber,DM_Approver,DM_Approved_Date,isApprovedDM,LocalDiv_Approver,LocalDiv_Approved_Date,isApprovedLocalDiv, " +
+                            "AM_Approver,AM_Approved_Date,isApprovedAM,RM_Approver,RM_Approved_Date,isApprovedRM,VPAssistant_Approver, " +
+                            "VPAssistant_Approved_Date,isApprovedVPAssistant,GM_Approver,GM_Approved_Date,isApprovedGM,Pres_Approver, " +
+                            "Pres_Approved_Date,isApprovedPres,Div_Approver1,DivCode1,Div_Approved_Date1,isApprovedDiv1,Div_Approver2,DivCode2, " +
+                            "Div_Approved_Date2,isApprovedDiv2,Div_Approver3,DivCode3,Div_Approved_Date3,isApprovedDiv3,VPO_PO_Approver, " +
+                            "VPO_PO_Approved_Date,isVPO_PO_Approved,Pres_PO_Approver,Pres_PO_Approved_Date,isPres_PO_Approved,isPO_Approved, " +
+                            "MMD_Approver,MMD_Approved_Date,isApprovedMMD,MMD_Processor,MMD_Processed_Date,isMMDProcessed,MMD_Deliverer, " +
+                            "MMD_Delivered_Date,isDelivered,MMD_Transitor,MMD_Transit_Date,isMMDTransit,RM_Receiver,RM_Received_Date,isRMReceived, " +
+                            "RM_Transitor,RM_Transit_Date,isRMTransit";
+
+                    break;
+
+                case "OREscalation":
+                    query = "reqNumber,EscalationAM_Name,EscalationAM_Date,EscalationAM_Remarks,EscalationRM_Name,EscalationRM_Date, " +
+                            "EscalationRM_Remarks,EscalationVPAssistant,EscalationVPAssistant_Date,EscalationVPAssistant_Remarks, " +
+                            "EscalationGM_Name,EscalationGM_Date,EscalationGM_Remarks,EscalationPres_Name,EscalationPres_Date, " +
+                            "EscalationPres_Remarks,EscalationDiv_Name,EscalationDiv_Date,EscalationDiv_Remarks,EscalationDiv2_Name, " +
+                            "EscalationDiv2_Date,EscalationDiv2_Remarks,EscalationDiv3_Name,EscalationDiv3_Date,EscalationDiv3_Remarks, " +
+                            "EscalationDM_Name,EscalationDM_Date,EscalationDM_Remarks,EscalationLocalDiv_Name,EscalationLocalDiv_Date, " +
+                            "EscalationLocalDiv_Remarks,EscalationVPO_PO_Name,EscalationVPO_PO_Date,EscalationVPO_PO_Remarks, " +
+                            "EscalationPres_PO_Name,EscalationPres_PO_Date,EscalationPres_PO_Remarks";
+                    break;
+
+                default:
+                    break;
+            }
+
+            return query;
+        }
+        public bool UpdateStatusOfStocks(string ReqNo, string description, string status)
+        {
+            var ss = (ORSession)Session["UserSession"];
+            var db = new ORtoMySql();
+            string desc = description.Trim();
+
+            try
+            {
+                using (var conn = db.getConnection())
+                {
+                    conn.Open();
+
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "UPDATE OnlineRequest.requestItems SET StatusOfStock = @StatusOfStock WHERE reqNumber = @ReqNo AND itemDescription = @description;";
+                    cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                    cmd.Parameters.AddWithValue("@description", desc);
+                    cmd.Parameters.AddWithValue("@StatusOfStock", Convert.ToInt32(status));
+                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+
+                    conn.Close();
+                }
+
+                log.Info("Status of stocks has been updated; || request no: " + ReqNo + " || Processor: " + ss.s_usr_id);
+
+                return true;
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message);
+                return false;
+            }
+        }
+
+        public string GetInStockStat(string ReqNo)
+        {
+            var db = new ORtoMySql();
+            string stat = string.Empty;
+
+            try
+            {
+                using (var conn = db.getConnection())
+                {
+                    conn.Open();
+
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "SELECT (IF(COUNT(StatusOfStock = '1') = COUNT(itemDescription), 'TRUE', 'FALSE')) " +
+                                      "AS Stat FROM OnlineRequest.requestItems WHERE reqNumber = @ReqNo ;";
+                    cmd.Parameters.AddWithValue("@ReqNo", ReqNo);
+                    cmd.CommandTimeout = 0;
+
+                    using (MySqlDataReader read = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        read.Read();
+                        stat = read["Stat"].ToString();
+                    }
+                 
+                    conn.Close();
+                }
+
+                return stat;
+            }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message);
+                return "Err";
             }
         }
     }

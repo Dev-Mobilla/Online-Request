@@ -1,6 +1,6 @@
 ﻿$(document).on('blur', '#txtBranch', function () {
     var check = $(this).prev().prop('checked');
-    var lastChild = $(this).closest("tr").find('td:last-child').text().trim();
+    var lastChild = $(this).closest("tr").find('td:nth-last-child(2)').text().trim();
     if (lastChild == 'Cancelled') {
         $.notify("Cannot be inputted if item is cancelled.", {
             position: "bottom right",
@@ -54,7 +54,7 @@
 $(document).on('click', '#chkBranch', function () {
     var Description = $(this).closest('tr').find('td:eq(1)').text();
     var Desc = Description.trim();
-    var lastChild = $(this).closest("tr").find('td:last-child').text().trim();
+    var lastChild = $(this).closest("tr").find('td:nth-last-child(2)').text().trim();
     if (lastChild == 'Cancelled') {
         $.notify("Cannot be checked if item is cancelled.", {
             position: "bottom right",

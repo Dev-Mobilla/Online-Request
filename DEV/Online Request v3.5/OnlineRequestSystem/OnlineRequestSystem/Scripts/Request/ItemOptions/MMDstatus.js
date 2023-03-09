@@ -42,7 +42,7 @@ $(".MMDOptions").on('click', function () {
         default:
     }
 
-    var lastChild = $(this).closest("tr").find('td:last-child');
+    var lastChild = $(this).closest("tr").find('td:nth-last-child(2)');
     var Description = $(this).closest("tr").find('td:eq(1)').text();
     var Desc = Description.trim();
 

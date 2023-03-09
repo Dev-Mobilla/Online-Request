@@ -4,6 +4,9 @@
         case "Open":
             message = "Please wait while we load all open requests.";
             break;
+        case "PO":
+            message = "Please wait while we load PO requests.";
+            break;
         case "Pending":
             message = "Please wait while we load all pending requests.";
             break;

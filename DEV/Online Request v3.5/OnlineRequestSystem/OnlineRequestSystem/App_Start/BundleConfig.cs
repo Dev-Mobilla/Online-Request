@@ -74,7 +74,8 @@ namespace OnlineRequestSystem
                         "~/Scripts/Request/RequestDetails.js",
                         "~/Scripts/bootbox.js",
                         "~/Scripts/Request/PrintFunctions.js",
-                        "~/Scripts/Request/CommentSection.js"));
+                        "~/Scripts/Request/CommentSection.js",
+                        "~/Scripts/Request/SplitRequests.js"));
 
             // Request Details Ajax functions
             bundles.Add(new ScriptBundle("~/bundles/requestdetails_functions").Include(

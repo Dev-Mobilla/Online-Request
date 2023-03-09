@@ -1,23 +1,59 @@
 ﻿$('#BMorOthers').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
+    "order": [[2, "desc"]], "bSort": false, stateSave: true
 });
 $('#AMOpen').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
+    "order": [[2, "desc"]], "bSort": false, stateSave: true
 });
 $('#DeptOpenReq').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
+    "order": [[2, "desc"]], "bSort": false, stateSave: true
 });
+
+$('#ReqI').DataTable({
+    "order": [[2, "desc"]], "bSort": false, stateSave: true
+});
+$('#ReqII').DataTable({
+    stateSave: true,
+    "order": [[2, "desc"]],
+    columns: [
+        { orderable: false },
+        null, null, null, null, null, null, null,null
+    ]
+});
+
 $('#DivisionOpenReq').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
+    stateSave: true,
+    "order": [[2, "desc"]],
+    columns: [
+        { orderable: false },
+        { orderable: false }, null, null, null, null, null, null, null, null
+    ]
 });
-////$('#GMOpen').DataTable({
-//    "order": [[0, "desc"]], "bSort": false, stateSave: true
-//});
-//$('#PresidentOpen').DataTable({
-//    "order": [[0, "desc"]], "bSort": false, stateSave: true
-//});
+$('#MMDOpenRequest').DataTable({
+    stateSave: true,
+    "order": [[1, "desc"]],
+    columns: [
+        { orderable: false },
+        null, null, null, null, null, null, null, null
+    ]
+});
+$('#GMOpen').DataTable({
+    stateSave: true,
+    "order": [[2, "desc"]],
+    columns: [
+        { orderable: false },
+        { orderable: false }, null, null, null, null, null, null, null, null
+    ]
+});
+$('#PresidentOpen').DataTable({
+    stateSave: true,
+    "order": [[2, "desc"]],
+    columns: [
+        { orderable: false },
+        { orderable: false }, null, null, null, null, null, null, null, null
+    ]
+});
 $('#RMOpen').DataTable({
-    "order": [[0, "desc"]], "bSort": false, stateSave: true
+    "order": [[2, "desc"]], "bSort": false, stateSave: true
 });
 
 $(".table_link").on("click", function () {

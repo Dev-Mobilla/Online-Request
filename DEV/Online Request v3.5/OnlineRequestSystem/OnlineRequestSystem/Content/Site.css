@@ -1,4 +1,11 @@
-﻿body {
+﻿@media (min-width: 1200px) {
+    .container {
+        width: 1200px;
+    }
+}
+
+
+body {
     /*padding-top: 50px;*/
     padding-bottom: 20px;
     background-color: #434A54;
@@ -114,6 +121,10 @@ input[type="checkbox"].input-validation-error {
     background-color: #d7002b;
     color: white;
 }
+.ORSHeadingPO {
+    background-color: maroon;
+    color: white;
+}
 
 .navbar, .jumbotron, .navbar-default, .panel, .modal-content {
     background-image: url("../Content/images/light_toast.png") !important;
@@ -210,12 +221,12 @@ div.pager span {
     padding-bottom: 2px;
 }
 
-.cellspacer td:hover {
-    cursor:pointer;
-}
+    .cellspacer td:hover {
+        cursor: pointer;
+    }
 
 .cellspacer:hover {
-    color:red;
+    color: red;
 }
 
 /*CREATE NEW REQUEST TYPE MODAL for Division Dropdowns*/
@@ -257,6 +268,11 @@ div.pager span {
     height: 20px;
 }
 
+.StockCheckbox {
+    width: 20px;
+    height: 20px;
+}
+
 .chkBox {
     height: 20px;
     width: 40px;
@@ -290,11 +306,11 @@ div.pager span {
     padding-right: 30px;
 }
 
-.MMDOptions:hover, .SDCOptions:hover, .DivOptions:hover, .BranchOptions:hover {
-font-size: 16px;
-cursor: pointer;
-border-left: 1px solid black;
-}
+    .MMDOptions:hover, .SDCOptions:hover, .DivOptions:hover, .BranchOptions:hover {
+        font-size: 16px;
+        cursor: pointer;
+        border-left: 1px solid black;
+    }
 
 
 /*.dataTables_filter {
@@ -321,12 +337,12 @@ border-left: 1px solid black;
     max-height: 400px;
 }
 
-#search-result tr {
-    width: 100%;
-    display: table;
-    table-layout: fixed;
-}
+    #search-result tr {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+    }
 
-#itemSearch{
+#itemSearch {
     width: 400px;
 }
