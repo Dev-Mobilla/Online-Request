@@ -63,7 +63,7 @@
                     }
                     else
                     {
-                        if (Model.Sts_MMD_isProcessed == "1" && Model.PO_Approved == "1")
+                        if (Model.Sts_MMD_isProcessed == "1" && (Model.PO_Approved == "1" || Model.PO_Approved == "2"))
                         {
                             <img src="~/Content/images/MMD/RECEIVED_FROM_SUPPLIER.png" class="mmdButton" id="InTransit" height="40" width="150" />
                             <br />
@@ -347,7 +347,7 @@
                         }
                         else
                         {
-                            if (Model.Sts_MMD_isProcessed == "1")
+                            if (Model.Sts_MMD_isProcessed == "1" && (Model.PO_Approved == "1" || Model.PO_Approved == "2"))
                             {
                                 <img src="~/Content/images/MMD/Received_From_Supplier.png" class="mmdButton" id="InTransit" height="40" width="150" />
                                 <br />
@@ -493,7 +493,7 @@
                         }
                         else
                         {
-                            if (Model.Sts_MMD_isProcessed == "1")
+                            if (Model.Sts_MMD_isProcessed == "1" && (Model.PO_Approved == "1" || Model.PO_Approved == "2"))
                             {
                                 <img src="~/Content/images/MMD/Received_From_Supplier.png" class="mmdButton" id="InTransit" height="40" width="150" />
                                 <br />
