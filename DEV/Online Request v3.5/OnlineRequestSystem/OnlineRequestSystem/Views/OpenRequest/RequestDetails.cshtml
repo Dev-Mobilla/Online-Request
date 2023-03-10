@@ -120,7 +120,7 @@
 
                         @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
                         {
-                            <th class="col-md-1"><center>Item Price</center></th>
+                            <th class="col-md-1" style="width:10%"><center>Item Price</center></th>
                         }
 
                         <th class="col-md-1"><center>MMD</center></th>
@@ -173,12 +173,12 @@
                                                 @if (item.StatusOfStock == "1")
                                                 {
                                                     <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @readonly = "readonly" })
+                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                                 }
                                                 else
                                                 {
                                                     <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
-                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15" })
+                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15" })
                                                 }
 
                                             </center>
@@ -187,7 +187,7 @@
                                         {
                                             <center>
                                                 <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                                @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @readonly = "readonly" })
+                                                @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                             </center>
                                         }
 
@@ -196,7 +196,7 @@
                                     {
                                         <center>
                                             <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                            @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @readonly = "readonly" })
+                                            @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                         </center>
                                     }
                                 </td>
