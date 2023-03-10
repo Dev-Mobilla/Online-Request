@@ -4,7 +4,7 @@
 
     if (isProcessed == 1) {
         $('.StockCheckbox').each(function () {
-            $(this).attr('disabled','disabled');
+            $(this).attr('disabled', 'disabled');
         });
     }
 
@@ -39,14 +39,21 @@ $('#split-Req').on('click', function () {
         }
     });
 
-    if (inStockDesc.length != inputsDesc.length && outOfStockDesc.length != inputsDesc.length) {
-        if (inputsPrice.length == outOfStockDesc.length) {
+    if (inputsPrice.length == outOfStockDesc.length) {
+        if (inStockDesc.length != inputsDesc.length && outOfStockDesc.length != inputsDesc.length) {
             bootbox.confirm({
                 title: "Confirmation",
-                message: "Are you sure you wt to split this requests?",
+                message: "Are you sure you want to split this requests?",
+                size: 'small',
                 buttons: {
-                    confirm: { label: '<span cla="glyphicon glyphicon-ok-sign"></span> Yes ', className: 'btn-danger ddd' },
-                    cancel: { label: '<span class=lyphicon glyphicon-remove-sign"></span> No', className: 'btn-default pull-right' }
+                    confirm: {
+                        label: '<span cla="glyphicon glyphicon-ok-sign"></span> Yes ',
+                        className: 'btn-danger ddd'
+                    },
+                    cancel: {
+                        label: '<span class=lyphicon glyphicon-remove-sign"></span> No',
+                        className: 'btn-default pull-right'
+                    }
                 }, callback: function (result) {
                     if (result == true) {
                         var dialog = bootbox.dialog({
@@ -86,29 +93,43 @@ $('#split-Req').on('click', function () {
                                 else {
                                     dialog.modal('hide');
                                     var msg = "Unable to process request.";
-                                    bootbox.alert(msg);
+                                    bootbox.alert({
+                                        title: "Error",
+                                        message: msg,
+                                        size: "small"
+                                    });
                                 }
                             },
                             error: function () {
-                                bootbox.alert('Error, Unable to ocess request');
+                                var msg = 'Unable to process request';
+                                bootbox.alert({
+                                    title: "Error",
+                                    message: msg,
+                                    size: "small"
+                                });
                             }
                         });
-                    }
-                    else {
-                        bootbox.alert('Error, Unable to process request');
                     }
                 }
             });
         }
         else {
-            var msg = "Please review and provide price for out of stock item/s.";
-            bootbox.alert(msg);
+            var msg = "No need to split request.";
+            bootbox.alert({
+                title: "System Message",
+                message: msg,
+                size: "small"
+            });
             return;
         }
     }
     else {
-        var msg = "No need to split request.";
-        bootbox.alert(msg);
+        var msg = "Please review and provide price for out of stock item/s.";
+        bootbox.alert({
+            title: "System Message",
+            message: msg,
+            size: "small"
+        });
 
         return;
     }
@@ -163,12 +184,14 @@ $(document).on('click', '#chkStock', function () {
         var overallTotalPrice = 0;
         inputs.each(function () {
             if ($(this).val() != "" || $(this).val() != 'undefined' || $(this).val() != 'NaN') {
-                overallTotalPrice += parseFloat($(this).val()) || 0;
+                overallTotalPrice += parseFloat(document.getElementById(this.id).value.replace(/,/g, "")) || 0;
                 finalPrice = overallTotalPrice.toFixed(2);
             }
         })
 
-        document.getElementById("overallPrice").value = finalPrice;
+        finalPrice = finalPrice == "0.00" ? "" : finalPrice;
+
+        document.getElementById("overallPrice").value = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         document.getElementById("_overallPrice").value = finalPrice;
 
         $.notify(Desc + " in-stock.", {

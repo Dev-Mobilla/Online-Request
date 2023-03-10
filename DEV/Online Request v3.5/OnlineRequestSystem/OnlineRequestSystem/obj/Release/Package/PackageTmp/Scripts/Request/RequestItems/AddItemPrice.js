@@ -11,7 +11,7 @@
 
     finalPrice = finalPrice == "0.00" ? "" : finalPrice;
 
-    document.getElementById("overallPrice").value = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+    document.getElementById("overallPrice").value = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     document.getElementById("_overallPrice").value = finalPrice;
 });
 
