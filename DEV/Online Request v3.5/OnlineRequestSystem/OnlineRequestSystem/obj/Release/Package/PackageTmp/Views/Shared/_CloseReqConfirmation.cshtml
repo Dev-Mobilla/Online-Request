@@ -1,0 +1,27 @@
+﻿@model OnlineRequestSystem.Models.CreateReqModels
+@{
+    ViewBag.Title = "ViewOpenRequest";
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+
+<div class="modal fade" id="_CloseReq">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content jumbotron">
+            <div class="modal-header ORSHeading">
+                <button type="button" class="close" data-dismiss="modal"></button>
+                <b><span>CLOSE REQUEST CONFIRMATION</span></b>
+            </div>
+            <div class="modal-body borderless">
+                Remarks
+                <textarea class="form-control" name="Remarks" id="ClosingRemarks" style="resize:none;max-width:inherit;" rows="3" cols="5" placeholder="Please put remarks."></textarea>
+                <br />
+                Received Date:
+                <input  type="text"  id="pickDate" class="form-control" placeholder="dd/mm/yyyy" />
+            </div>
+            <div class="modal-footer ">
+                <input type="submit" id="CloseRequest" class="btn btn-danger" value="CLOSE REQUEST" onclick="return empty()" />
+                <input type="button" data-dismiss="modal" class="btn btn-default" aria-label="Close" value="Cancel">
+            </div>
+        </div>
+    </div>
+</div>

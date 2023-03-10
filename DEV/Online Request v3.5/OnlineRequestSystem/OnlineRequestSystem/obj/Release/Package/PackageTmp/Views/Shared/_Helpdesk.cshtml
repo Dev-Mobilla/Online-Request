@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+
+                                                                            ¶¶ ¶¶¶¶¶¶¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶ ¶¶
+                                                                          ¶¶¶¶¶ ¶¶¶¶¶¶¶¶ ¶¶ ¶¶¶¶¶¶¶¶ ¶¶¶¶¶
+                                                                        ¶¶¶¶¶¶¶¶ ¶¶¶¶¶¶ ¶¶¶¶ ¶¶¶¶¶¶ ¶¶¶¶¶¶¶¶
+                                                                     ¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶¶¶ ¶¶¶¶¶¶ ¶¶¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                   ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶ ¶¶ ¶¶¶¶¶¶¶¶ ¶¶ ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                 ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶  ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                             MLHUILLIER FINANCIAL SERVICES
+                                                                ¶¶¶¶¶¶¶¶¶¶¶     ¶¶¶¶¶¶¶   ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                  ¶¶¶¶¶¶¶¶      ¶¶¶¶¶¶    ¶¶  ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                   ¶¶¶¶¶        ¶¶¶¶      ¶    ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                     ¶¶    ¶¶   ¶¶¶       ¶     ¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶
+                                                                          ¶¶¶   ¶     ¶   ¶      ¶¶¶¶¶ ¶¶¶¶¶¶
+                                                                         ¶¶¶¶        ¶¶   ¶¶      ¶¶    ¶¶¶¶
+                                                                          ¶¶¶       ¶¶¶   ¶¶¶            ¶
+                                                                           ¶¶      ¶¶¶¶   ¶¶¶¶         ¶
+                                                                                  ¶¶¶¶¶   ¶¶¶¶¶¶     ¶¶
+                                                                                ¶¶¶¶¶¶¶   ¶¶¶¶¶¶¶  ¶¶
+                                                                                 ¶¶¶¶¶¶   ¶¶¶¶¶¶¶¶¶¶
+                                                                                  ¶¶¶¶¶   ¶¶¶¶¶¶¶¶¶
+                                                                                   ¶¶¶¶   ¶¶¶¶¶¶¶
+                                                                                     ¶¶   ¶¶¶¶¶¶
+                                                                                      ¶   ¶¶¶¶
+                                                                                          ¶¶¶
+                                                                                          ¶¶
+                                                                                          ¶
+
+    -->
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helpdesk</title>
+
+    <link rel="icon" href="~/Content/images/Diamante.png">
+
+    @Styles.Render("~/Content/css")
+</head>
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top headBoxshadow">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("ViewOpenRequest", "OpenRequest")">
+                    <img src="~/Content/images/Diamante.png" style="height:40px;margin-top:5px;padding-right:20px;" />
+                </a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a style="color:black;" href="@Url.Action("RequestFormView", "Request")">Create Request</a>
+                    </li>
+                    <li>
+                        <a style="color:black;" href="@Url.Action("ViewOpenRequest", "OpenRequest")">Open Requests</a>
+                    </li>
+                    <li>
+                        <a style="color:black;" href="@Url.Action("ViewCloseRequest", "CloseRequest")">Closed Requests</a>
+                    </li>
+                    @*-------------Transfered to MMD-----------*@
+                    @*<li>
+                        <a style="color:black;" href="@Url.Action("Division", "Helpdesk")">Division Approver</a>
+                    </li>
+                    <li>
+                        <a style="color:black;" href="@Url.Action("RequestType", "Helpdesk")">Request Types</a>
+                    </li>*@
+                    <li class="menu-item dropdown">
+                        <a href="#" style="color:black;" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports&nbsp;<b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("ReportsMenu", "Reports", new { type = "daily" })">Daily Report</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ReportsMenu", "Reports", new { type = "monthly" })">Monthly Report</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav"></ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @{ Html.RenderPartial("~/Views/Shared/_Loader.cshtml");}
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @RenderSection("Scripts", required: false)
+    @RenderSection("tableCss", required: false)
+</body>
+</html>

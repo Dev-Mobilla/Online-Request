@@ -1,0 +1,201 @@
+﻿@model OnlineRequestSystem.Models.CloseRequest
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+
+@if (Model.reqStatus != "DISAPPROVED")
+{
+    <div class="col-sm-12">
+        <div class="col-sm-2">
+            @if (Model.Sts_MMD_isProcessed == "1")
+            {
+                <img src="~/Content/images/MMD/PROCESS_PO_SUCCESS.png" height="40" width="150" />
+                <br />
+                <u>@Model.Sts_MMD_Processed_Date</u>
+                <br />
+                <span class="glyphicon glyphicon-user"></span>
+                <u>@Model.Sts_MMD_Processor</u>
+            }
+            else
+            {
+                <img src="~/Content/images/MMD/PROCESS_PO.png" height="40" width="150" />
+                <br />
+            }
+        </div>
+        <div class="col-sm-2">
+            @if (Model.Sts_MMD_isTransit == "1")
+            {
+                <img src="~/Content/images/MMD/Received_From_Supplier_SUCCESS.png" height="40" width="150" />
+                <br />
+                <u> @Model.Sts_MMD_Transit_Date </u>
+                <br />
+                <span class="glyphicon glyphicon-user"></span>
+                <u>@Model.Sts_MMD_Transitor</u>
+            }
+            else
+            {
+                <img src="~/Content/images/MMD/Received_From_Supplier.png" height="40" width="150" />
+                <br />
+            }
+        </div>
+        @if (Model.isDivRequest == 0)
+        {
+            <div class="col-sm-2">
+                @if (Model.Sts_MMD_isDelivered == "1")
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_SDC_SUCCESS.png" height="40" width="150" />
+                    <br />
+                    <u>@Model.Sts_MMD_Delivered_Date</u>
+                    <br />
+                    <span class="glyphicon glyphicon-user"></span>
+                    <u>@Model.Sts_MMD_Deliverer</u>
+                }
+                else
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT.png" height="40" width="150" />
+                    <br />
+                }
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-2">
+                @if (Model.Sts_MMD_isDelivered == "1")
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_DIVISION_SUCCESS.png" height="40" width="150" />
+                    <br />
+                    <u>@Model.Sts_MMD_Delivered_Date</u>
+                    <br />
+                    <span class="glyphicon glyphicon-user"></span>
+                    <u>@Model.Sts_MMD_Deliverer</u>
+                }
+                else
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_DIVISION.png" height="40" width="150" />
+                    <br />
+                }
+            </div>
+        }
+
+        @if (Model.isDivRequest == 0)
+        {
+            @* FOR RM's 'SIDE *@
+            <div class="col-sm-2">
+                @if (Model.Sts_RM_isReceived == "1")
+                {
+                    <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD_SUCCESS.png" height="40" width="150" />
+                    <br />
+                    <u> @Model.Sts_RM_Received_Date </u>
+                    <br />
+                    <span class="glyphicon glyphicon-user"></span>
+                    <u>@Model.Sts_RM_Receiver</u>
+                }
+                else
+                {
+                    <img src="~/Content/images/MMD/RECEIVED_ITEM_FROM_MMD.png" height="40" width="150" />
+                    <br />
+                }
+            </div>
+            <div class="col-sm-2">
+                @if (Model.Sts_RM_isTransit == "1")
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_BRANCH_SUCCESS.png" height="40" width="150" />
+                    <br />
+                    <u>@Model.Sts_RM_Transit_Date</u>
+                    <br />
+                    <span class="glyphicon glyphicon-user"></span>
+                    <u>@Model.Sts_RM_Transitor</u>
+                }
+                else
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_BRANCH.png" height="40" width="150" />
+                    <br />
+                }
+            </div>
+            @* END OF RM's SIDE *@
+        }
+
+        <div class="col-sm-6"></div>
+        <br />
+        <br />
+    </div>
+}
+else
+{
+    <div class="col-sm-12">
+        <div class="col-sm-2">
+            @if (Model.Sts_MMD_isProcessed == "1")
+            {
+                <img src="~/Content/images/MMD/PROCESS_PO_SUCCESS.png" height="40" width="150" />
+                <br />
+                <u>@Model.Sts_MMD_Processed_Date</u>
+                <br />
+                <span class="glyphicon glyphicon-user"></span>
+                <u>@Model.Sts_MMD_Processor</u>
+            }
+            else
+            {
+                <img src="~/Content/images/MMD/PROCESS_PO.png" height="40" width="150" />
+                <br />
+            }
+            <br />
+        </div>
+        <div class="col-sm-2">
+            @if (Model.Sts_MMD_isTransit == "1")
+            {
+                <img src="~/Content/images/MMD/Received_From_Supplier_SUCCESS.png" height="40" width="150" />
+                <br />
+                <u> @Model.Sts_MMD_Transit_Date </u>
+                <br />
+                <span class="glyphicon glyphicon-user"></span>
+                <u>@Model.Sts_MMD_Transitor</u>
+            }
+            else
+            {
+                <img src="~/Content/images/MMD/Received_From_Supplier.png" height="40" width="150" />
+                <br />
+            }
+            <br />
+        </div>
+        @if (Model.isDivRequest == 0)
+        {
+            <div class="col-sm-2">
+                @if (Model.Sts_MMD_isDelivered == "1")
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_SDC_SUCCESS.png" height="40" width="150" />
+                    <br />
+                    <u>@Model.Sts_MMD_Delivered_Date</u>
+                    <br />
+                    <span class="glyphicon glyphicon-user"></span>
+                    <u>@Model.Sts_MMD_Deliverer</u>
+                }
+                else
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT.png" height="40" width="150" />
+                    <br />
+                }
+            </div>
+        }
+        else
+        {
+            <div class="col-sm-2">
+                @if (Model.Sts_MMD_isDelivered == "1")
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_DIVISION_SUCCESS.png" height="40" width="150" />
+                    <br />
+                    <u>@Model.Sts_MMD_Delivered_Date</u>
+                    <br />
+                    <span class="glyphicon glyphicon-user"></span>
+                    <u>@Model.Sts_MMD_Deliverer</u>
+                }
+                else
+                {
+                    <img src="~/Content/images/MMD/IN_TRANSIT_DIVISION.png" height="40" width="150" />
+                    <br />
+                }
+            </div>
+        }
+        <div class="col-sm-6">
+        </div>
+    </div>
+}

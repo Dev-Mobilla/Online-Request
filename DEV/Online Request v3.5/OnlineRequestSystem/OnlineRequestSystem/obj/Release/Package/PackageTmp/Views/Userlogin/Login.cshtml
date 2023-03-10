@@ -1,0 +1,48 @@
+﻿@model OnlineRequestSystem.Models.Login
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Userlogin/_LoginLayout.cshtml";
+}
+
+<div id="xLoader">
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <center>
+        <img src="~/Content/images/Diamante.png" style="height:101px;width:100px;" />
+        <div class="lds-dual-ring" id="spinner" style="position:fixed; margin-left:-115px; margin-top:-15px">
+        </div>
+    </center>
+</div>
+<div id="xForm" style="display:none">
+    @using (Ajax.BeginForm("Authenticate", "Userlogin", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4></h4>
+        @Html.ValidationSummary(true)
+        <div class="logo"></div>
+        <center>
+            @Html.Raw(ViewBag.Note)
+        </center>
+        <div class="login-block navbar-default boxShadow">
+            <center>
+                <br />
+                <img id="effect" src="~/Content/images/Diamante.png" style="height:100px;width:100px;" />
+                <h5 style="font-family:Ebrima;margin-bottom:-15px;">Mlhuillier Philippines</h5>
+                <h2 style="font-family:Ebrima;">Online Request</h2>
+            </center>
+            <br />
+            @Html.TextBoxFor(model => model.username, new { @required = "required", @class = "form-control", placeholder = " Username", @maxlength = 20 })
+            @Html.PasswordFor(model => model.password, new { @required = "required", @class = "form-control", placeholder = " Password" })
+            <div>
+                <input type="submit" value="Login" id="xloginButton" class="btn btn-sm btn-danger orHeader" style="background-color:#d7002b !important;" />
+            </div>
+            <div class=" pull-right">
+                <p style="font-size:10px;">Version 3.4</p>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/loginview")
+}

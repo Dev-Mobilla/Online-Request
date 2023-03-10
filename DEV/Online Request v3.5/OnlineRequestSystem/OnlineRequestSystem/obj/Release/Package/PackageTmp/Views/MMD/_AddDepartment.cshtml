@@ -1,0 +1,48 @@
+﻿@model OnlineRequestSystem.Models.DepartmentInfo
+
+@using (Ajax.BeginForm("AddDepartment", "MMD", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "onCreateBegin", OnSuccess = "onCreateSuccess", OnFailure = "onCreateFail" }, new { @class = "form-horizontal" }))
+{
+    <div id="_AddDepartment" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content jumbotron">
+                <div class="modal-header ORSHeading">
+                    <button type="button" class="close" data-dismiss="modal"></button>
+                    <b class="orHeader"><span>CREATE NEW DEPARTMENT - APPROVER</span></b>
+                </div>
+                <div class="modal-body">
+                    <table class="table borderless">
+                        <thead>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody id="deptTBody">
+                            <tr>
+                                <td>Division</td>
+                                <td> @Html.DropDownListFor(m => m.division, Model.IRDivisions, "-Select Division-", new { @class = "form-control", @required = "required", @id = "deptDivision" })  </td>
+                            </tr>
+                            <tr>
+                                <td>Department Manager:</td>
+                                <td>
+                                    @Html.TextBoxFor(m => m.deptManager, new { @class = "form-control", @required = "required" ,@id = "createDeptManager"})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Approver's IRWeb User ID:</td>
+                                <td>@Html.TextBoxFor(m => m.approver_resID, new { @class = "form-control", @required = "required", @placeholder = "(e.g., NUNE12345678)", @id = "c_deptResID" })</td>
+                            </tr>
+                            <tr>
+                                <td>Division Acro</td>
+                                <td>@Html.TextBoxFor(m => m.divacro, new { @class = "form-control" , @id = "dept_divcode", @readonly = "readonly"})</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="subNewDept" class="qabutton btn btn-sm btn-danger orHeader">&nbsp;Save Department</button>
+                    <button class="qabutton  btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
