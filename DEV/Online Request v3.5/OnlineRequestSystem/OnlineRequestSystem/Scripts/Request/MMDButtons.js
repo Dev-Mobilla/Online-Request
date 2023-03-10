@@ -45,8 +45,8 @@
         ProcessPO("1");
     }
     else {
-        console.log(outOfStock);
-        console.log(inputsDesc.length)
+        //console.log(outOfStock);
+        //console.log(inputsDesc.length)
         bootbox.alert("Please split items that are out of stocks.");
         return;
     }

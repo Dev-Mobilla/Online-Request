@@ -67,7 +67,7 @@
             tbl.each(function () {
                 if ($(this).text() == "Price") {
                     tbl.index(this);
-                    console.log(tbl.index(this));
+                    //console.log(tbl.index(this));
                     index = tbl.index(this);
                 }
             })
