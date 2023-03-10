@@ -413,7 +413,7 @@ namespace OnlineRequestSystem.Controllers
             {
                 using (var conn = db.getConnection())
                 {
-                    if(allStockStat == "0")
+                    if (allStockStat == "0")
                     {
                         var cmd = conn.CreateCommand();
                         conn.Open();
@@ -1656,7 +1656,7 @@ namespace OnlineRequestSystem.Controllers
                 var OutOfStockObj = JsonConvert.DeserializeObject<List<object>>(OutOfStock);
                 var db = new ORtoMySql();
                 var toTC = new CultureInfo("en-US", false).TextInfo;
-                string[] tbl = { "OROpen", "RAS", "OREscalation" };
+                string[] tbl = { "OROpen", "RAS", "OREscalation", "ORDiag" };
                 var table_Name = string.Empty;
 
                 var newReqNo = ReqNo + "-A";
@@ -1734,9 +1734,16 @@ namespace OnlineRequestSystem.Controllers
                                     {
                                         table_Name = "OnlineRequest.requestApproverStatus";
                                     }
-                                    else
+                                    else if (tbl[i] == "OREscalation")
                                     {
                                         table_Name = "OnlineRequest.onlineRequest_Escalation";
+                                    }
+                                    else
+                                    {
+                                        if (set.DiagnosticCheck(ReqNo) == 1)
+                                        {
+                                            table_Name = "OnlineRequest.diagnosticFiles";
+                                        }
                                     }
 
                                     cmd2.CommandText = "INSERT INTO " + table_Name + " ( " + SplitReqQueries(tbl[i]) + " ) " +
@@ -2087,6 +2094,10 @@ namespace OnlineRequestSystem.Controllers
                             "EscalationPres_PO_Name,EscalationPres_PO_Date,EscalationPres_PO_Remarks";
                     break;
 
+                case "ORDiag":
+                    query = "reqNumber,diagnostic,syscreated,syscreator";
+                    break;
+
                 default:
                     break;
             }
@@ -2149,7 +2160,7 @@ namespace OnlineRequestSystem.Controllers
                         read.Read();
                         stat = read["Stat"].ToString();
                     }
-                 
+
                     conn.Close();
                 }
 
