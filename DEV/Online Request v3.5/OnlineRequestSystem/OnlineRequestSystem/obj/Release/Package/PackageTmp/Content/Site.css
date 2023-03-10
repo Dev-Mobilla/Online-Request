@@ -365,3 +365,8 @@ div.pager span {
 input.input-validation-error {
     border: 1px solid #ccc;
 }
+
+.comments h5 {
+    margin-top: 2px;
+    margin-bottom: 15px;
+}

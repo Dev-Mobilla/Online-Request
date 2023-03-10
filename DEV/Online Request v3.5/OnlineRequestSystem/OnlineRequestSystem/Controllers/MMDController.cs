@@ -387,6 +387,7 @@ namespace OnlineRequestSystem.Controllers
                 ViewBag.Msg = selected;
                 ViewBag.headTxt = selected + " REQUESTS";
                 ViewBag.ProcessedPO = 1;
+                Info.returnUrl = retUrl;
 
                 return View("~/Views/OpenRequest/MMD_OpenRequests.cshtml", Info);
             }
@@ -424,8 +425,9 @@ namespace OnlineRequestSystem.Controllers
                             var totalP = Convert.ToDecimal(TotalP[i]);
                             var descc = desc[i].ToString().Trim();
 
-                            cmd.CommandText = "UPDATE OnlineRequest.requestItems SET TotalPrice = @TotalPrice WHERE reqNumber = @reqNumber1 AND itemDescription = @desc";
+                            cmd.CommandText = "UPDATE OnlineRequest.requestItems SET TotalPrice = @TotalPrice, StatusOfStock = @StatusOfStock WHERE reqNumber = @reqNumber1 AND itemDescription = @desc";
                             cmd.Parameters.AddWithValue("@TotalPrice", totalP);
+                            cmd.Parameters.AddWithValue("@StatusOfStock", 0);
                             cmd.Parameters.AddWithValue("@desc", descc);
                             cmd.Parameters.AddWithValue("@reqNumber1", ReqNo);
                             cmd.ExecuteNonQuery();
@@ -451,6 +453,18 @@ namespace OnlineRequestSystem.Controllers
                     {
                         var cmd = conn.CreateCommand();
                         conn.Open();
+
+                        for (var i = 0; i < desc.Count; i++)
+                        {
+                            var descc = desc[i].ToString().Trim();
+
+                            cmd.CommandText = "UPDATE OnlineRequest.requestItems SET StatusOfStock = @StatusOfStock WHERE reqNumber = @reqNumber1 AND itemDescription = @desc";
+                            cmd.Parameters.AddWithValue("@StatusOfStock", 1);
+                            cmd.Parameters.AddWithValue("@desc", descc);
+                            cmd.Parameters.AddWithValue("@reqNumber1", ReqNo);
+                            cmd.ExecuteNonQuery();
+                            cmd.Parameters.Clear();
+                        }
 
                         cmd.CommandText = "UPDATE OnlineRequest.requestApproverStatus SET MMD_Processor = @MMDProcessor, MMD_Processed_Date = @ProcessedDate, isMMDProcessed = @isMMDProcessed, isPO_Approved = @isPO_Approved WHERE reqNumber = @ReqNo3";
                         cmd.Parameters.AddWithValue("@ReqNo3", ReqNo);

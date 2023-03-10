@@ -11,13 +11,14 @@
 
     finalPrice = finalPrice == "0.00" ? "" : finalPrice;
 
-    document.getElementById("overallPrice").value = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    document.getElementById("_overallPrice").value = finalPrice;
+    if (typeof finalPrice != "undefined") {
+        document.getElementById("overallPrice").value = finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        document.getElementById("_overallPrice").value = finalPrice;
+    }
 });
 
 function addPriceModal(selectedQty, selectedPrice) {
     document.getElementById("qtySelected").value = selectedQty;
-    var quantity = document.getElementById(selectedQty).innerText;
     document.getElementById("itemSelected").value = selectedPrice;
 
     //console.log(quantity);
@@ -29,7 +30,7 @@ function addPriceModal(selectedQty, selectedPrice) {
 function getSelectedPrice(e) {
     var selectedPrice = document.getElementById("itemSelected").value;
     var selectedQty = document.getElementById("qtySelected").value;
-    var quantity = document.getElementById(selectedQty).innerText;
+    var quantity = document.getElementById(selectedQty).value;
     var selectedItemPrice = document.getElementById("Price" + e).innerText;
 
     var price = parseFloat(selectedItemPrice);
