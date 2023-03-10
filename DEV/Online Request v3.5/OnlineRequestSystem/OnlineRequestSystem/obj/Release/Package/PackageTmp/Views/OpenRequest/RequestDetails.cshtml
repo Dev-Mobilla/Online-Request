@@ -120,7 +120,7 @@
 
                         @if (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873")
                         {
-                            <th class="col-md-1"><center>Item Price</center></th>
+                            <th class="col-md-1" style="width:10%"><center>Item Price</center></th>
                         }
 
                         <th class="col-md-1"><center>MMD</center></th>
@@ -173,12 +173,12 @@
                                                 @if (item.StatusOfStock == "1")
                                                 {
                                                     <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @readonly = "readonly" })
+                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                                 }
                                                 else
                                                 {
                                                     <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px">₱</button></span>
-                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15" })
+                                                    @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @class = "priceTotal", @Name = "pricePerItem", @autocomplete = "off", @step = ".01", @min = "0", @onPaste = "return false", @maxlength = "15" })
                                                 }
 
                                             </center>
@@ -187,7 +187,7 @@
                                         {
                                             <center>
                                                 <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                                @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @readonly = "readonly" })
+                                                @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                             </center>
                                         }
 
@@ -196,55 +196,56 @@
                                     {
                                         <center>
                                             <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
-                                            @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:70px; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @readonly = "readonly" })
+                                            @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                         </center>
                                     }
                                 </td>
                             }
 
-                            <td style="padding: 1px; vertical-align: middle" class="forMMD">
-                                @if (Model.Sts_MMD_isProcessed == "0")
-                                {
-                                    <center>
-                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " disabled />
+                        <td style="padding: 1px; vertical-align: middle" class="forMMD">
+                            @if (Model.Sts_MMD_isProcessed == "1" && (Model.PO_Approved == "1" || Model.PO_Approved == "2"))
+                            {
+                                <center>
+                                    @if (item.isCheckedMMD == 1)
+                                    {
+                                        <input type="checkbox" @mmd class="mmdCheck ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @mmd class="mmdCheck ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
+                                    }
 
-                                        <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" disabled />
-                                        <span class="dropdown">
-                                            <i class="@item.MMDstatus  dropdown-toggle MMDSelect" style="font-size:16px;" disabled></i>
-                                            <span class="dropdown-menu itemSelect">
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger"></i>&nbsp; Cancelled</span><br />
-                                            </span>
+                                    <input type="text" @mmd class="mmdPrice ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
+
+                                    <span class="dropdown">
+                                        <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
+                                        <span class="dropdown-menu itemSelectStat">
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
                                         </span>
-                                    </center>
-                                }
-                                else
-                                {
-                                    <center>
-                                        @if (item.isCheckedMMD == 1)
-                                        {
-                                            <input type="checkbox" @mmd class="mmdCheck ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
-                                        }
-                                        else
-                                        {
-                                            <input type="checkbox" @mmd class="mmdCheck ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
-                                        }
+                                    </span>
+                                </center>
 
-                                        <input type="text" @mmd class="mmdPrice ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
+                            }
+                            else
+                            {
+                                <center>
+                                    <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " disabled />
 
-                                        <span class="dropdown">
-                                            <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
-                                            <span class="dropdown-menu itemSelectStat">
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
-                                            </span>
+                                    <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" disabled />
+                                    <span class="dropdown">
+                                        <i class="@item.MMDstatus  dropdown-toggle MMDSelect" style="font-size:16px;" disabled></i>
+                                        <span class="dropdown-menu itemSelect">
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger"></i>&nbsp; Cancelled</span><br />
                                         </span>
-                                    </center>
-                                }
+                                    </span>
+                                </center>
+                            }
 
-                            </td>
+                        </td>
 
                             @if (Model.isDivRequest == 0)
                             {

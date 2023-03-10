@@ -1,8 +1,15 @@
 ﻿// MMD
 $(".BranchOptions").on('click', function () {
+    var index;
+    if ($('#isRequest').val() == "Open") {
+        index = 2;
+    } else {
+        index = 1;
+    }
+
     var Status = $(this).text().trim();
-    var lastChild = $(this).closest("tr").find('td:nth-last-child(2)');
-    if ($(this).closest("tr").find('td:nth-last-child(2)').text().trim() == 'Cancelled') {
+    var lastChild = $(this).closest("tr").find('td:nth-last-child(' + index + ')');
+    if ($(this).closest("tr").find('td:nth-last-child(' + index + ')').text().trim() == 'Cancelled') {
         $.notify("Cannot update status if item is already cancelled.", { position: "bottom right", className: "error" });
     } else {
         var Branch = $(this).closest('tr').find('.BranchSelect');
