@@ -77,7 +77,7 @@
                         type: "POST",
                         url: Url + '/MMD/ProcessedPO',
                         traditional: true,
-                        data: { 'ReqNo': ReqNO, 'OverallTotal': OverallTotal, 'TotalP': inputsPrice, 'desc': inputsDesc, 'allStockStat': allStockStat  },
+                        data: { 'ReqNo': ReqNO, 'OverallTotal': OverallTotal, 'TotalP': inputsPrice, 'desc': inputsDesc, 'allStockStat': allStockStat },
                         success: function (result) {
                             if (result.status) {
                                 dialog.modal('hide');
@@ -180,7 +180,7 @@ $("#InTransit").on('click', function (e) {
 
     $('.forMMD').each(function () {
         var isChecked = $(this).find('input[type=checkbox]').is(':checked');
-            hasCheck.push(isChecked)
+        hasCheck.push(isChecked)
     })
 
     $('.mmdPrice').each(function () {
@@ -257,10 +257,10 @@ $("#InTransit").on('click', function (e) {
         });
     }
     else {
-        bootbox.dialog({
-            message: '<p class="text-center">Please input quantity and update the status.</p>',
-            closeButton: true
-        });
+
+        var msg = "Please input quantity and update the status.";
+        bootbox.alert(msg);
+
         return;
     }
 });
