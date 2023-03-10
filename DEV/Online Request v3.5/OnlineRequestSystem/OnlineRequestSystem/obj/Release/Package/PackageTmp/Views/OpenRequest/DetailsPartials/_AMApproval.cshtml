@@ -1,0 +1,63 @@
+﻿@model OnlineRequestSystem.Models.CreateReqModels
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+
+@if (Model.isAMApproval == 1)
+{
+    <div class="col-md-12">
+        <div class="col-md-6">
+            @if (mySession.s_job_title == "AREA MANAGER")
+            {
+                if (Model.Sts_AM_isApproved == "1")
+                {
+                    <label>Area Manager Approval&nbsp;&nbsp;<span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                    <br />
+                    <span>Approver: </span> @Model.E_AMName
+                    <br />
+                    <span>Date Approved: </span> @Model.E_AMDate
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly", @title = "Testing ra" })
+                }
+                else
+                {
+                    // To be inputted
+                    @Html.TextBoxFor(m => m.Approver, new { @Value = "AM", @style = "display:none;" })
+                    @Html.TextBoxFor(m => m.E_AMName, new { @Value = mySession.s_fullname, @style = "display:none;" })
+                    @Html.TextBoxFor(m => m.Sts_AM_isApproved, new { @Value = "1", @style = "display:none;" })
+                    <label> Area Manager Approval<b style="color:red;"> *</b></label>
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks..", @pattern = "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$" })
+                    <br />
+                    <center>
+                        @Html.TextBoxFor(m => m.E_AMDate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
+                        <button class="btn btn-sm btn-success" type="submit" value="1" name="Status"><span></span>Approve Request</button>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                        <button class="btn btn-sm btn-danger" type="submit" value="0" name="Status"><span></span>Disapprove Request</button>
+                    </center>
+                }
+            }
+            else
+            {
+                if (Model.Sts_AM_isApproved == "1")
+                {
+                    <label>Area Manager Approval&nbsp;&nbsp;<span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                    <br />
+                    <span>Approved by: </span> @Model.E_AMName
+                    <br />
+                    <span>Approved Date: </span> @Model.E_AMDate
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.Sts_AM_isApproved, new { @Value = Model.Sts_AM_isApproved, @style = "display:none;" })
+                    <label>Area Manager Approval</label>
+                    <br />
+                    <span>Approved by: </span> @Model.E_AMName
+                    <br />
+                    <span>Approved Date: </span> @Model.E_AMDate
+                    @Html.TextAreaFor(m => m.E_AMRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+
+            }
+            <hr style="border-bottom:1px solid #808080" />
+        </div>
+    </div>
+}

@@ -1,0 +1,77 @@
+﻿@model OnlineRequestSystem.Models.OpenReqInfo
+
+@{
+    ViewBag.Title = "viewSDCStatus";
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+<br />
+<div class="jumbotron boxShadow col-md-12" style="width: 1300px; margin-left: -4.5%; padding-right: 0px; padding-left: 0px">
+    <div class="panel-heading ORSHeading">
+        <b>@ViewBag.Msg</b>
+        @using (Html.BeginForm("viewSDCStatus", "SDC", FormMethod.Post, new { @class = "pull-right" }))
+        {
+            if (mySession.s_job_title == "REGIONAL MAN")
+            {
+                <span>
+                    <button style="color:black;" type="submit" onclick="loadClick()" name="selected" value="RECEIVED"><i>Received</i></button>
+                    <button style="color:black;" type="submit" onclick="loadClick()" name="selected" value="IN TRANSIT-BRANCH"><i>In Transit - Branch</i></button>
+                </span>
+            }
+        }
+    </div>
+    <div>
+        <div style="padding-top:7px;"></div>
+        <table id="MMDprocesses" class="table-hover table_data">
+            <thead>
+                <tr>
+                    <th><center>Select</center></th>
+                    <th class="col-sm-1"><center>Date</center></th>
+                    <th class="col-sm-2"><center>Request no.</center></th>
+                    <th class="col-sm-2"><center>Types</center></th>
+                    <th style="width:4%">Count</th>
+                    <th class="col-sm-2"><center>Description</center></th>
+                    <th class="col-sm-2"><center>Branch/Division</center></th>
+                    <th class="col-sm-2"><center>Author</center></th>
+                    <th class="col-sm-2"><center>Region</center></th>
+                </tr>
+            </thead>
+            <tbody style="font-size:12px;">
+                @foreach (var item in Model._OpenInfo)
+                {
+                    <tr class="cellspacer">
+                        <td style="text-align:center"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                        <td style="text-align:center"><center>@item.reqDate</center></td>
+                        <td style="text-align:center">@item.reqNumber</td>
+                        <td style="text-align:center">@item.TypeName</td>
+                        <td style="text-align:center">@item.TotalItems</td>
+                        <td style="text-align:center">@item.itemDescription</td>
+                        <td style="text-align:center">@item.BranchName</td>
+                        <td style="text-align:center">@item.reqCreator</td>
+                        <td style="text-align:center">
+                            @item.Region
+                            <span style="display:none;">@item.BranchCode</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section tableCss{
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" />
+}
+
+@section scripts{
+    <script src="~/Scripts/table/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/table/dataTables.min.js"></script>
+    <script>
+        $('#MMDprocesses').DataTable({
+            "order": [[0, "desc"]], "bSort": false, stateSave: true
+        });
+
+        $(".MMDprocesses").on("click", function () {
+            $('#CloseTable').DataTable().state.clear();
+        });
+    </script>
+}

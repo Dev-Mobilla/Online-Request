@@ -1,0 +1,29 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+}
+
+<div class="jumbotron boxShadow">
+    <center>
+        <h1 style="color:red;" class="text-danger">Error :( </h1>
+        <h2 style="color:red;" class="text-danger">An error occurred while processing your request.</h2>
+        <br /><br />
+        <button id="displayError" class="btn btn-sm btn-danger">Display Error</button>
+        <a href="@Url.Action("Logout","Userlogin")" class="btn btn-sm btn-success">Go to login</a>
+    </center>
+</div>
+
+<div class="jumbotron boxShadow" style="border:1px solid red;padding:10px;display:none;color:red;" id="Error"> 
+    <h5>Error: @ViewBag.Error</h5>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/SourceNotAllowed.js"></script>
+    <script>
+        $('#displayError').on('click', function () {
+            $('#Error').toggle();
+        });
+    </script>
+}

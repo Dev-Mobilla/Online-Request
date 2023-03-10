@@ -1,0 +1,126 @@
+﻿@model OnlineRequestSystem.Models.CreateReqModels
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+
+@if (Model.Sts_MMD_isProcessed == "1" && Model.PO_Approved != "2")
+{
+    if (Model.forPresident == 1)
+    {
+        <div class="col-md-12">
+            <div class="col-md-6">
+                @if (mySession.s_usr_id == "LHUI1011873")
+                {
+                    if (Model.Sts_Pres_PO_isApproved == "1")
+                    {
+                        <label>President/CEO PO Approval <span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_Pres_POName
+                        <br />
+                        <span>Approved Date:</span> @Model.E_Pres_PODate
+                        @Html.TextArea("Pres_POApproval", Model.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        // To be inputted
+                        @Html.TextBoxFor(m => m.Approver, new { @Value = "Pres", @style = "display:none;" })
+                        @Html.TextBoxFor(m => m.ForPO, new { @Value = 1, @style = "display:none;" })
+                        @Html.TextBoxFor(m => m.E_Pres_POName, new { @Value = mySession.s_fullname, @style = "display:none;" })
+                        @Html.TextBoxFor(m => m.Sts_Pres_PO_isApproved, new { @Value = "1", @style = "display:none;" })
+                        <input name="forPresident" value="1" style="display:none;" />
+                        <label>President/CEO PO Approval<b style="color:red;"> *</b></label>
+                        @Html.TextAreaFor(m => m.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
+                        <br />
+                        <center>
+                            @Html.TextBoxFor(m => m.E_Pres_PODate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
+                            <button class="btn btn-sm btn-success" type="submit" value="1" name="Status"><span></span>Approve Request</button>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                            <button class="btn btn-sm btn-danger" type="submit" value="0" name="Status"><span></span>Disapprove Request</button>
+                        </center>
+                    }
+                }
+                else
+                {
+                    if (Model.Sts_Pres_PO_isApproved == "1")
+                    {
+                        <label>President/CEO PO Approval <span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_Pres_POName
+                        <br />
+                        <span>Approved Date:</span> @Model.E_Pres_PODate
+                        @Html.TextArea("Pres_POApproval", Model.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Sts_Pres_PO_isApproved, new { @Value = Model.Sts_Pres_PO_isApproved, @style = "display:none;" })
+                        <label>President/CEO PO Approval</label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_Pres_POName
+                        <br />
+                        <span>Approved Date:</span> @Model.E_Pres_PODate
+                        @Html.TextArea("Pres_POApproval", Model.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                }
+                <hr style="border-bottom:1px solid #808080" />
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12">
+            <div class="col-md-6">
+                @if (mySession.s_usr_id == "LHUI1011873")
+                {
+                    if (Model.Sts_Pres_PO_isApproved == "1")
+                    {
+                        <label>President/CEO PO Approval <span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_Pres_POName
+                        <br />
+                        <span>Approved Date:</span> @Model.E_Pres_PODate
+                        @Html.TextArea("Pres_POApproval", Model.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        // To be inputted
+                        @Html.TextBoxFor(m => m.Approver, new { @Value = "Pres", @style = "display:none;" })
+                        @Html.TextBoxFor(m => m.ForPO, new { @Value = 1, @style = "display:none;" })
+                        @Html.TextBoxFor(m => m.E_Pres_POName, new { @Value = mySession.s_fullname, @style = "display:none;" })
+                        @Html.TextBoxFor(m => m.Sts_Pres_PO_isApproved, new { @Value = "1", @style = "display:none;" })
+                        <label>President/CEO PO Approval<b style="color:red;"> *</b></label>
+                        @Html.TextAreaFor(m => m.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @required = "required", @placeholder = "Please Provide Remarks.." })
+                        <br />
+                        <center>
+                            @Html.TextBoxFor(m => m.E_Pres_PODate, new { @Value = DateTime.Now.ToString(), @style = "display:none;" })
+                            <button class="btn btn-sm btn-success" type="submit" value="1" name="Status"><span></span>Approve Request</button>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                            <button class="btn btn-sm btn-danger" type="submit" value="0" name="Status"><span></span>Disapprove Request</button>
+                            @*<span>@Html.ActionLink("Disapprove Request", "#", null, new { @data_toggle = "modal", @data_target = "#_DisApprove", @style = "color:black;", @class = "disApproved btn btn-sm btn-default" })</span>*@
+                        </center>
+                    }
+                }
+                else
+                {
+                    if (Model.Sts_Pres_PO_isApproved == "1")
+                    {
+                        <label>President/CEO PO Approval <span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_Pres_POName
+                        <br />
+                        <span>Approved Date:</span> @Model.E_Pres_PODate
+                        @Html.TextArea("Pres_POApproval", Model.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.Sts_Pres_PO_isApproved, new { @Value = Model.Sts_Pres_PO_isApproved, @style = "display:none;" })
+                        <label>President/CEO PO Approval</label>
+                        <br />
+                        <span>Approved by: </span> @Model.E_Pres_POName
+                        <br />
+                        <span>Approved Date:</span> @Model.E_Pres_PODate
+                        @Html.TextArea("Pres_POApproval", Model.E_Pres_PORemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                    }
+                }
+                <hr style="border-bottom:1px solid #808080" />
+            </div>
+        </div>
+    }
+}

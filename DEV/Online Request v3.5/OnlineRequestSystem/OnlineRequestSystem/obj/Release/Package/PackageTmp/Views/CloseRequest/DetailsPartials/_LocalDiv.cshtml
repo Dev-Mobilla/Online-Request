@@ -1,0 +1,72 @@
+﻿@model OnlineRequestSystem.Models.CloseRequest
+@{
+    var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
+}
+
+@if (Model.reqStatus != "DISAPPROVED")
+{
+    if (Model.isDivRequest == 1)
+    {
+        <div class="col-md-12">
+            <div class="col-md-6">
+                @if (Model.Sts_LocalDiv_isApproved == "1")
+                {
+                    <label>Division Manager's Approval <span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                    <br />
+                    <span>Approved by: </span> @Model.E_LocalDivName
+                    <br />
+                    <span>Approved Date: </span> @Model.E_LocalDivDate
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                else
+                {
+                    <label>Division Manager's Approval </label>
+                    <br />
+                    <span>Approved by: </span> @Model.E_LocalDivName
+                    <br />
+                    <span>Approved Date: </span> @Model.E_LocalDivDate
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                <hr style="border-bottom:1px solid #808080" />
+            </div>
+        </div>
+    }
+}
+else
+{
+    if (Model.isDivRequest == 1)
+    {
+        <div class="col-md-12">
+            <div class="col-md-6">
+                @if (Model.Sts_LocalDiv_isApproved == "1")
+                {
+                    <label>Division Manager's Approval <span style="color:green;" class="glyphicon glyphicon-check"></span></label>
+                    <br />
+                    <span>Approved by: </span> @Model.E_LocalDivName
+                    <br />
+                    <span>Approved Date: </span> @Model.E_LocalDivDate
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                else if (Model.Remarks == Model.E_LocalDivRemarks)
+                {
+                    <label>Division Manager's Approval <span style="color:red;" class="glyphicon glyphicon-remove"></span></label>
+                    <br />
+                    <span>Disapproved by: </span> @Model.ClosedBy
+                    <br />
+                    <span>Disapproved Date: </span> @Model.ClosedDate
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                else
+                {
+                    <label>Division Manager's Approval </label>
+                    <br />
+                    <span>Approved by: </span>
+                    <br />
+                    <span>Approved Date: </span>
+                    @Html.TextArea("DivApproval", Model.E_LocalDivRemarks, new { @class = "form-control", @rows = "3", @style = "resize:none;max-width:inherit;", @readonly = "readonly" })
+                }
+                <hr style="border-bottom:1px solid #808080" />
+            </div>
+        </div>
+    }
+} 
