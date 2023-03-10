@@ -23,17 +23,18 @@ function postComment() {
         data: { 'ReqNo': reqNo, 'comment': comm },
         success: function (result) {
             if (result.status == true) {
-                bootbox.alert({
-                    message: result.msg,
+                bootbox.dialog({
+                    message: "<h5><center>" + result.msg + "</center></h5>",
                     size: "small",
-                    callback: function () {
-                        var dialog = bootbox.dialog({
-                            message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Reloading..</p>',
-                            closeButton: false
-                        });
-                        window.location.reload(true);
-                    }
+                    closeButton: false
                 });
+
+                window.setTimeout(function () {
+                    bootbox.hideAll();
+
+                    window.location.reload(true);
+
+                }, 1000);
             }
         },
         error: function () {
