@@ -75,8 +75,8 @@
         <table class="table table-bordered table-hover table-condensed" id="myTable">
             <thead>
                 <tr style="background-color:#1b5fdc;color:white;" class="orHeader">
-                    <th class="col-md-4">Item Name</th>
-                    <th class="col-md-1">Item Quantity</th>
+                    <th class="col-md-4"><center>Item Name</center></th>
+                    <th class="col-md-1"><center>Item Quantity</center></th>
                     <th class="col-md-1"><center>MMD</center></th>
                     @if (Model.isDivRequest == 0)
                     {
@@ -98,61 +98,70 @@
                             @item.ItemDescription
                         </td>
                         <td id="itemQty">
-                            @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i>
+                            <center> @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
                         </td>
-                        <td style="padding:1px;">
-                            @if (item.isCheckedMMD == 1)
-                            {
-                                <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkMMD" value="1" checked />
-                            }
-                            else
-                            {
-                                <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkMMD" value="1" />
-                            }
-                            <input type="text" class="ReqDetailsBlock" id="txtMMD" disabled value="@item.actualQtyMMD" maxlength="6" />
-                            <i class="@item.MMDstatus pull-right itmstatus" style="font-size:16px"></i>
+                        <td style="padding:1px; vertical-align: middle">
+                            <center>
+                                @if (item.isCheckedMMD == 1)
+                                {
+                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkMMD" style="vertical-align: middle; margin: -4px 0 0 0" value="1" />
+                                }
+                                <input type="text" class="ReqDetailsBlock" id="txtMMD" disabled value="@item.actualQtyMMD" maxlength="6" />
+                                <i class="@item.MMDstatus itmstatus" style="font-size:16px"></i>
+                            </center>
                         </td>
                         @if (Model.isDivRequest == 0)
                         {
-                            <td style="padding:1px;">
-                                @if (item.isCheckedSDC == 1)
-                                {
-                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkSDC" value="1" checked />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkSDC" value="1" />
-                                }
-                                <input type="text" class="ReqDetailsBlock" id="txtSDC" disabled maxlength="6" value=@item.actualQtySDC />
-                                <i class="@item.SDCStatus pull-right itmstatus" style="font-size:16px"></i>
+                            <td style="padding:1px; vertical-align: middle">
+                                <center>
+                                    @if (item.isCheckedSDC == 1)
+                                    {
+                                        <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0" />
+                                    }
+                                    <input type="text" class="ReqDetailsBlock" id="txtSDC" disabled maxlength="6" value=@item.actualQtySDC />
+                                    <i class="@item.SDCStatus itmstatus" style="font-size:16px"></i>
+                                </center>
                             </td>
 
-                            <td style="padding:1px;">
-                                @if (item.isCheckedBranch == 1)
-                                {
-                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkBranch" value="1" checked />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkBranch" value="1" />
-                                }
-                                <input type="text" class="ReqDetailsBlock" id="txtBranch" disabled maxlength="6" value=@item.actualQtyBranch />
-                                <i class="@item.BranchStatus pull-right itmstatus" style="font-size:16px"></i>
+                            <td style="padding:1px; vertical-align: middle">
+                                <center>
+                                    @if (item.isCheckedBranch == 1)
+                                    {
+                                        <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0" />
+                                    }
+                                    <input type="text" class="ReqDetailsBlock" id="txtBranch" disabled maxlength="6" value=@item.actualQtyBranch />
+
+                                    <i class="@item.BranchStatus itmstatus" style="font-size:16px"></i>
+                                </center>
                             </td>
                         }
                         else
                         {
-                            <td style="padding:1px;">
-                                @if (item.isCheckedDiv == 1)
-                                {
-                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkDiv" name="ReqDetailsCheckbox4" value="1" checked />
-                                }
-                                else
-                                {
-                                    <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkDiv" name="ReqDetailsCheckbox4" value="1" />
-                                }
-                                <input type="text" class="ReqDetailsBlock" id="txtDiv" disabled maxlength="6" value=@item.actualQtyDiv />
-                                <i class="@item.DivStatus pull-right itmstatus" style="font-size:16px"></i>
+                            <td style="padding:1px; vertical-align: middle">
+                                <center>
+                                    @if (item.isCheckedDiv == 1)
+                                    {
+                                        <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkDiv" name="ReqDetailsCheckbox4" value="1" style="vertical-align: middle; margin: -4px 0 0 0" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" @dis class="ReqDetailsCheckbox" id="chkDiv" name="ReqDetailsCheckbox4" value="1" style="vertical-align: middle; margin: -4px 0 0 0" />
+                                    }
+                                    <input type="text" class="ReqDetailsBlock" id="txtDiv" disabled maxlength="6" value=@item.actualQtyDiv />
+                                    <i class="@item.DivStatus itmstatus" style="font-size:16px"></i>
+                                </center>
                             </td>
 
                         }
