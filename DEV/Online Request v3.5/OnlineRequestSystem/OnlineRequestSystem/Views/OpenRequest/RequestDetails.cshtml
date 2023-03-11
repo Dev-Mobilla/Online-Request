@@ -28,13 +28,18 @@
     string priceVal = price != 0 ? price.ToString("#,###,##0.00") : string.Empty;
 
     var ORHeading = string.Empty;
+    var isRequest = string.Empty;
+
     if (Model.POurl == "PO")
     {
         ORHeading = "ORSHeadingPO";
+        isRequest = "PO";
+
     }
     else
     {
         ORHeading = "ORSHeading";
+        isRequest = "Open";
     }
 
 }
@@ -476,6 +481,7 @@
     </div>
     <input id="isProcessed" value="@Model.Sts_MMD_isProcessed" hidden />
     <input id="reqTrigger" value="@Model.reqTrigger" hidden />
+    <input id="isRequest" value="@isRequest" hidden />
 }
 @{ Html.RenderPartial("DetailsPartials/_AddItemPrice"); }
 @{ Html.RenderPartial("_CloseReqConfirmation"); }

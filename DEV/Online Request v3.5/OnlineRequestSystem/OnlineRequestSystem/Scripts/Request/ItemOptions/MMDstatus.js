@@ -41,8 +41,14 @@ $(".MMDOptions").on('click', function () {
             break;
         default:
     }
+    var index;
+    if ($('#isRequest').val() == "PO") {
+        index = 2;
+    } else {
+        index = 1;
+    }
 
-    var lastChild = $(this).closest("tr").find('td:nth-last-child(2)');
+    var lastChild = $(this).closest("tr").find('td:nth-last-child(' + index + ')');
     var Description = $(this).closest("tr").find('td:eq(1)').text();
     var Desc = Description.trim();
 
