@@ -1,7 +1,7 @@
 ﻿// MMD
 $(".DivOptions").on('click', function () {
     var index;
-    if ($('#isRequest').val() == "Open") {
+    if ($('#isRequest').val() == "PO") {
         index = 2;
     } else {
         index = 1;
