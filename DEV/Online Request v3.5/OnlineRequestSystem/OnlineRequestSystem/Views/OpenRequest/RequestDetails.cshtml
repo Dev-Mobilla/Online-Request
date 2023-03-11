@@ -283,13 +283,29 @@
                                             <input type="checkbox" @branch class="ReqDetailsCheckbox" id="chkBranch" value="1" style="vertical-align: middle; margin: -4px 0 0 0 " />
                                         }
                                         <input type="text" @branch class="ReqDetailsBlock" id="txtBranch" maxlength="6" value=@item.actualQtyBranch />
-                                        <span class="dropdown">
+                                        @*<span class="dropdown">
+                                                <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
+                                                <span class="dropdown-menu itemSelect">
+                                                    <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                                    <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                                </span>
+                                            </span>*@
+
+
+                                    <span class="dropdown">
+                                        @if (Model.reqCreator == mySession.s_fullname && Model.Sts_RM_isTransit != "1")
+                                        {
+                                            <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" disabled></i>
+                                        }
+                                        else
+                                        {
                                             <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
-                                            <span class="dropdown-menu itemSelect">
-                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
-                                            </span>
+                                        }
+                                        <span class="dropdown-menu itemSelect">
+                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
                                         </span>
+                                    </span>
                                     </center>
                                 </td>
                             }
