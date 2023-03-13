@@ -52,15 +52,15 @@
             <table class="table-hover" id="BMorOthers">
                 <thead>
                     <tr>
-                        <th class="col-sm-1"><center>Select</center></th>
-                        <th class="col-sm-1"><center>Date Created</center></th>
-                        <th class="col-sm-2"><center>Request no.</center></th>
-                        <th class="col-sm-2"><center>Type</center></th>
-                        <th class="col-sm-2"><center>Count</center></th>
-                        <th class="col-sm-1"><center>Description</center></th>
-                        <th class="col-sm-2"><center>Branch/Division</center></th>
-                        <th class="col-sm-2"><center>Author</center></th>
-                        <th class="col-sm-2"><center>Region</center></th>
+                        <th style="text-align:center">Select</th>
+                        <th class="col-sm-1" style="text-align:center">Date Created</th>
+                        <th class="col-sm-2" style="text-align:center">Request no.</th>
+                        <th class="col-sm-2" style="text-align:center">Type</th>
+                        <th class="col-sm-1" style="text-align:center">Count</th>
+                        <th class="col-sm-2" style="text-align:center">Description</th>
+                        <th class="col-sm-2" style="text-align:center">Branch/Division</th>
+                        <th class="col-sm-2" style="text-align:center">Author</th>
+                        <th class="col-sm-2" style="text-align:center">Region</th>
                     </tr>
                 </thead>
                 <tbody style="font-size:12px;" id="tbodys">
@@ -71,19 +71,17 @@
                             if (item.reqCreator == mySession.s_fullname && item.reqStatus == "OPEN")
                             {
                                 <tr class="cellspacer" style="cursor:pointer;">
-                                    <td><center><button class="btn btn-sm btn-danger" onclick="location.href = '@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></center></td>
-                                    <td style="text-align: center">@item.reqDate</td>
-                                    <td><center>@item.reqNumber</center></td>
-                                    <td><center>@item.TypeName</center></td>
-                                    <td><center>@item.TotalItems</center></td>
-                                    <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
-                                    <td><center>@item.BranchName</center></td>
-                                    <td><center>@item.reqCreator</center></td>
-                                    <td>
-                                        <center>
+                                    <td style="text-align:center"><button class="btn btn-sm btn-danger" onclick="location.href = '@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+                                    <td style="text-align:center">@item.reqDate</td>
+                                    <td style="text-align:center">@item.reqNumber</td>
+                                    <td style="text-align:center">@item.TypeName</td>
+                                    <td style="text-align:center">@item.TotalItems</td>
+                                    <td style="text-align:center">@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</td>
+                                    <td style="text-align:center">@item.BranchName</td>
+                                    <td style="text-align:center">@item.reqCreator</td>
+                                    <td style="text-align:center">
                                             @item.Region
                                             <span id="bcode" style="display:none;">@item.BranchCode</span>
-                                        </center>
                                     </td>
                                 </tr>
                             }

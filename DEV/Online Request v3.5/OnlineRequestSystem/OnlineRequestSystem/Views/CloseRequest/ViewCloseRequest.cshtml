@@ -12,30 +12,30 @@
         <table class="table-hover table_data" id="CloseTable" cellspacing="0">
             <thead>
                 <tr>
-                    <th><center>Select</center></th>
-                    <th class="col-sm-2"><center>Date Closed</center></th>
-                    <th class="col-sm-2"><center>Request no.</center></th>
-                    <th class="col-sm-2"><center>Type</center></th>
-                    <th class="col-sm-2"><center>Count</center></th>
-                    <th class="col-sm-1"><center>Description</center></th>
-                    <th class="col-sm-2"><center>Branch/Division</center></th>
-                    <th class="col-sm-2"><center>Author</center></th>
-                    <th class="col-sm-2"><center>Region</center></th>
+                    <th style="text-align:center">Select</th>
+                    <th class="col-sm-1" style="text-align:center">Date Closed</th>
+                    <th class="col-sm-2" style="text-align:center">Request no.</th>
+                    <th class="col-sm-2" style="text-align:center">Type</th>
+                    <th class="col-sm-1" style="text-align:center">Count</th>
+                    <th class="col-sm-2" style="text-align:center">Description</th>
+                    <th class="col-sm-2" style="text-align:center">Branch/Division</th>
+                    <th class="col-sm-2" style="text-align:center">Author</th>
+                    <th class="col-sm-2" style="text-align:center">Region</th>
                 </tr>
             </thead>
             <tbody style="font-size:12px;">
                 @foreach (var item in Model._CloseInfo)
                 {
                     <tr class="cellspacer">
-                        <td style="text-align:center;"><button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("closeRequestDetails", "CloseRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region })'">Show Details</button></td>
-                        <td style="text-align: center"><center>@item.closedDate</center></td>
-                        <td style="text-align: center"> @item.reqNumber</td>
-                        <td style="text-align: center">@item.TypeName</td>
-                        <td style="text-align: center">@item.TotalCount</td>
-                        <td style="text-align: center;">@item.itemDescription</td>
-                        <td style="text-align: center">@item.BranchName</td>
-                        <td style="text-align: center">@item.reqCreator</td>
-                        <td style="text-align: center">
+                        <td style="text-align:center"><button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("closeRequestDetails", "CloseRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region })'">Show Details</button></td>
+                        <td style="text-align:center"><center>@item.closedDate</center></td>
+                        <td style="text-align:center"> @item.reqNumber</td>
+                        <td style="text-align:center">@item.TypeName</td>
+                        <td style="text-align:center">@item.TotalCount</td>
+                        <td style="text-align:center">@item.itemDescription</td>
+                        <td style="text-align:center">@item.BranchName</td>
+                        <td style="text-align:center">@item.reqCreator</td>
+                        <td style="text-align:center">
                             @item.Region
                             <span style="display:none;">@item.BranchCode</span>
                         </td>

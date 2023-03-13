@@ -990,6 +990,7 @@ E:\QuencyProject\OnlineRequest\Online-Request\DEV\Online Request v3.5\OnlineRequ
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\CrystalDecisions.CrystalReports.Engine.dll
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\CrystalDecisions.ReportSource.dll
 C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\CrystalDecisions.Shared.dll
+E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Newtonsoft.Json.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Report\dailyReport.rpt
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Report\monthlyReport.rpt
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Report\dailyReport.cs
@@ -1024,7 +1025,6 @@ E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.Twitter.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Web.Infrastructure.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\MySql.Data.dll
-E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Newtonsoft.Json.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Owin.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\System.Web.Helpers.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\System.Web.Mvc.dll
@@ -1071,8 +1071,8 @@ E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.Google.xml
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.Twitter.xml
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.csprojAssemblyReference.cache
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.csproj.CoreCompileInputs.cache
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.csproj.CopyComplete
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.pdb
+E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.csprojAssemblyReference.cache
