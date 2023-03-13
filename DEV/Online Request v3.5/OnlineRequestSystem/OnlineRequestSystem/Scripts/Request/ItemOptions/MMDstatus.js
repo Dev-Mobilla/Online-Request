@@ -20,8 +20,6 @@ $(".MMDOptions").on('click', function () {
     var x = MMDStatus.replace('dropdown-toggle MMDSelect', '');
     var newClass = classSelector(Status.trim());
 
-    console.log(newClass);
-
     switch (x.trim()) {
         case 'fa fa-caret-square-o-down': //Open
             $(this).closest('td').find('.MMDSelect').removeClass(x)
@@ -48,11 +46,11 @@ $(".MMDOptions").on('click', function () {
         index = 1;
     }
 
+    console.log($('#isRequest').val());
+
     var lastChild = $(this).closest("tr").find('td:nth-last-child(' + index + ')');
     var Description = $(this).closest("tr").find('td:eq(1)').text();
     var Desc = Description.trim();
-
-    console.log(Desc);
 
     $.ajax({
         type: "GET",

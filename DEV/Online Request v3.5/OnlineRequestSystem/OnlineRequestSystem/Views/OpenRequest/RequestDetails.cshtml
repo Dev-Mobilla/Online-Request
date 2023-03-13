@@ -30,7 +30,7 @@
     var ORHeading = string.Empty;
     var isRequest = string.Empty;
 
-    if (Model.POurl == "PO")
+    if ((Model.POurl == "PO" || Model.PO_Approved == "1") && (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873"))
     {
         ORHeading = "ORSHeadingPO";
         isRequest = "PO";
@@ -39,7 +39,7 @@
     else
     {
         ORHeading = "ORSHeading";
-        isRequest = "Open";
+        isRequest = "";
     }
 
 }
@@ -421,7 +421,7 @@
             <input type="hidden" id="_overallPrice" />
             <input hidden id="Req" value="@Model.RequestNo" />
             <div hidden><input id="divRequest" value="@Model.isDivRequest" /></div>
-            <input id="isRequest" value="Open" hidden />
+            <input id="isRequest" value="@isRequest" hidden />
 
 
             <!-- Hidden Recommended Approval Values -->
@@ -514,6 +514,7 @@
     <input id="isProcessed" value="@Model.Sts_MMD_isProcessed" hidden />
     <input id="reqTrigger" value="@Model.reqTrigger" hidden />
     <input id="isRequest" value="@isRequest" hidden />
+    <input id="isPO" value="@Model.POurl" hidden />
 }
 @{ Html.RenderPartial("DetailsPartials/_AddItemPrice"); }
 @{ Html.RenderPartial("_CloseReqConfirmation"); }
@@ -526,6 +527,7 @@
 @section scripts{
     <script>
         var ReqNO = $('#Req').val();
+        var isReq = $('#isPO').val()
 
     </script>
     <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>

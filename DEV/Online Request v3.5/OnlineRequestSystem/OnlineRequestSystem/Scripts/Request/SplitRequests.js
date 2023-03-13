@@ -78,6 +78,7 @@ $('#split-Req').on('click', function () {
                                     var msg = "Successfully Split Request! Please see split request in the new tab.";
 
                                     bootbox.alert({
+                                        title: "System Message",
                                         message: msg,
                                         size: "small",
                                         callback: function () {
@@ -101,6 +102,7 @@ $('#split-Req').on('click', function () {
                                 }
                             },
                             error: function () {
+                                dialog.modal('hide');
                                 var msg = 'Unable to process request';
                                 bootbox.alert({
                                     title: "Error",

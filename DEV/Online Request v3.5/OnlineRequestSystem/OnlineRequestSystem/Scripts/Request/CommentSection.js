@@ -31,7 +31,6 @@ function postComment() {
 
                 window.setTimeout(function () {
                     bootbox.hideAll();
-
                     window.location.reload(true);
 
                 }, 1000);
