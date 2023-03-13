@@ -68,7 +68,7 @@
                                 <tr class="cellspacer">
 
                                     <td><center><button style="background-color: firebrick" class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office, PO = "PO" })'">Show Details</button></center></td>
-                                    <td><center>@item.reqDate</center></td>
+                                    <td style="text-align: center">@item.reqDate</td>
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
@@ -83,15 +83,15 @@
                                         </center>
                                     </td>
                                     <td>
-                                    <center>
-                                        <div class="badge-holder">
-                                        <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
-                                            @if (item.numOfNotifs != 0)
-                                            {
-                                                <span class="badge badge-notify">@item.numOfNotifs</span>
-                                            }
-                                        </div>
-                                    </center>
+                                        <center>
+                                            <div class="badge-holder">
+                                                <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
+                                                @if (item.numOfNotifs != 0)
+                                                {
+                                                    <span class="badge badge-notify">@item.numOfNotifs</span>
+                                                }
+                                            </div>
+                                        </center>
                                     </td>
                                 </tr>
                             }
@@ -142,7 +142,7 @@
                                 <tr class="cellspacer">
 
                                     <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office })'">Show Details</button></center></td>
-                                    <td><center>@item.reqDate</center></td>
+                                    <td style="text-align: center">@item.reqDate</td>
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
@@ -196,7 +196,7 @@
                                 <tr class="cellspacer">
 
                                     <td><center><button style="background-color: firebrick" class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office, PO = "PO" })'">Show Details</button></center></td>
-                                    <td><center>@item.reqDate</center></td>
+                                    <td style="text-align: center">@item.reqDate</td>
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
@@ -211,15 +211,15 @@
                                         </center>
                                     </td>
                                     <td>
-                                    <center>                                        
-                                        <div class="badge-holder">
-                                            <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
-                                            @if (item.numOfNotifs != 0)
-                                            {
-                                                <span class="badge badge-notify">@item.numOfNotifs</span>
-                                            }
-                                        </div>
-                                    </center>
+                                        <center>
+                                            <div class="badge-holder">
+                                                <span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span>
+                                                @if (item.numOfNotifs != 0)
+                                                {
+                                                    <span class="badge badge-notify">@item.numOfNotifs</span>
+                                                }
+                                            </div>
+                                        </center>
                                     </td>
                                 </tr>
                             }
@@ -270,7 +270,7 @@
                                 <tr class="cellspacer">
 
                                     <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = item.ZoneCode, Region = item.Region, retUrl = Model.returnUrl, office = Model.office })'">Show Details</button></center></td>
-                                    <td><center>@item.reqDate</center></td>
+                                    <td style="text-align: center">@item.reqDate</td>
                                     <td><center>@item.reqNumber</center></td>
                                     <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                     <td><center>@item.TotalItems</center></td>
@@ -304,13 +304,15 @@
 
     @*<script type="text/javascript" src="//code.jquery.com/jquery-3.5.1.js"></script>*@
     <script type="text/javascript" src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/datetime/1.3.0/js/dataTables.dateTime.min.js"></script>
+    @*<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/datetime/1.3.0/js/dataTables.dateTime.min.js"></script>*@
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.13.3/sorting/datetime-moment.js"></script>
 
     @Scripts.Render("~/bundles/openrequestlibraries")
 
     @Scripts.Render("~/bundles/openrequests")
     <script>
-        
+
     </script>
 }

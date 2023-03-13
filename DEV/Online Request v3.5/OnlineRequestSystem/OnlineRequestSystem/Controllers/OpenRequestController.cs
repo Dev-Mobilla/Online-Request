@@ -674,11 +674,6 @@ namespace OnlineRequestSystem.Controllers
                             {
                                 ViewBag.MMD = "";
                             }
-                            if (model.reqCreator == ss.s_fullname)
-                            {
-                                ViewBag.Division = "dropdown";
-                                ViewBag.hover = "hoverable";
-                            }
                         }
                         else
                         {
@@ -701,7 +696,7 @@ namespace OnlineRequestSystem.Controllers
                         }
 
 
-                        if ((new[] { "001", "002" }).Contains(ss.s_comp) && ss.s_MMD != 1 && model.Sts_MMD_isDelivered == "1")
+                        if ((new[] { "001", "002" }).Contains(ss.s_comp) && (ss.s_MMD != 1 || (model.reqCreator == ss.s_fullname)) && model.Sts_MMD_isDelivered == "1")
                         {
                             ViewBag.Division = "dropdown";
                             ViewBag.hover = "hoverable";
