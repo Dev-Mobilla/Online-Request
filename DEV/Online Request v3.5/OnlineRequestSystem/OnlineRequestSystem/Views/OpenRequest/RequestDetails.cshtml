@@ -6,14 +6,14 @@
     var mySession = (OnlineRequestSystem.Models.ORSession)Session["UserSession"];
     string sdc = "", mmd = "", div = "", branch = "", BranchOrDivisionName = "";
     if (mySession.s_SDCApprover == 0) { sdc = "disabled"; }
-    if (mySession.s_MMD == 0 || Model.Sts_MMD_isDelivered == "1") { mmd = "disabled"; }
+    if (mySession.s_MMD == 0 || Model.Sts_MMD_isDelivered == "1" || (mySession.s_MMD == 1 && Model.Sts_MMD_isTransit == "1")) { mmd = "disabled"; }
     if (Model.reqCreator != mySession.s_fullname) { div = "disabled"; }
     else if (Model.reqCreator == mySession.s_fullname && Model.Sts_MMD_isDelivered != "1")
     { div = "disabled"; }
     if (Model.reqCreator != mySession.s_fullname) { branch = "disabled"; }
     else if (Model.reqCreator == mySession.s_fullname && Model.Sts_RM_isTransit != "1") { branch = "disabled"; }
     if (Model.Sts_RM_isTransit == "1") { sdc = "disabled"; }
-    else if (mySession.s_SDCApprover == 1 && Model.Sts_MMD_isDelivered == "0") { sdc = "disabled"; };
+    else if ((mySession.s_SDCApprover == 1 && Model.Sts_MMD_isDelivered == "0") || Model.Sts_RM_isReceived == "1") { sdc = "disabled"; };
     if (Model.isDivRequest == 1)
     { BranchOrDivisionName = "Division Name :"; }
     else
@@ -220,13 +220,29 @@
                                         <input type="text" @mmd class="mmdPrice ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
 
                                         <span class="dropdown">
-                                            <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
-                                            <span class="dropdown-menu itemSelectStat">
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
-                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
+                                                <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD" @mmd></i>
+                                                <span class="dropdown-menu itemSelectStat">
+                                                    <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
+                                                    <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
+                                                    <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
+                                                </span>
                                             </span>
+
+                                    @*<span class="dropdown">
+                                        @if (Model.Sts_MMD_isTransit == "1")
+                                        {
+                                            <i class="@item.MMDstatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD" @mmd></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="@item.MMDstatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
+                                        }
+                                        <span class="dropdown-menu itemSelectStat">
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
+                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
                                         </span>
+                                    </span>*@
                                     </center>
 
                                 }
@@ -292,20 +308,20 @@
                                             </span>*@
 
 
-                                    <span class="dropdown">
-                                        @if (Model.reqCreator == mySession.s_fullname && Model.Sts_RM_isTransit != "1")
-                                        {
-                                            <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" disabled></i>
-                                        }
-                                        else
-                                        {
-                                            <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
-                                        }
-                                        <span class="dropdown-menu itemSelect">
-                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                        <span class="dropdown">
+                                            @if (Model.reqCreator == mySession.s_fullname && Model.Sts_RM_isTransit != "1")
+                                            {
+                                                <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" disabled></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
+                                            }
+                                            <span class="dropdown-menu itemSelect">
+                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            </span>
                                         </span>
-                                    </span>
                                     </center>
                                 </td>
                             }

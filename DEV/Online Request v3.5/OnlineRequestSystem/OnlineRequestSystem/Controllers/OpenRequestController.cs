@@ -670,6 +670,10 @@ namespace OnlineRequestSystem.Controllers
                         {
                             ViewBag.MMD = "dropdown";
                             ViewBag.hover = "hoverable";
+                            if(model.Sts_MMD_isTransit == "1")
+                            {
+                                ViewBag.MMD = "";
+                            }
                             if (model.reqCreator == ss.s_fullname)
                             {
                                 ViewBag.Division = "dropdown";
@@ -680,11 +684,16 @@ namespace OnlineRequestSystem.Controllers
                         {
                             ViewBag.MMD = "";
                         }
+                       
 
                         if (ss.s_SDCApprover == 1 && model.Sts_MMD_isDelivered == "1")
                         {
                             ViewBag.SDC = "dropdown";
                             ViewBag.hover = "hoverable";
+                            if (model.Sts_RM_isReceived == "1")
+                            {
+                                ViewBag.SDC = "";
+                            }
                         }
                         else
                         {

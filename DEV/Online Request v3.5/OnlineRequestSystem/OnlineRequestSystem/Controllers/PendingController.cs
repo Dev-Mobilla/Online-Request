@@ -76,6 +76,7 @@ namespace OnlineRequestSystem.Controllers
                         {
                             cmd.CommandText = " SELECT " +
                                               " a.reqNumber,  a.reqCreator, a.reqDescription, COUNT(d.itemDescription) AS TotalCount, a.reqDate, a.TypeID , a.reqTotal, a.BranchCode, a.Region, a.DivCode, " +
+                                              " ( SELECT itemDescription FROM requestItems WHERE reqnumber = a.reqnumber ORDER BY itemDescription ASC LIMIT 1  ) AS Description, " +
                                               " a.Zonecode, a.reqStatus, a.isDivRequest,b.isApprovedLocalDiv, a.DeptCode, a.forPresident," +
                                               " b.isApprovedDM, c.isDMApproval, " +
                                               " b.isApprovedAM, c.isAMApproval, " +
@@ -106,6 +107,7 @@ namespace OnlineRequestSystem.Controllers
                                 var o = new OpenReqViewModel();
                                 o.reqNumber = rdr["reqNumber"].ToString().Trim();
                                 o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
+                                o.itemDescription = rdr["Description"].ToString().Trim();
                                 o.reqDescription = rdr["reqDescription"].ToString().Trim();
                                 o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
