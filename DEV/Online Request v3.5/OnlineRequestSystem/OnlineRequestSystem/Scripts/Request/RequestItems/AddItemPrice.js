@@ -84,10 +84,10 @@ $('#btnSearchID').click(function (e) {
                 if (result.status == true && items.length != 0) {
                     $.each(items, function (index, item) {
                         resultItems.push(`<tr key=${index}>
-                            <td><button onclick=getSelectedPrice('${index}')>Select</button></td>
-                            <td>${item.ItemCode}</td>
-                            <td>${item.ItemDescription}</td>
-                            <td id=Price${index}>${item.ItemPrice}</td>
+                            <td style="text-align: center"><button onclick=getSelectedPrice('${index}') class="btn btn-sm btn-danger">Select</button></td>
+                            <td style="text-align: center">${item.ItemCode}</td>
+                            <td style="text-align: center">${item.ItemDescription}</td>
+                            <td style="text-align: center; padding-left: 3rem" id=Price${index}>${item.ItemPrice}</td>
                         </tr>`)
                     })
                     $('#itemInfo').empty().append(resultItems);

@@ -130,25 +130,22 @@
                 {
                     foreach (var item in Model._OpenInfo)
                     {
-                        if (item.MMD_Processed != 1)
-                        {
-                            <tr class="cellspacer">
-                                <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
-                                <td style="text-align: center">@item.reqDate</td>
-                                <td><center>@item.reqNumber</center></td>
-                                <td title="@item.TypeName"><center>@item.TypeName</center></td>
-                                <td><center>@item.TotalItems</center></td>
-                                <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
-                                <td><center>@item.BranchName</center></td>
-                                <td><center>@item.reqCreator</center></td>
-                                <td>
-                                    <center>
-                                        @item.Region
-                                        <span style="display:none;">@item.BranchCode</span>
-                                    </center>
-                                </td>
-                            </tr>
-                        }
+                        <tr class="cellspacer">
+                            <td style="padding-left:10px;"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></td>
+                            <td style="text-align: center">@item.reqDate</td>
+                            <td><center>@item.reqNumber</center></td>
+                            <td title="@item.TypeName"><center>@item.TypeName</center></td>
+                            <td><center>@item.TotalItems</center></td>
+                            <td><center>@item.itemDescription.ToString().Substring(0, (item.itemDescription.Length > 16) ? 16 : item.itemDescription.Length)</center></td>
+                            <td><center>@item.BranchName</center></td>
+                            <td><center>@item.reqCreator</center></td>
+                            <td>
+                                <center>
+                                    @item.Region
+                                    <span style="display:none;">@item.BranchCode</span>
+                                </center>
+                            </td>
+                        </tr>
                     }
                 }
             </tbody>
