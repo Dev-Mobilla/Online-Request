@@ -83,7 +83,7 @@ $("#InTransitBranch").on('click', function (e) {
                                         message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Redirecting..</p>',
                                         closeButton: false
                                     });
-                                    window.location.href = Url + '/satellite-distribution-center';
+                                    window.location.href = Url + '/sdc?selected=RECEIVED';
                                 }
                             });
                         } else {

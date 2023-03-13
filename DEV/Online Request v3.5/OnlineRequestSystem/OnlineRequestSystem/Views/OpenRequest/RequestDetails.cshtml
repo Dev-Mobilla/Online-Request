@@ -30,7 +30,7 @@
     var ORHeading = string.Empty;
     var isRequest = string.Empty;
 
-    if (Model.POurl == "PO")
+    if ((Model.POurl == "PO" || Model.PO_Approved == "1") && (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873"))
     {
         ORHeading = "ORSHeadingPO";
         isRequest = "PO";
@@ -39,7 +39,7 @@
     else
     {
         ORHeading = "ORSHeading";
-        isRequest = "Open";
+        isRequest = "";
     }
 
 }
@@ -292,20 +292,20 @@
                                             </span>*@
 
 
-                                    <span class="dropdown">
-                                        @if (Model.reqCreator == mySession.s_fullname && Model.Sts_RM_isTransit != "1")
-                                        {
-                                            <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" disabled></i>
-                                        }
-                                        else
-                                        {
-                                            <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
-                                        }
-                                        <span class="dropdown-menu itemSelect">
-                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
-                                            <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                        <span class="dropdown">
+                                            @if (Model.reqCreator == mySession.s_fullname && Model.Sts_RM_isTransit != "1")
+                                            {
+                                                <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" disabled></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="@item.BranchStatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.Branch"></i>
+                                            }
+                                            <span class="dropdown-menu itemSelect">
+                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess"></i>&nbsp; Served</span><br />
+                                                <span class="BranchOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning"></i>&nbsp; Pending</span><br />
+                                            </span>
                                         </span>
-                                    </span>
                                     </center>
                                 </td>
                             }
@@ -405,7 +405,7 @@
             <input type="hidden" id="_overallPrice" />
             <input hidden id="Req" value="@Model.RequestNo" />
             <div hidden><input id="divRequest" value="@Model.isDivRequest" /></div>
-            <input id="isRequest" value="Open" hidden />
+            <input id="isRequest" value="@isRequest" hidden />
 
 
             <!-- Hidden Recommended Approval Values -->
@@ -498,6 +498,7 @@
     <input id="isProcessed" value="@Model.Sts_MMD_isProcessed" hidden />
     <input id="reqTrigger" value="@Model.reqTrigger" hidden />
     <input id="isRequest" value="@isRequest" hidden />
+    <input id="isPO" value="@Model.POurl" hidden />
 }
 @{ Html.RenderPartial("DetailsPartials/_AddItemPrice"); }
 @{ Html.RenderPartial("_CloseReqConfirmation"); }
@@ -510,6 +511,7 @@
 @section scripts{
     <script>
         var ReqNO = $('#Req').val();
+        var isReq = $('#isPO').val()
 
     </script>
     <script type="text/javascript" src="~/Scripts/Request/RequestItems/AddItemPrice.js"></script>
