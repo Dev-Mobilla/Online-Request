@@ -1,10 +1,27 @@
 ﻿$(document).ready(function () {
 
     var isProcessed = $('#isProcessed').val();
+    var MyReqMMD = (typeof $('#isMMDuser').val() == 'undefined') ? 0 : $('#isMMDuser').val();
 
-    if (isProcessed == 1) {
+    if (isProcessed == 1 || MyReqMMD != 1) {
         $('.StockCheckbox').each(function () {
             $(this).attr('disabled', 'disabled');
+        });
+
+        if (typeof $('#split-Req') != 'undefined') {
+            /*document.getElementById("split-Req").style.display = "none"*/
+            $('#split-Req').hide();
+        }
+
+        $('input[name="pricePerItem"]').each(function () {
+            if (document.getElementById(this.id).disabled != true) {
+                document.getElementById(this.id).disabled = true;
+            }
+        });
+        $('.itemPriceBtn').each(function () {
+            if (document.getElementById(this.id).disabled != true) {
+                document.getElementById(this.id).disabled = true;
+            }
         });
     }
 

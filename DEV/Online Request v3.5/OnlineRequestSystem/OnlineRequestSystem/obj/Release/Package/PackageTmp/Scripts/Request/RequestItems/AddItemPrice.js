@@ -70,7 +70,8 @@ function getSelectedPrice(e) {
 }
 
 
-$('#btnSearchID').click(function (e) {
+//Function for Search item price
+function submitSearch() {
     var searchItem = $('#itemSearch').val();
 
     if (searchItem.length != 0) {
@@ -84,10 +85,10 @@ $('#btnSearchID').click(function (e) {
                 if (result.status == true && items.length != 0) {
                     $.each(items, function (index, item) {
                         resultItems.push(`<tr key=${index}>
-                            <td><button onclick=getSelectedPrice('${index}')>Select</button></td>
-                            <td>${item.ItemCode}</td>
-                            <td>${item.ItemDescription}</td>
-                            <td id=Price${index}>${item.ItemPrice}</td>
+                            <td style="text-align: center"><button onclick=getSelectedPrice('${index}') class="btn btn-sm btn-danger" type="button">Select</button></td>
+                            <td style="text-align: center">${item.ItemCode}</td>
+                            <td style="text-align: center">${item.ItemDescription}</td>
+                            <td style="text-align: center; padding-left: 3rem" id=Price${index}>${item.ItemPrice}</td>
                         </tr>`)
                     })
                     $('#itemInfo').empty().append(resultItems);
@@ -104,7 +105,24 @@ $('#btnSearchID').click(function (e) {
     else {
         bootbox.alert("Please input item code or description!");
     }
-});
+}
+
+
+//Search using button
+$('#btnSearchID').click(function (e) {
+    submitSearch();
+    e.preventDefault();
+})
+
+//Search using Enter key
+$(document).keypress(function (e) {
+    if (e.which == 13) {
+        submitSearch();
+    }
+})
+
+
+
 
 
 $('.priceTotal').blur(function (e) {

@@ -1583,9 +1583,10 @@ namespace OnlineRequestSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult StoreComments(string ReqNo, string comment)
+        public ActionResult StoreComments(string ReqNo, string comment)
         {
             var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
             var db = new ORtoMySql();
             try
             {
@@ -1622,9 +1623,10 @@ namespace OnlineRequestSystem.Controllers
         }
 
         //FOR ITEM PRICING: SEARCH PRICE
-        public JsonResult SearchItemPrice(string searchCriteria)
+        public ActionResult SearchItemPrice(string searchCriteria)
         {
             var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
 
             try
             {
