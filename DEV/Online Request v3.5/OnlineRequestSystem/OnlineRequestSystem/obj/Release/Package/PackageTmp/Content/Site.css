@@ -370,3 +370,12 @@ input.input-validation-error {
     margin-top: 2px;
     margin-bottom: 15px;
 }
+
+.items th {
+    background: #d7002b;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+}
+
+

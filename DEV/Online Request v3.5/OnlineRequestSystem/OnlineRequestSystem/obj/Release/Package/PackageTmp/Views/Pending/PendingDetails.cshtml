@@ -123,13 +123,13 @@
                                 <center>
                                     @if (item.isCheckedMMD == 1)
                                     {
-                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" checked />
+                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" checked style="vertical-align: middle; margin: -4px 0 0 0"/>
                                     }
                                     else
                                     {
-                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" />
+                                        <input type="checkbox" @mmd class="ReqDetailsCheckbox" id="chkMMD" value="1" style="vertical-align: middle; margin: -4px 0 0 0"/>
                                     }
-                                    <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
+                                    <input type="text" @mmd class="ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" style="vertical-align: middle; margin: -4px 0 0 0" />
                                     <span class="dropdown">
                                         &nbsp;&nbsp;<i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
                                         <span class="dropdown-menu itemSelect">
@@ -153,7 +153,7 @@
                                         {
                                             <input type="checkbox" @sdc class="ReqDetailsCheckbox" id="chkSDC" value="1" style="vertical-align: middle; margin: -4px 0 0 0" />
                                         }
-                                        <input type="text" @sdc class="ReqDetailsBlock" id="txtSDC" maxlength="6" onblur="sumSDC()" value=@item.actualQtySDC />
+                                        <input type="text" @sdc class="ReqDetailsBlock" id="txtSDC" maxlength="6" onblur="sumSDC()" value=@item.actualQtySDC style="vertical-align: middle; margin: -4px 0 0 0" />
                                         <span class="dropdown">
                                             &nbsp;&nbsp;<i class="@item.SDCStatus dropdown-toggle SDCSelect" style="font-size:16px;" data-toggle="@ViewBag.SDC"></i>
                                             <span class="dropdown-menu itemSelect">

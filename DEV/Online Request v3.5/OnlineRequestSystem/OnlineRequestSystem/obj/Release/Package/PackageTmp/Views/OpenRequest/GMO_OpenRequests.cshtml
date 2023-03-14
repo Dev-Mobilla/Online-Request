@@ -29,13 +29,13 @@
             <thead>
                 <tr>
                     <th class="checkAll"><center><input type="checkbox" class="checkAll thChkbox"></center></th>
-                    <th style="text-align:right">Select</th>
+                    <th style="text-align:center">Select</th>
                     <th class="col-sm-1"><center>Date Created</center></th>
                     <th class="col-sm-2"><center>Request no.</center></th>
                     <th class="col-sm-2"><center>Types</center></th>
-                    <th style="width:6%;"><center>Count</center></th>
+                    <th class="col-sm-1"><center>Count</center></th>
                     <th class="col-sm-1"><center>Price</center></th>
-                    <th class="col-sm-1"><center>Description</center></th>
+                    <th class="col-sm-2"><center>Description</center></th>
                     <th class="col-sm-2"><center>Branch/Division</center></th>
                     <th class="col-sm-2"><center>Author</center></th>
                     <th class="col-sm-2"><center>Region</center></th>
@@ -63,7 +63,7 @@
                                 }
 
                                 <td><center><button style="background-color: firebrick" class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl, PO = "PO" })'">Show Details</button></center></td>
-                                <td style="text-align: center">@item.reqDate</td>
+                                <td style="text-align:center" data-sort='@item.sortreqDate'>@item.reqDate</td>
                                 <td><center>@item.reqNumber</center></td>
                                 <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                 <td><center>@item.TotalItems</center></td>
@@ -77,7 +77,7 @@
                                         <span style="display:none;">@item.BranchCode</span>
                                     </center>
                                 </td>
-                                <td><center><span class="glyphicon glyphicon-comment" style="color:gray"></span></center></td>
+                                <td><center><span class="glyphicon glyphicon-comment" style="font-size: 17px;color:grey"></span></center></td>
                             </tr>
                         }
                     }
@@ -110,7 +110,7 @@
                     <th class="col-sm-1"><center>Date Created</center></th>
                     <th class="col-sm-2"><center>Request no.</center></th>
                     <th class="col-sm-2"><center>Types</center></th>
-                    <th style="width:6%;"><center>Count</center></th>
+                    <th class="col-sm-1"><center>Count</center></th>
                     <th class="col-sm-1"><center>Description</center></th>
                     <th class="col-sm-2"><center>Branch/Division</center></th>
                     <th class="col-sm-2"><center>Author</center></th>
@@ -135,7 +135,7 @@
                                 }
 
                                 <td><center><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region, retUrl = Model.returnUrl })'">Show Details</button></center></td>
-                                <td style="text-align: center">@item.reqDate</td>
+                                <td style="text-align:center" data-sort='@item.sortreqDate'>@item.reqDate</td>
                                 <td><center>@item.reqNumber</center></td>
                                 <td title="@item.TypeName"><center>@item.TypeName</center></td>
                                 <td><center>@item.TotalItems</center></td>

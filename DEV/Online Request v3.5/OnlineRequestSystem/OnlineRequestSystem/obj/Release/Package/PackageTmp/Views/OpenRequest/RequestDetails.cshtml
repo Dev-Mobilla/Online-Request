@@ -33,13 +33,26 @@
     if ((Model.POurl == "PO" || Model.PO_Approved == "1") && (mySession.s_task == "GMO-GENMAN" || mySession.s_MMD == 1 || mySession.s_usr_id == "LHUI1011873"))
     {
         ORHeading = "ORSHeadingPO";
-        isRequest = "PO";
+
+        if (mySession.s_MMD == 1)
+        {
+            isRequest = "PO";
+        }
+        else
+        {
+            isRequest = "";
+        }
 
     }
     else
     {
         ORHeading = "ORSHeading";
         isRequest = "";
+
+        if (mySession.s_MMD == 1)
+        {
+            isRequest = "PO";
+        }
     }
 
 }
@@ -188,7 +201,7 @@
                                         else
                                         {
                                             <center>
-                                                <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                                <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
                                                 @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                             </center>
                                         }
@@ -197,7 +210,7 @@
                                     else if (mySession.s_task == "GMO-GENMAN" || mySession.s_usr_id == "LHUI1011873")
                                     {
                                         <center>
-                                            <span><button type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
+                                            <span><button class="itemPriceBtn" type="button" id="@newID" onclick="addPriceModal('@quantity', '@priceNewID')" style="font-size:13px" disabled>₱</button></span>
                                             @Html.TextBoxFor(m => totalPriceVal, new { @style = "width:75%; margin-left:2px", @id = @priceNewID, @type = "text", @Name = "pricePerItem", @disabled = "disabled" })
                                         </center>
                                     }
@@ -220,29 +233,29 @@
                                         <input type="text" @mmd class="mmdPrice ReqDetailsBlock" id="txtMMD" value="@item.actualQtyMMD" maxlength="6" />
 
                                         <span class="dropdown">
-                                                <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD" @mmd></i>
+                                            <i class="@item.MMDstatus dropdown-toggle MMDSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD" @mmd></i>
+                                            <span class="dropdown-menu itemSelectStat">
+                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
+                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
+                                                <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
+                                            </span>
+                                        </span>
+
+                                        @*<span class="dropdown">
+                                                @if (Model.Sts_MMD_isTransit == "1")
+                                                {
+                                                    <i class="@item.MMDstatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD" @mmd></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="@item.MMDstatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
+                                                }
                                                 <span class="dropdown-menu itemSelectStat">
                                                     <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
                                                     <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
                                                     <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
                                                 </span>
-                                            </span>
-
-                                    @*<span class="dropdown">
-                                        @if (Model.Sts_MMD_isTransit == "1")
-                                        {
-                                            <i class="@item.MMDstatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD" @mmd></i>
-                                        }
-                                        else
-                                        {
-                                            <i class="@item.MMDstatus dropdown-toggle BranchSelect" style="font-size:16px;" data-toggle="@ViewBag.MMD"></i>
-                                        }
-                                        <span class="dropdown-menu itemSelectStat">
-                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-check-circle txtSuccess stat" data-value="Served"></i>&nbsp; Served</span><br />
-                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-share-square-o txtWarning stat" data-value="Pending"></i>&nbsp; Pending</span><br />
-                                            <span class="MMDOptions"><i style="font-size:16px" class="fa fa-window-close txtDanger stat" data-value="Cancelled"></i>&nbsp; Cancelled</span><br />
-                                        </span>
-                                    </span>*@
+                                            </span>*@
                                     </center>
 
                                 }
