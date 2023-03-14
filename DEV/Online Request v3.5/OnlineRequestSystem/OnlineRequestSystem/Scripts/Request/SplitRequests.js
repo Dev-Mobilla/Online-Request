@@ -23,9 +23,8 @@
                 document.getElementById(this.id).disabled = true;
             }
         });
-
     }
-    
+
 });
 
 $('#split-Req').on('click', function () {
