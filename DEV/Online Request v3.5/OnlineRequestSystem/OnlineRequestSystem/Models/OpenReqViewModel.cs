@@ -6,12 +6,15 @@ namespace OnlineRequestSystem.Models
     {
         #region Open Request View Models
 
+        public string isMyReqPO { get; set; }
         public int numOfNotifs { get; set; }
         public string reqNumber { get; set; }
         public string reqCreator { get; set; }
         public string reqDescription { get; set; }
         public string OverallTotalPrice { get; set; }
         public string reqDate { get; set; }
+        public string sortreqDate { get; set; }
+
         public string reqStatus { get; set; }
         public string TypeID { get; set; }
         public string TypeName { get; set; }
@@ -23,8 +26,6 @@ namespace OnlineRequestSystem.Models
         public string TotalItems { get; set; }
         public string itemDescription { get; set; }
         public string HOTotalPrice { get; set; }
-
-
 
         public string DeptCode { get; set; }
         public string forPresident { get; set; }

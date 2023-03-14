@@ -48,7 +48,13 @@ namespace OnlineRequestSystem.Service
                             o.reqCreator = read["reqCreator"].ToString().Trim();
                             o.reqDescription = read["reqDescription"].ToString().Trim();
                             o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
-                            o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                            //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                            var dt = Convert.ToDateTime(read["reqDate"].ToString());
+                            var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                            var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                            var year = dt.Year.ToString();
+                            o.sortreqDate = year + month + day;
+                            o.reqDate = month + "/" + day + "/" + year;
                             o.TypeID = read["TypeID"].ToString().Trim();
                             o.TotalItems = read["TotalCount"].ToString().Trim();
                             o.itemDescription = read["Description"].ToString().Trim();
@@ -124,7 +130,7 @@ namespace OnlineRequestSystem.Service
                         {
                             cmd2.Parameters.Clear();
                             read.Read();
-                            item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);                            
+                            item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
                         }
                     }
                 }
@@ -162,7 +168,13 @@ namespace OnlineRequestSystem.Service
                         o.reqCreator = read["reqCreator"].ToString().Trim();
                         o.reqDescription = read["reqDescription"].ToString().Trim();
                         o.OverallTotalPrice = read["OverallTotalPrice"].ToString().Trim();
-                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                        //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                        var dt = Convert.ToDateTime(read["reqDate"].ToString());
+                        var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                        var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                        var year = dt.Year.ToString();
+                        o.sortreqDate = year + month + day;
+                        o.reqDate = month + "/" + day + "/" + year;
                         o.TypeID = read["TypeID"].ToString().Trim();
                         o.TotalItems = read["TotalCount"].ToString().Trim();
                         o.itemDescription = read["Description"].ToString().Trim();
@@ -271,7 +283,13 @@ namespace OnlineRequestSystem.Service
                             o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                             o.reqDescription = rdr["reqDescription"].ToString().Trim();
                             o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
-                            o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                            //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                            var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                            var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                            var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                            var year = dt.Year.ToString();
+                            o.sortreqDate = year + month + day;
+                            o.reqDate = month + "/" + day + "/" + year;
                             o.TypeID = rdr["TypeID"].ToString().Trim();
                             o.TotalItems = rdr["TotalCount"].ToString().Trim();
                             o.itemDescription = rdr["Description"].ToString().Trim();
@@ -360,7 +378,13 @@ namespace OnlineRequestSystem.Service
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
                         o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
-                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                        //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                        var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                        var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                        var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                        var year = dt.Year.ToString();
+                        o.sortreqDate = year + month + day;
+                        o.reqDate = month + "/" + day + "/" + year;
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = rdr["TotalCount"].ToString().Trim();
                         o.itemDescription = rdr["Description"].ToString().Trim();
@@ -473,7 +497,14 @@ namespace OnlineRequestSystem.Service
                         o.reqNumber = rdr["reqNumber"].ToString().Trim();
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
-                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+
+                        var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                        var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                        var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                        var year = dt.Year.ToString();                       
+                        o.sortreqDate = year + month + day;
+                        o.reqDate = month + "/" + day + "/" + year;
+
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = Convert.ToString(rdr["TotalCount"].ToString().Trim());
                         o.itemDescription = rdr["Description"].ToString().Trim();
@@ -563,7 +594,13 @@ namespace OnlineRequestSystem.Service
                         o.reqNumber = rdr["reqNumber"].ToString().Trim();
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
-                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                        //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                        var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                        var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                        var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                        var year = dt.Year.ToString();
+                        o.sortreqDate = year + month + day;
+                        o.reqDate = month + "/" + day + "/" + year;
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = Convert.ToString(rdr["TotalCount"].ToString().Trim());
                         o.itemDescription = rdr["Description"].ToString().Trim();
@@ -651,7 +688,13 @@ namespace OnlineRequestSystem.Service
                         o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                         o.reqDescription = rdr["reqDescription"].ToString().Trim();
                         o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
-                        o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                        //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                        var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                        var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                        var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                        var year = dt.Year.ToString();
+                        o.sortreqDate = year + month + day;
+                        o.reqDate = month + "/" + day + "/" + year;
                         o.TypeID = rdr["TypeID"].ToString().Trim();
                         o.TotalItems = rdr["TotalCount"].ToString().Trim();
                         o.itemDescription = rdr["Description"].ToString().Trim();
@@ -713,6 +756,7 @@ namespace OnlineRequestSystem.Service
                         o.MMD_Processed = Convert.ToInt32(rdr["isMMDProcessed"]);
                         o.MMD_ForDelivery = Convert.ToInt32(rdr["isDelivered"]);
                         o.MMD_InTransit = Convert.ToInt32(rdr["isMMDTransit"]);
+                        o.isMyReqPO = rdr["isPO_Approved"].ToString();
 
                         #endregion Read data from database
 
@@ -721,7 +765,7 @@ namespace OnlineRequestSystem.Service
                     conn.Close();
                     rdr.Close();
                 }
-                if(PO == "PO")
+                if (PO == "PO")
                 {
                     conn.Open();
                     var cmd2 = conn.CreateCommand();
@@ -741,8 +785,8 @@ namespace OnlineRequestSystem.Service
                 }
                 Info._OpenInfo = OpenReqList;
                 return new OpenReqInfo { _OpenInfo = Info._OpenInfo };
+            }
         }
-    }
 
         public OpenReqInfo LocalRequests(ORSession ss, string div_dept, string PO)
         {
@@ -790,7 +834,13 @@ namespace OnlineRequestSystem.Service
                             o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                             o.reqDescription = rdr["reqDescription"].ToString().Trim();
                             o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
-                            o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                            //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                            var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                            var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                            var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                            var year = dt.Year.ToString();
+                            o.sortreqDate = year + month + day;
+                            o.reqDate = month + "/" + day + "/" + year;
                             o.TypeID = rdr["TypeID"].ToString().Trim();
                             o.TotalItems = rdr["TotalCount"].ToString().Trim();
                             o.itemDescription = rdr["Description"].ToString().Trim();
@@ -864,7 +914,7 @@ namespace OnlineRequestSystem.Service
                     }
                 }
 
-                if(PO == "PO")
+                if (PO == "PO")
                 {
                     conn.Open();
                     var cmd2 = conn.CreateCommand();
@@ -887,7 +937,7 @@ namespace OnlineRequestSystem.Service
             Info._OpenInfo = OpenReqList;
             return new OpenReqInfo { _OpenInfo = Info._OpenInfo };
         }
-            
+
 
 
         private string ZoneSelector(string zone)

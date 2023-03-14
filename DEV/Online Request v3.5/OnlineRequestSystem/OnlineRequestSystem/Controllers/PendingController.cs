@@ -109,7 +109,13 @@ namespace OnlineRequestSystem.Controllers
                                 o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                                 o.itemDescription = rdr["Description"].ToString().Trim();
                                 o.reqDescription = rdr["reqDescription"].ToString().Trim();
-                                o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                                var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                                var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                                var year = dt.Year.ToString();
+                                o.sortreqDate = year + month + day;
+                                o.reqDate = month + "/" + day + "/" + year;
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
                                 o.TypeName = help.GetTypeName(o.TypeID);
                                 o.TotalItems = rdr["TotalCount"].ToString().Trim();

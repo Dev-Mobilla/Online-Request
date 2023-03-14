@@ -28,7 +28,7 @@
                 {
                     <tr class="cellspacer">
                         <td style="text-align:center"><button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("closeRequestDetails", "CloseRequest", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region })'">Show Details</button></td>
-                        <td style="text-align:center"><center>@item.closedDate</center></td>
+                        <td style="text-align:center" data-sort='@item.sortreqDate'>@item.closedDate</td>
                         <td style="text-align:center"> @item.reqNumber</td>
                         <td style="text-align:center">@item.TypeName</td>
                         <td style="text-align:center">@item.TotalCount</td>
@@ -55,7 +55,7 @@
     <script src="~/Scripts/table/dataTables.min.js"></script>
     <script>
         $('#CloseTable').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
 
         $(".table_link").on("click", function () {

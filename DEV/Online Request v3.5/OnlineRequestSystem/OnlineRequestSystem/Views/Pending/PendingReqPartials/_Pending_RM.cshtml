@@ -23,19 +23,20 @@
         {
             foreach (var item in Model._OpenInfo)
             {
-                <tr class="cellspacer">
-                    <td style="text-align:center"><button class="btn btn-sm btn-warning btnPending" onclick="location.href='@Url.Action("PendingDetails", "Pending", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
-                    <td style="text-align:center">@item.reqDate</td>
-                    <td style="text-align:center">@item.reqNumber</td>
-                    <td style="text-align:center">@item.TypeName</td>
-                    <td style="text-align:center">@item.TotalItems</td>
-                    <td style="text-align:center">@item.BranchName</td>
-                    <td style="text-align:center">@item.reqCreator</td>
-                    <td style="text-align:center">
-                        @item.Region
-                        <span style="display:none;">@item.BranchCode</span>
-                    </td>
-                </tr>
+        <tr class="cellspacer">
+            <td style="text-align:center"><button class="btn btn-sm btn-warning btnPending" onclick="location.href='@Url.Action("PendingDetails", "Pending", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
+            <td style="text-align:center" data-sort='@item.sortreqDate'>@item.reqDate</td>
+            <td style="text-align:center">@item.reqNumber</td>
+            <td style="text-align:center">@item.TypeName</td>
+            <td style="text-align:center">@item.TotalItems</td>
+            <td style="text-align:center">@item.itemDescription</td>
+            <td style="text-align:center">@item.BranchName</td>
+            <td style="text-align:center">@item.reqCreator</td>
+            <td style="text-align:center">
+                @item.Region
+                <span style="display:none;">@item.BranchCode</span>
+            </td>
+        </tr>
             }
         }
     </tbody>

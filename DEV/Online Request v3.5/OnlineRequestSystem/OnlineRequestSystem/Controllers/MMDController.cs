@@ -1659,9 +1659,10 @@ namespace OnlineRequestSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult SplitRequest(string ReqNo, List<string> PricePerItem, string InStock, string OutOfStock)
+        public ActionResult SplitRequest(string ReqNo, List<string> PricePerItem, string InStock, string OutOfStock)
         {
             var ss = (ORSession)Session["UserSession"];
+            if (ss == null) return RedirectToAction("Logout", "Userlogin");
             CreateReqModels model = new CreateReqModels();
 
             try
@@ -1670,7 +1671,20 @@ namespace OnlineRequestSystem.Controllers
                 var OutOfStockObj = JsonConvert.DeserializeObject<List<object>>(OutOfStock);
                 var db = new ORtoMySql();
                 var toTC = new CultureInfo("en-US", false).TextInfo;
-                string[] tbl = { "OROpen", "RAS", "OREscalation", "ORDiag" };
+
+                var isDiag = set.DiagnosticCheck(ReqNo);
+
+                string[] tables = { "OROpen", "RAS", "OREscalation" };
+                List<string> list = new List<string>();
+                list.AddRange(tables);
+
+                if (isDiag == 1)
+                {
+                    list.Add("ORDiag");
+                }
+
+                String[] tbl = list.ToArray();
+
                 var table_Name = string.Empty;
 
                 var newReqNo = ReqNo + "-A";
@@ -1754,10 +1768,7 @@ namespace OnlineRequestSystem.Controllers
                                     }
                                     else
                                     {
-                                        if (set.DiagnosticCheck(ReqNo) == 1)
-                                        {
-                                            table_Name = "OnlineRequest.diagnosticFiles";
-                                        }
+                                        table_Name = "OnlineRequest.diagnosticFiles";
                                     }
 
                                     cmd2.CommandText = "INSERT INTO " + table_Name + " ( " + SplitReqQueries(tbl[i]) + " ) " +
