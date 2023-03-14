@@ -567,7 +567,13 @@ namespace OnlineRequestSystem.Controllers
                             o.reqCreator = toTC.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                             o.reqDescription = rdr["reqDescription"].ToString().Trim();
                             o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
-                            o.closedDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["ClosedDate"].ToString()));
+                            //o.closedDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["ClosedDate"].ToString()));
+                            var dt = Convert.ToDateTime(rdr["ClosedDate"].ToString());
+                            var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                            var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                            var year = dt.Year.ToString();
+                            o.sortreqDate = year + month + day;
+                            o.closedDate = month + "/" + day + "/" + year;
                             o.TypeID = rdr["TypeID"].ToString().Trim();
 
                             o.BranchCode = rdr["BranchCode"].ToString().Trim();

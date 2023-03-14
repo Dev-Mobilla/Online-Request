@@ -102,7 +102,13 @@ namespace OnlineRequestSystem.Controllers
                                     o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
                                 }
 
-                                o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                                var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                                var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                                var year = dt.Year.ToString();
+                                o.sortreqDate = year + month + day;
+                                o.reqDate = month + "/" + day + "/" + year;
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
 
                                 string typeName = "";
@@ -241,7 +247,13 @@ namespace OnlineRequestSystem.Controllers
                                 o.reqCreator = Culture.ToTitleCase(rdr["reqCreator"].ToString().Trim().ToLower());
                                 o.reqDescription = rdr["reqDescription"].ToString().Trim();
                                 o.OverallTotalPrice = rdr["OverallTotalPrice"].ToString().Trim();
-                                o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(rdr["reqDate"].ToString()));
+                                var dt = Convert.ToDateTime(rdr["reqDate"].ToString());
+                                var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                                var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                                var year = dt.Year.ToString();
+                                o.sortreqDate = year + month + day;
+                                o.reqDate = month + "/" + day + "/" + year;
                                 o.TypeID = rdr["TypeID"].ToString().Trim();
 
                                 string typeName = "";
@@ -495,12 +507,6 @@ namespace OnlineRequestSystem.Controllers
                                 model.Sts_RM_Transit_Date = rdr["RM_Transit_Date"].ToString().Trim();
                                 model.Sts_RM_isTransit = rdr["isRMTransit"].ToString().Trim();
 
-                                if (model.Sts_MMD_isProcessed == "1")
-                                {
-
-                                }
-
-
                                 #endregion Read Approver Status
                             }
                             con.Close();
@@ -670,7 +676,7 @@ namespace OnlineRequestSystem.Controllers
                         {
                             ViewBag.MMD = "dropdown";
                             ViewBag.hover = "hoverable";
-                            if(model.Sts_MMD_isTransit == "1")
+                            if (model.Sts_MMD_isTransit == "1")
                             {
                                 ViewBag.MMD = "";
                             }
@@ -679,7 +685,7 @@ namespace OnlineRequestSystem.Controllers
                         {
                             ViewBag.MMD = "";
                         }
-                       
+
 
                         if (ss.s_SDCApprover == 1 && model.Sts_MMD_isDelivered == "1")
                         {

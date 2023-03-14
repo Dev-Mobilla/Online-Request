@@ -40,7 +40,7 @@
                 {
                     <tr class="cellspacer">
                         <td style="text-align:center"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
-                        <td style="text-align:center"><center>@item.reqDate</center></td>
+                        <td style="text-align:center">@item.reqDate</td>
                         <td style="text-align:center">@item.reqNumber</td>
                         <td style="text-align:center">@item.TypeName</td>
                         <td style="text-align:center">@item.TotalItems</td>

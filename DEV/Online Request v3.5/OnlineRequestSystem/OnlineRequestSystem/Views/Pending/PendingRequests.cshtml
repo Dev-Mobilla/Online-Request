@@ -69,7 +69,7 @@
                                 {
                                     <tr class="cellspacer">
                                         <td style="text-align:center"><button class="btn btn-sm btn-warning" style="border-color:#bf360c85;background-color:#ff5722" onclick="location.href='@Url.Action("PendingDetails", "Pending", new { ReqNo = item.reqNumber, BranchCode = item.BranchCode, ZoneCode = @item.ZoneCode, Region = @item.Region })'">Show Details</button></td>
-                                        <td style="text-align:center">@item.reqDate</td>
+                                        <td style="text-align:center" data-sort='@item.sortreqDate'>@item.reqDate</td>
                                         <td style="text-align:center">@item.reqNumber</td>
                                         <td style="text-align:center">@item.TypeName</td>
                                         <td style="text-align:center">@item.TotalItems</td>
@@ -101,28 +101,28 @@
   
     <script>
         $('#MMDOpenRequest').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#BMorOthers').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#AMOpen').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#DeptOpenReq').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#DivisionOpenReq').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#GMOpen').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#PresidentOpen').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
         $('#RMOpen').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true
         });
 
         $(".table_link").on("click", function () {

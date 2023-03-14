@@ -25,7 +25,7 @@
             {
                 <tr class="cellspacer">
                     <td style="text-align:center"><button class="btn btn-sm btn-warning btnPending" onclick="location.href='@Url.Action("PendingDetails", "Pending", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
-                    <td style="text-align:center">@item.reqDate</td>
+                    <td style="text-align:center" data-sort='@item.sortreqDate'>@item.reqDate</td>
                     <td style="text-align:center">@item.reqNumber</td>
                     <td style="text-align:center">@item.TypeName</td>
                     <td style="text-align:center">@item.TotalItems</td>
