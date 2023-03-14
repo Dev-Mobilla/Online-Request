@@ -43,7 +43,7 @@
     $('#DivisionOpenReq').DataTable({
         stateSave: true,
         "order": [[2, "asc"]],
-        "aoColumns": [
+        columns: [
             { orderable: false },
             { orderable: false },
             null, null, null, null, null, null, null, null

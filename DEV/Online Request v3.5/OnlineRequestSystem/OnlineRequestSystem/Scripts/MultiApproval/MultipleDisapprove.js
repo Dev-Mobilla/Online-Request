@@ -21,7 +21,14 @@
 
                 $(".chkBox:checkbox:checked").each(function () {
                     ReqNolist.push($(this).closest("tr").find('td:eq(3)').text());
-                    ForPOList.push($(this).closest("tr").find('td:eq(12)').text());
+
+                    if ($(this).closest("tr").find('.ForPO').val() != 1) {
+                        ForPOList.push("0");
+                    }
+                    else {
+                        ForPOList.push($(this).closest("tr").find('.ForPO').val());
+                    }
+                    
                 });
 
                 $.ajax({

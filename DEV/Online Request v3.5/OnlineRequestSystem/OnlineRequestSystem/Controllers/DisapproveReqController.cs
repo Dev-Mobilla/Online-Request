@@ -316,7 +316,7 @@ namespace OnlineRequestSystem.Controllers
                         case "Pres":
                             if (mod.ForPO == 1)
                             {
-                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_PO_Name = @E_Pres_PO_Name, EscalationPres_PO_Date = @E_Pres_PO_Date , EscalationPres_Remarks = @Remarks WHERE reqNumber = @ReqNo";
+                                cmd.CommandText = "UPDATE OnlineRequest.onlineRequest_Escalation SET EscalationPres_PO_Name = @E_Pres_PO_Name, EscalationPres_PO_Date = @E_Pres_PO_Date , EscalationPres_PO_Remarks = @Remarks WHERE reqNumber = @ReqNo";
                                 cmd.Parameters.AddWithValue("@E_Pres_PO_Name", mod.E_Pres_POName);
                                 cmd.Parameters.AddWithValue("@E_Pres_PO_Date", Convert.ToDateTime(mod.E_Pres_PODate));
                             }
