@@ -549,37 +549,76 @@ namespace OnlineRequestSystem.Controllers
         public ActionResult CheckRequest(string reqCreator)
         {
             ORSession mySession = (ORSession)Session["UserSession"];
-            var db = new ORtoMySql();
-            using (var conn = db.getConnection())
-            {
-                var cmd = conn.CreateCommand();
+            if (mySession == null) return RedirectToAction("Logout", "Userlogin");
 
-                cmd.CommandText = "SELECT * FROM OnlineRequest.onlineRequest_Open WHERE reqCreator = @reqCreator AND reqStatus = 'OPEN'";
-                cmd.Parameters.AddWithValue("@reqCreator", reqCreator.ToString().Trim());
-                cmd.CommandTimeout = 0;
-                conn.Open();
-                using (var read = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+            var db = new ORtoMySql();
+
+            try
+            {
+                string query = string.Empty;
+
+                if (mySession.isDivRequest == 0)
                 {
-                    if (read.HasRows)
+                    query = "SELECT * FROM OnlineRequest.onlineRequest_Open a " +
+                            "INNER JOIN OnlineRequest.requestApproverStatus b " +
+                            "ON a.reqNumber = b.reqNumber " +
+                            "WHERE a.reqCreator = @reqCreator " +
+                            "AND b.isMMDProcessed = 1 " +
+                            "AND b.isDelivered = 1 " +
+                            "AND b.isMMDTransit = 1 " +
+                            "AND b.isRMReceived = 1 " +
+                            "AND b.isRMTransit = 1 ";
+                }
+                else
+                {
+                    query = "SELECT * FROM OnlineRequest.onlineRequest_Open a " +
+                            "INNER JOIN OnlineRequest.requestApproverStatus b " +
+                            "ON a.reqNumber = b.reqNumber " +
+                            "WHERE a.reqCreator = @reqCreator " +
+                            "AND b.isMMDProcessed = 1 " +
+                            "AND b.isDelivered = 1 " +
+                            "AND b.isMMDTransit = 1 ";
+                }
+
+                using (var conn = db.getConnection())
+                {
+                    var cmd = conn.CreateCommand();
+
+                    cmd.CommandText = query;
+                    cmd.Parameters.AddWithValue("@reqCreator", reqCreator.ToString().Trim());
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    using (var read = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                     {
-                        return Json(new
+                        if (read.HasRows)
                         {
-                            status = true,
-                            msg = "Unable to create new request. Please advise to close your recent requests."
-                        }, JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        return Json(new
+                            return Json(new
+                            {
+                                status = true,
+                                msg = "Unable to create new request. Please advise to close your recent requests."
+                            }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
                         {
-                            status = false,
-                            msg = "Able to create request."
-                        }, JsonRequestBehavior.AllowGet);
+                            return Json(new
+                            {
+                                status = false,
+                                msg = "Able to create request."
+                            }, JsonRequestBehavior.AllowGet);
+                        }
                     }
                 }
             }
+            catch (Exception x)
+            {
+                log.Fatal(x.Message);
+
+                return Json(new
+                {
+                    status = true,
+                    msg = "Unable to create new request. An error has occured."
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
-
-
     }
 }
