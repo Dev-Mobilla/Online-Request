@@ -12,6 +12,7 @@ namespace OnlineRequestSystem.Models
         public string reqCreator { get; set; }
         public string reqDescription { get; set; }
         public string reqDate { get; set; }
+        public string sortreqDate { get; set; }
         public string reqStatus { get; set; }
         public string closedDate { get; set; }
         public string TypeID { get; set; }

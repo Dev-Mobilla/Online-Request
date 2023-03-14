@@ -40,7 +40,7 @@
                 {
                     <tr class="cellspacer">
                         <td style="text-align:center"><button class="btn btn-sm btn-danger" onclick="location.href='@Url.Action("RequestDetails", "OpenRequest", new { ReqNo = item.reqNumber , BranchCode = item.BranchCode , ZoneCode = @item.ZoneCode , Region = @item.Region })'">Show Details</button></td>
-                        <td style="text-align:center"><center>@item.reqDate</center></td>
+                        <td style="text-align:center">@item.reqDate</td>
                         <td style="text-align:center">@item.reqNumber</td>
                         <td style="text-align:center">@item.TypeName</td>
                         <td style="text-align:center">@item.TotalItems</td>
@@ -66,8 +66,23 @@
     <script src="~/Scripts/table/jquery.dataTables.min.js"></script>
     <script src="~/Scripts/table/dataTables.min.js"></script>
     <script>
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "date-uk-pre": function (a) {
+                var ukDatea = a.split('/');
+                return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+            },
+
+            "date-uk-asc": function (a, b) {
+                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+            },
+
+            "date-uk-desc": function (a, b) {
+                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+            }
+        });
+
         $('#MMDprocesses').DataTable({
-            "order": [[0, "desc"]], "bSort": false, stateSave: true
+            "order": [[1, "asc"]], "bSort": false, stateSave: true, columnDefs: [{ "sType": "date-uk", targets: 1 }]
         });
 
         $(".MMDprocesses").on("click", function () {

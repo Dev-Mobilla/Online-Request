@@ -1,51 +1,52 @@
 ﻿$(document).ready(function () {
-    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-        "date-uk-pre": function (a) {
-            var ukDatea = a.split('/');
-            return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
-        },
+    //jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+    //    "date-uk-pre": function (a) {
+    //        console.log(a)
+    //        var ukDatea = a.split('/');
+    //        return (ukDatea[2] + ukDatea[1] + ukDatea[0]) * 1;
+    //    },
 
-        "date-uk-asc": function (a, b) {
-            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-        },
+    //    "date-uk-asc": function (a, b) {          
+    //        return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+    //    },
 
-        "date-uk-desc": function (a, b) {
-            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
-        }
-    });
+    //    "date-uk-desc": function (a, b) {
+    //        return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+    //    }
+    //});
 
     $('#BMorOthers').DataTable({
-        "order": [[2, "asc"]], "bSort": false, stateSave: true, columnDefs: [{ "sType": "date-uk", targets: 2 }]
+        "order": [[2, "asc"]], "bSort": false, stateSave: true
     });
     $('#AMOpen').DataTable({
-        "order": [[2, "asc"]], "bSort": false, stateSave: true, columnDefs: [{ "sType": "date-uk", targets: 2 }]
+        "order": [[2, "asc"]], "bSort": false, stateSave: true
     });
     $('#DeptOpenReq').DataTable({
-        "order": [[2, "asc"]], "bSort": false, stateSave: true, columnDefs: [{ "sType": "date-uk", targets: 2 }]
+        "order": [[2, "asc"]], "bSort": false, stateSave: true
     });
     $('#RMOpen').DataTable({
-        "order": [[2, "asc"]], "bSort": false, stateSave: true, columnDefs: [{ "sType": "date-uk", targets: 2 }]
+        "order": [[2, "asc"]], "bSort": false, stateSave: true
     });
 
     $('#ReqI').DataTable({
-        "order": [[1, "asc"]], "bSort": false, stateSave: true, columnDefs: [{ "sType": "date-uk", targets: 2 }]
+        "order": [[1, "asc"]], "bSort": false, stateSave: true
     });
     $('#ReqII').DataTable({
         stateSave: true,
         "order": [[1, "asc"]],
         columns: [
             { orderable: false },
-            { "sType": "date-uk" },null, null, null, null, null, null, null
+            null,null, null, null, null, null, null, null
         ],
     });
 
     $('#DivisionOpenReq').DataTable({
         stateSave: true,
         "order": [[2, "asc"]],
-        columns: [
+        "aoColumns": [
             { orderable: false },
             { orderable: false },
-            { "sType": "date-uk" }, null, null, null, null, null, null, null
+            null, null, null, null, null, null, null, null
         ]
     });
 
@@ -55,7 +56,7 @@
         columns: [
             { orderable: false },
             { orderable: false },
-            { "sType": "date-uk" }, null, null, null, null, null, null, null
+            null, null, null, null, null, null, null, null
         ]
     });
     $('#PresidentOpen').DataTable({
@@ -64,7 +65,7 @@
         columns: [
             { orderable: false },
             { orderable: false },
-            { "sType": "date-uk" }, null, null, null, null, null, null, null
+            null, null, null, null, null, null, null, null
         ]
     });
 
@@ -73,7 +74,7 @@
         "order": [[1, "asc"]],
         columns: [
             { orderable: false },
-            { "sType": "date-uk" }, null, null, null, null, null, null, null
+            null, null, null, null, null, null, null, null
         ],
 
     });
@@ -86,7 +87,7 @@
         columns: [
             { orderable: false },
             { orderable: false },
-            { "sType": "date-uk" }, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null,
             { orderable: false }
         ],
         stateSave: true,
@@ -130,7 +131,7 @@
         "order": [[1, "asc"]],
         columns: [
             { orderable: false },
-            { "sType": "date-uk" }, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null,
             { orderable: false }
         ],
         stateSave: true,
