@@ -186,7 +186,6 @@ namespace OnlineRequestSystem.Controllers
                         }
 
                         Info.POurl = "PO";
-
                     }
                     else
                     {
@@ -379,6 +378,27 @@ namespace OnlineRequestSystem.Controllers
                             o.MMD_InTransit = Convert.ToInt32(rdr["isMMDTransit"]);
 
                             OpenReqList.Add(o);
+                        }
+                        conn.Close();
+                        rdr.Close();
+                    }
+
+                    if (type == "PO")
+                    {
+                        conn.Open();
+                        var cmd2 = conn.CreateCommand();
+
+                        foreach (var item in OpenReqList.ToList())
+                        {
+                            cmd2.CommandText = "SELECT COUNT(*) AS numOfNotify FROM OnlineRequest.storedComments WHERE reqNumber = @reqNo AND (isViewedBy IS NULL OR isViewedOn IS NULL) AND commCreator = 'Michael L. Lhuillier'";
+                            cmd2.Parameters.AddWithValue("@reqNo", item.reqNumber);
+                            cmd2.Parameters.AddWithValue("@viewer", mySession.s_fullname);
+                            using (var read = cmd2.ExecuteReader())
+                            {
+                                cmd2.Parameters.Clear();
+                                read.Read();
+                                item.numOfNotifs = Convert.ToInt32(read["numOfNotify"]);
+                            }
                         }
                     }
                     Info.office = office;
