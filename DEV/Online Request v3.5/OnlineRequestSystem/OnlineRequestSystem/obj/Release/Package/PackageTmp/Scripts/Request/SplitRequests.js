@@ -100,7 +100,7 @@ $('#split-Req').on('click', function () {
                                         size: "small",
                                         callback: function () {
                                             var dialog = bootbox.dialog({
-                                                message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Redirecting..</p>',
+                                                message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Reloading..</p>',
                                                 closeButton: false
                                             });
 

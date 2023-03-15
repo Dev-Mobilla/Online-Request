@@ -46,7 +46,13 @@ namespace OnlineRequestSystem.Controllers
                     o.reqNumber = read["reqNumber"].ToString().Trim();
                     o.reqCreator = Culture.ToTitleCase(read["reqCreator"].ToString().Trim().ToLower());
                     o.reqDescription = read["reqDescription"].ToString().Trim();
-                    o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                    //o.reqDate = string.Format("{0:MM/dd/yyyy}", Convert.ToDateTime(read["reqDate"].ToString()));
+                    var dt = Convert.ToDateTime(read["reqDate"].ToString());
+                    var day = (dt.Day < 10) ? "0" + dt.Day.ToString() : dt.Day.ToString();
+                    var month = (dt.Month < 10) ? "0" + dt.Month.ToString() : dt.Month.ToString();
+                    var year = dt.Year.ToString();
+                    o.sortreqDate = year + month + day;
+                    o.reqDate = month + "/" + day + "/" + year;
                     o.TypeID = read["TypeID"].ToString().Trim();
                     o.TotalItems = read["TotalCount"].ToString().Trim();
                     o.itemDescription = read["Description"].ToString().Trim();

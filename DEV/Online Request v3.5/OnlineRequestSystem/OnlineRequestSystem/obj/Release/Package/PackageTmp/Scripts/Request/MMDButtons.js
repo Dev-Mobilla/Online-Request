@@ -152,7 +152,13 @@ $("#ForDelivery").on('click', function (e) {
                                         closeButton: false
                                     });
                                     window.setTimeout(function () {
-                                        window.location.href = Url + '/MMD/viewMMDStatus?selected=' + encodeURIComponent("RECEIVED FROM SUPPLIER") + '&office=' + $('#office').val() + '&type=' + isReq;
+                                        if ($('#returnUrl').val() == "my-requests" || $('#returnUrl').val() == "my-PO-requests") {
+                                            window.location.href = Url + $('#returnUrl').val();
+                                        }
+                                        else {
+                                            window.location.href = Url + '/MMD/viewMMDStatus?selected=' + encodeURIComponent("RECEIVED FROM SUPPLIER") + '&office=' + $('#office').val() + '&type=' + isReq;
+                                        }
+
                                     }, 5000);
                                 }
                             });
@@ -236,7 +242,13 @@ $("#InTransit").on('click', function (e) {
                                             message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Redirecting..</p>',
                                             closeButton: false
                                         });
-                                        window.location.href = Url + '/MMD/viewMMDStatus?selected=' + encodeURIComponent("PROCESSED PO") + '&office=' + $('#office').val() + '&type=' + isReq;
+                                        if ($('#returnUrl').val() == "my-requests" || $('#returnUrl').val() == "my-PO-requests") {
+                                            window.location.href = Url + $('#returnUrl').val();
+                                        }
+                                        else {
+                                            window.location.href = Url + '/MMD/viewMMDStatus?selected=' + encodeURIComponent("PROCESSED PO") + '&office=' + $('#office').val() + '&type=' + isReq;
+                                        }
+
                                         //window.location.href = Url + '/MMDStatus?selected=' + encodeURIComponent("RECEIVED FROM SUPPLIER");
                                     }
                                 });
