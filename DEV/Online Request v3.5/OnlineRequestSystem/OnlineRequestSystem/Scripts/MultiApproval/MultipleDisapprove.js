@@ -22,7 +22,7 @@
                 $(".chkBox:checkbox:checked").each(function () {
                     ReqNolist.push($(this).closest("tr").find('td:eq(3)').text());
 
-                    if ($(this).closest("tr").find('.ForPO').val() != 1) {
+                    if (typeof $(this).closest("tr").find('.ForPO').val() === 'undefined') {
                         ForPOList.push("0");
                     }
                     else {
