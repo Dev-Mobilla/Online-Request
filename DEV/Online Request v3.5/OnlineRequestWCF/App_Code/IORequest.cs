@@ -149,15 +149,18 @@ public interface IORequest
     UriTemplate = "/GetIRDivisions/?zonecode={zonecode}")]
     ListOfIRDivisionResponse ListIRDivisions(string zonecode);
 
+
+
     #region CASH REQUEST
     [OperationContract]
     [WebInvoke(Method = "GET",
     RequestFormat = WebMessageFormat.Json,
     ResponseFormat = WebMessageFormat.Json,
     BodyStyle = WebMessageBodyStyle.WrappedRequest,
-    UriTemplate = "/GetCashRequestApprovers/?zonecode={zonecode}&class_04={class_04}&region={region}&areacode={areacode}&task={task}")]
-    CashRequestApproversResponse ListOfCashRequestApprovers(string zonecode, string class_04, string region, string areacode, string task);
+    UriTemplate = "/GetCashRequestApprovers/?zonecode={zonecode}&class_04={class_04}&region={region}&areacode={areacode}&job_title={job_title}")]
+    CashRequestApproversResponse ListOfCashRequestApprovers(string zonecode, string class_04, string region, string areacode, string job_title);
     #endregion
+
 
     //For Item Pricing
     [OperationContract]

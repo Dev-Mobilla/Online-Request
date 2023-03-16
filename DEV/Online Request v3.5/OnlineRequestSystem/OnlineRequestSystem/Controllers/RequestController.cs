@@ -473,10 +473,10 @@ namespace OnlineRequestSystem.Controllers
             }
         }
 
+
         [Route("cash-request")]
         public ActionResult CashRequest()
         {
-
             var encrypt = new AESEncryption();
             ORSession mySession = (ORSession)Session["UserSession"];
 
@@ -490,9 +490,8 @@ namespace OnlineRequestSystem.Controllers
                 }
                 else
                 {
-
                     string serviceUrl = ConfigurationManager.AppSettings["ServiceUrl"].ToString();
-                    var source = new System.Uri(serviceUrl + "/GetCashRequestApprovers/?zonecode=" + mySession.s_zonecode + "&class_04=" + mySession.s_area + "&region=" + mySession.s_region + "&areacode=" + mySession.s_areaCode + "&task=" + mySession.s_task);
+                    var source = new System.Uri(serviceUrl + "/GetCashRequestApprovers/?zonecode=" + mySession.s_zonecode + "&class_04=" + mySession.s_area + "&region=" + mySession.s_region + "&areacode=" + mySession.s_areaCode + "&job_title=" + mySession.s_job_title);
                     var requestHandler = new RequestHandler(source, "GET", "application/json");
 
                     string x = requestHandler.HttpGetRequest();
@@ -516,9 +515,6 @@ namespace OnlineRequestSystem.Controllers
                         ViewBag.Error = response.resMsg.ToString();
                         return View("Error");
                     }
-
-                    //return Json(response.ListOfCashRequestApprovers[0].AmName.ToString(), JsonRequestBehavior.AllowGet);
-
                 }
             }
 
@@ -539,12 +535,14 @@ namespace OnlineRequestSystem.Controllers
                 "&" + "jobTitle=" + mySession.s_job_title.ToString() +
                 "&" + "task=" + mySession.s_task.ToString() + "&" + "zonecode=" + mySession.s_zonecode.ToString() +
                "&" + "bedrnm=" + mySession.s_bedrnm.ToString() + "&" + "area=" + mySession.s_area.ToString() +
-                "&" + "region=" + mySession.s_region.ToString() + "&" + "areaCode=" + mySession.s_areaCode + "&" + "amName=" + approvers.AmName.ToString() +
-                "&" + "rmName=" + approvers.RmName.ToString() + "&" + "ramName=" + approvers.RamName.ToString() + "&" + "asstName=" + approvers.GmoGenAsstName.ToString() +
-                "&" + "vpoName=" + approvers.GmoGenName.ToString() + "&" + "token=" + encryptedUser
+                "&" + "region=" + mySession.s_region.ToString() + "&" + "areaCode=" + mySession.s_areaCode + "&" + "amName=" + approvers.AmName.ToString() + "&" + "amId=" + approvers.AmId.ToString() +
+                "&" + "rmName=" + approvers.RmName.ToString() + "&" + "rmId=" + approvers.RmId.ToString() + "&" + "ramName=" + approvers.RamName.ToString() + "&" + "ramId=" + approvers.RamId.ToString() +
+                "&" + "asstName=" + approvers.GmoGenAsstName.ToString() + "&" + "asstId=" + approvers.GmoGenAsstId.ToString() +
+                "&" + "vpoName=" + approvers.GmoGenName.ToString() + "&" + "vpoId=" + approvers.GmoGenId.ToString()
 
            );
         }
+
 
         public ActionResult CheckRequest(string reqCreator)
         {

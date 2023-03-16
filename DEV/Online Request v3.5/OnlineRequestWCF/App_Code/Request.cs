@@ -116,12 +116,13 @@ public class Request : IORequest
     }
 
     #region CASH REQUEST
-    public CashRequestApproversResponse ListOfCashRequestApprovers(string zonecode, string class_04, string region, string areacode, string task)
+    public CashRequestApproversResponse ListOfCashRequestApprovers(string zonecode, string class_04, string region, string areacode, string job_title)
     {
         var x = new Queries(_RequestLog);
-        return x.CashRequestApprovers(zonecode, class_04, region, areacode, task);
+        return x.CashRequestApprovers(zonecode, class_04, region, areacode, job_title);
     }
     #endregion
+
 
 
     //FOR ITEM PRICING
