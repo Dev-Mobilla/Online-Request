@@ -93,7 +93,7 @@
                             @Html.TextBoxFor(m => m.ReqItems[i].ItemDescription, new { @style = "max-width:inherit;", @id = "reqName0", @type = "text", @class = "form-control itemDes", @placeholder = "Enter Item Name", @autocomplete = "off" })
                         </td>
                         <td class="col-md-1">
-                            @Html.TextBoxFor(m => m.ReqItems[i].ItemQty, new { @style = "max-width:inherit;", @id = "reqQty0", @class = "form-control UnitQty", @placeholder = "0", @maxlength = "6", @onkeypress = "AlphaNumeric()", @autocomplete = "off" })
+                            @Html.TextBoxFor(m => m.ReqItems[i].ItemQty, new { @style = "max-width:inherit;", @id = "reqQty0", @class = "form-control UnitQty", @placeholder = "0", @maxlength = "6", @onkeypress = "AlphaNumeric()", @autocomplete = "off", @onPaste = "return false" })
                         </td>
                         <td class="col-md-3">
                             @Html.DropDownListFor(m => m.ReqItems[i].ItemUnit, Model.ListRequestUnits, "Select Unit", new { @id = "reqUnit0", @class = "form-control itemUnit", @required = "required" })

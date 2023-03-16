@@ -738,409 +738,7 @@ namespace OnlineRequestWCF.Request.Methods
             }
         }
 
-        #region CASH REQUEST
-
-        protected internal CashRequestApproversResponse CashRequestApprovers(string zonecode, string class_04, string region, string areacode, string task)
-        {
-            try
-            {
-                var ApproverList = new CashRequestApproversResponse();
-                ApproverList.ListOfCashRequestApprovers = new List<ListOfCashRequestApprovers>();
-
-                List<string> approvers = new List<string>();
-
-
-                _log.Info(zonecode + class_04 + region + areacode);
-
-                string am = GetAreaManager(zonecode, class_04, region, areacode);
-                string rm = GetRManager(zonecode, class_04, region, areacode);
-                string ram = GetRAManager(zonecode, class_04, region, areacode);
-
-
-                if (task == "BM" || task == "ABM" || task == "TELLER")
-                {
-
-                    if (am == "" || rm == "" || ram == "")
-                    {
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                    }
-                    else
-                    {
-                        approvers.Add(GetAreaManager(zonecode, class_04, region, areacode));
-                        approvers.Add(GetRManager(zonecode, class_04, region, areacode));
-                        approvers.Add(GetRAManager(zonecode, class_04, region, areacode));
-                        approvers.Add(GetGmoAstGenman(zonecode));
-                        approvers.Add(GetGmoGenman(zonecode));
-                    }
-
-                }
-                else if (task == "AREA MANAGER")
-                {
-
-                    if (am == "" || rm == "" || ram == "")
-                    {
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                    }
-                    else
-                    {
-                        approvers.Add(string.Empty);
-                        approvers.Add(GetRManager(zonecode, class_04, region, areacode));
-                        approvers.Add(GetRAManager(zonecode, class_04, region, areacode));
-                        approvers.Add(GetGmoAstGenman(zonecode));
-                        approvers.Add(GetGmoGenman(zonecode));
-                    }
-
-
-                }
-                else if (task == "REGIONAL MAN")
-                {
-
-                    if (am == "" || rm == "" || ram == "")
-                    {
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                    }
-                    else
-                    {
-                        approvers.Add(string.Empty);
-                        approvers.Add(string.Empty);
-                        approvers.Add(GetRAManager(zonecode, class_04, region, areacode));
-                        approvers.Add(GetGmoAstGenman(zonecode));
-                        approvers.Add(GetGmoGenman(zonecode));
-                    }
-
-
-                }
-                else if (task == "RAM")
-                {
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(GetGmoAstGenman(zonecode));
-                    approvers.Add(GetGmoGenman(zonecode));
-                }
-                else if (task == "GMO-ASTGENMAN")
-                {
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(GetGmoGenman(zonecode));
-                }
-                else if (task == "GMO-GENMAN")
-                {
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                    approvers.Add(string.Empty);
-                }
-
-                ApproverList.ListOfCashRequestApprovers.Add(new ListOfCashRequestApprovers
-                {
-                    AmName = approvers[0],
-                    RmName = approvers[1],
-                    RamName = approvers[2],
-                    GmoGenAsstName = approvers[3],
-                    GmoGenName = approvers[4]
-                });
-
-                var response = new CashRequestApproversResponse { ListOfCashRequestApprovers = ApproverList.ListOfCashRequestApprovers, resCode = "0", resMsg = resMessages(1) };
-                return response;
-
-
-            }
-            catch (TimeoutException e)
-            {
-                _log.Fatal(e.Message, e);
-                return new CashRequestApproversResponse { resCode = "1", resMsg = resMessages(5) };
-            }
-            catch (Exception x)
-            {
-                _log.Fatal(x.Message, x);
-                return new CashRequestApproversResponse { resCode = "1", resMsg = resMessages(0) };
-            }
-        }
-
-
-        #endregion
-
-        #region AREA MANAGER
-        private string GetAreaManager(string zonecode, string class_04, string region, string areacode)
-        {
-            var amFullname = "";
-
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
-            {
-                con.Open();
-                using (SqlCommand cmd = con.CreateCommand())
-                {
-                    //GET AREA MANAGER
-                    cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@zonecode AND wb.class_04 =@class_04 AND wb.region=@region AND wb.areacode=@areacode AND wa.task = 'AREA MANAGER'";
-
-                    cmd.Parameters.AddWithValue("@zonecode", zonecode);
-                    cmd.Parameters.AddWithValue("@class_04", class_04);
-                    cmd.Parameters.AddWithValue("@region", region);
-                    cmd.Parameters.AddWithValue("@areacode", areacode);
-
-                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        if (rdr.HasRows)
-                        {
-                            rdr.Read();
-                            //approvers.Add(rdr["fullname"].ToString().Trim());
-                            amFullname = rdr["fullname"].ToString().Trim();
-
-                        }
-                        else
-                        {
-                            //approvers.Add(string.Empty);
-                            amFullname = string.Empty;
-
-                        }
-                        con.Close();
-                        rdr.Close();
-                    }
-                }
-            }
-            return amFullname;
-        }
-        #endregion
-
-        #region REGIONAL MANAGER
-        private string GetRManager(string zonecode, string class_04, string region, string areacode)
-        {
-            var rmFullname = "";
-
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
-            {
-                con.Open();
-                using (SqlCommand cmd = con.CreateCommand())
-                {
-                    //GET REGIONAL MANAGER
-                    cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@rm_zonecode AND wb.class_04 =@rm_class_04 AND wb.region=@rm_region AND wb.areacode=@rm_areacode AND wa.task = 'REGIONAL MAN'";
-
-                    cmd.Parameters.AddWithValue("@rm_zonecode", zonecode);
-                    cmd.Parameters.AddWithValue("@rm_class_04", class_04);
-                    cmd.Parameters.AddWithValue("@rm_region", region);
-                    cmd.Parameters.AddWithValue("@rm_areacode", areacode);
-
-                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        if (rdr.HasRows)
-                        {
-                            rdr.Read();
-                            //approvers.Add(rdr["fullname"].ToString().Trim());
-                            rmFullname = rdr["fullname"].ToString().Trim();
-
-                        }
-                        else
-                        {
-                            //approvers.Add(string.Empty);
-                            rmFullname = string.Empty;
-
-                        }
-                        con.Close();
-                        rdr.Close();
-                    }
-                }
-            }
-            return rmFullname;
-        }
-        #endregion
-
-        #region REGIONAL AUDIT MANAGER
-        private string GetRAManager(string zonecode, string class_04, string region, string areacode)
-        {
-            var ramFullname = "";
-
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
-            {
-                con.Open();
-                using (SqlCommand cmd = con.CreateCommand())
-                {
-                    //GET REGIONAL AUDIT MANAGER
-                    cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@ram_zonecode AND wb.class_04 =@ram_class_04 AND wb.region=@ram_region AND wb.areacode=@ram_areacode AND wa.task = 'RAM'";
-
-                    cmd.Parameters.AddWithValue("@ram_zonecode", zonecode);
-                    cmd.Parameters.AddWithValue("@ram_class_04", class_04);
-                    cmd.Parameters.AddWithValue("@ram_region", region);
-                    cmd.Parameters.AddWithValue("@ram_areacode", areacode);
-
-                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        if (rdr.HasRows)
-                        {
-                            rdr.Read();
-                            //approvers.Add(rdr["fullname"].ToString().Trim());
-                            ramFullname = rdr["fullname"].ToString().Trim();
-
-                        }
-                        else
-                        {
-                            //approvers.Add(string.Empty);
-                            ramFullname = string.Empty;
-
-                        }
-                        con.Close();
-                        rdr.Close();
-                    }
-                }
-            }
-            return ramFullname;
-        }
-        #endregion
-
-        #region ASST VPO
-        private string GetGmoAstGenman(string zonecode)
-        {
-            var asstGenManFullname = "";
-
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
-            {
-                con.Open();
-                using (SqlCommand cmd = con.CreateCommand())
-                {
-                    //GET ASST GENMAN
-                    if (zonecode == "VISAYAS" || zonecode == "MINDANAO" || zonecode == "VISMIN")
-                    {
-
-                        //GET GMO-ASSTGENMAN || ASST.VPO
-
-                        cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='VISMIN' AND wa.task = 'GMO-ASTGENMAN' AND res_id='94016508'";
-
-                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                        {
-                            if (rdr.HasRows)
-                            {
-                                rdr.Read();
-                                //approvers.Add(rdr["fullname"].ToString().Trim());
-                                asstGenManFullname = rdr["fullname"].ToString().Trim();
-
-                            }
-                            else
-                            {
-                                //approvers.Add(string.Empty);
-                                asstGenManFullname = string.Empty;
-
-                            }
-                            con.Close();
-                            rdr.Close();
-                        }
-                    }
-                    else
-                    {
-                        cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='LUZON' AND wa.task = 'GMO-ASTGENMAN' AND res_id='19930045'";
-
-                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                        {
-                            if (rdr.HasRows)
-                            {
-                                rdr.Read();
-                                //approvers.Add(rdr["fullname"].ToString().Trim());
-                                asstGenManFullname = rdr["fullname"].ToString().Trim();
-
-
-                            }
-                            else
-                            {
-                                //approvers.Add(string.Empty);
-                                asstGenManFullname = string.Empty;
-
-                            }
-                            con.Close();
-                            rdr.Close();
-                        }
-                    }
-                }
-            }
-            return asstGenManFullname;
-        }
-        #endregion
-
-        #region VPO
-        private string GetGmoGenman(string zonecode)
-        {
-            var GenManFullname = "";
-
-            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
-            {
-                con.Open();
-                using (SqlCommand cmd = con.CreateCommand())
-                {
-
-                    if (zonecode == "VISAYAS" || zonecode == "MINDANAO" || zonecode == "VISMIN")
-                    {
-                        //VISMIN
-                        //GET GMO-GENMAN || VPO
-
-                        cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='VISMIN' AND wa.task = 'GMO-GENMAN' AND res_id='94002722'";
-
-                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                        {
-                            if (rdr.HasRows)
-                            {
-                                rdr.Read();
-                                //approvers.Add(rdr["fullname"].ToString().Trim());
-
-                                GenManFullname = rdr["fullname"].ToString().Trim();
-
-                            }
-                            else
-                            {
-                                //approvers.Add(string.Empty);
-                                GenManFullname = string.Empty;
-                            }
-                            con.Close();
-                            rdr.Close();
-                        }
-
-                    }
-                    else
-                    {
-
-                        //LUZON
-                        //GET GMO-GENMAN || VPO
-
-                        cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='LUZON' AND wa.task = 'GMO-GENMAN' AND res_id='19890004'";
-
-                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
-                        {
-                            if (rdr.HasRows)
-                            {
-                                rdr.Read();
-                                //approvers.Add(rdr["fullname"].ToString().Trim());
-                                GenManFullname = rdr["fullname"].ToString().Trim();
-
-                            }
-                            else
-                            {
-                                //approvers.Add(string.Empty);
-                                GenManFullname = string.Empty;
-
-                            }
-                            con.Close();
-                            rdr.Close();
-                        }
-
-                    }
-
-                }
-            }
-            return GenManFullname;
-        }
-        #endregion
+        
 
         //For Item Pricing
         protected internal ListOfItemsResponse GetAllItems()
@@ -1217,5 +815,508 @@ namespace OnlineRequestWCF.Request.Methods
             }
 
         }
+
+
+
+        #region CASH REQUEST
+
+        protected internal CashRequestApproversResponse CashRequestApprovers(string zonecode, string class_04, string region, string areacode, string job_title)
+        {
+            try
+            {
+                var ApproverList = new CashRequestApproversResponse();
+                ApproverList.ListOfCashRequestApprovers = new List<ListOfCashRequestApprovers>();
+
+
+                var approvers = new List<string>();
+
+                _log.Info(zonecode + class_04 + region + areacode);
+
+                var am = GetAreaManager(zonecode, class_04, region, areacode);
+                var rm = GetRManager(zonecode, class_04, region, areacode);
+                var ram = GetRAManager(zonecode, class_04, region, areacode);
+                var asst = GetGmoAstGenman(zonecode);
+                var vpo = GetGmoGenman(zonecode);
+
+
+                if (job_title == "BM" || job_title == "ABM" || job_title == "TELLER" ||
+                    job_title == "BM/BOSMAN" || job_title == "LPTL/BM/LPT/BOSMAN" || job_title == "LPT/BM-A/BOSMAN" ||
+                    job_title == "ASST. BM" || job_title == "LPT/BM-R" || job_title == "LPT-A/BOSMAN" || job_title == "BRANCH STAFF" ||
+                    job_title == "ABM/BOSMAN" || job_title == "LPT/BM-R/BOSMAN" || job_title == "LPT-A" || job_title == "ABM/LPT-A/BOSMAN" ||
+                    job_title == "ABM/LPT-A")
+                {
+
+                    if (am.Count == 0 || rm.Count == 0 || ram.Count == 0)
+                    {
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                    }
+                    else
+                    {
+                        approvers.Add(am[0]);
+                        approvers.Add(am[1]);
+                        approvers.Add(rm[0]);
+                        approvers.Add(rm[1]);
+                        approvers.Add(ram[0]);
+                        approvers.Add(ram[1]);
+                        approvers.Add(asst[0]);
+                        approvers.Add(asst[1]);
+                        approvers.Add(vpo[0]);
+                        approvers.Add(vpo[1]);
+
+                    }
+
+                }
+                else if (job_title == "AREA MANAGER")
+                {
+
+                    if (rm.Count == 0 || ram.Count == 0)
+                    {
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                    }
+                    else
+                    {
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(rm[0]);
+                        approvers.Add(rm[1]);
+                        approvers.Add(ram[0]);
+                        approvers.Add(ram[1]);
+                        approvers.Add(asst[0]);
+                        approvers.Add(asst[1]);
+                        approvers.Add(vpo[0]);
+                        approvers.Add(vpo[1]);
+                    }
+
+
+                }
+                else if (job_title == "REGIONAL MAN")
+                {
+
+                    if (ram.Count == 0)
+                    {
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                    }
+                    else
+                    {
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(string.Empty);
+                        approvers.Add(ram[0]);
+                        approvers.Add(ram[1]);
+                        approvers.Add(asst[0]);
+                        approvers.Add(asst[1]);
+                        approvers.Add(vpo[0]);
+                        approvers.Add(vpo[1]);
+                    }
+
+
+                }
+                else if (job_title == "RAM")
+                {
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(asst[0]);
+                    approvers.Add(asst[1]);
+                    approvers.Add(vpo[0]);
+                    approvers.Add(vpo[1]);
+
+                }
+                else if (job_title == "GMO-ASTGENMAN" || job_title == "ADM ASS SR" || job_title == "GM'S STAFF")
+                {
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(vpo[0]);
+                    approvers.Add(vpo[1]);
+                }
+                else if (job_title == "GMO-GENMAN")
+                {
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                    approvers.Add(string.Empty);
+                }
+
+                ApproverList.ListOfCashRequestApprovers.Add(new ListOfCashRequestApprovers
+                {
+                    //AmName = { new AmCred { amFullname = approvers[0].ToString(), amId = approvers[0].ToString() } },
+                    AmName = approvers[0],
+                    AmId = approvers[1],
+                    RmName = approvers[2],
+                    RmId = approvers[3],
+                    RamName = approvers[4],
+                    RamId = approvers[5],
+                    GmoGenAsstName = approvers[6],
+                    GmoGenAsstId = approvers[7],
+                    GmoGenName = approvers[8],
+                    GmoGenId = approvers[9]
+                });
+
+                var response = new CashRequestApproversResponse { ListOfCashRequestApprovers = ApproverList.ListOfCashRequestApprovers, resCode = "0", resMsg = resMessages(1) };
+                return response;
+
+
+            }
+            catch (TimeoutException e)
+            {
+                _log.Fatal(e.Message, e);
+                return new CashRequestApproversResponse { resCode = "1", resMsg = resMessages(5) };
+            }
+            catch (Exception x)
+            {
+                _log.Fatal(x.Message, x);
+                return new CashRequestApproversResponse { resCode = "1", resMsg = resMessages(0) };
+            }
+        }
+
+
+        #endregion
+
+        #region AREA MANAGER
+        private List<string> GetAreaManager(string zonecode, string class_04, string region, string areacode)
+        {
+            //var amFullname = "";
+            //var amId = "";
+
+            var amCred = new List<string>();
+
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
+            {
+                con.Open();
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    //GET AREA MANAGER
+                    //cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@zonecode AND wb.class_04 =@class_04 AND wb.region=@region AND wb.areacode=@areacode AND wa.job_title = 'AREA MANAGER'";
+                    cmd.CommandText = "SELECT TOP 1 wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@zonecode AND wb.class_03 =@class_03 AND class_04 = @class_04 AND wb.region=@region AND wb.areacode=@areacode AND wa.job_title = 'AREA MANAGER'";
+
+                    cmd.Parameters.AddWithValue("@zonecode", zonecode);
+                    cmd.Parameters.AddWithValue("@class_04", class_04);
+                    cmd.Parameters.AddWithValue("@class_03", region);
+                    cmd.Parameters.AddWithValue("@region", region);
+                    cmd.Parameters.AddWithValue("@areacode", areacode);
+
+                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        if (rdr.HasRows)
+                        {
+                            rdr.Read();
+
+                            //amFullname = rdr["fullname"].ToString().Trim();
+                            //amId = rdr["resId"].ToString().Trim();
+
+                            amCred.Add(rdr["fullname"].ToString().Trim());
+                            amCred.Add(rdr["resId"].ToString().Trim());
+
+
+                        }
+                        else
+                        {
+                            //approvers.Add(string.Empty);
+                            //amFullname = string.Empty;
+                            //amId = string.Empty;
+                            amCred.Add(string.Empty);
+                            amCred.Add(string.Empty);
+
+                        }
+                        con.Close();
+                        rdr.Close();
+                    }
+                }
+            }
+            return amCred;
+        }
+        #endregion
+
+        #region REGIONAL MANAGER
+        private List<string> GetRManager(string zonecode, string class_04, string region, string areacode)
+        {
+            //var rmFullname = "";
+
+            var rmCred = new List<string>();
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
+            {
+                con.Open();
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    //GET REGIONAL MANAGER
+                    //cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@rm_zonecode AND wb.class_04 =@rm_class_04 AND wb.region=@rm_region AND wb.areacode=@rm_areacode AND wa.job_title = 'REGIONAL MAN'";
+                    cmd.CommandText = "SELECT TOP 1 wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@rm_zonecode AND wb.class_03 =@rm_class_03 AND class_04 = @rm_class_04 AND wb.region=@rm_region AND wb.areacode=@rm_areacode AND wa.job_title = 'REGIONAL MAN'";
+
+                    cmd.Parameters.AddWithValue("@rm_zonecode", zonecode);
+                    cmd.Parameters.AddWithValue("@rm_class_04", class_04);
+                    cmd.Parameters.AddWithValue("@rm_class_03", region);
+                    cmd.Parameters.AddWithValue("@rm_region", region);
+                    cmd.Parameters.AddWithValue("@rm_areacode", areacode);
+
+                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        if (rdr.HasRows)
+                        {
+                            rdr.Read();
+                            rmCred.Add(rdr["fullname"].ToString().Trim());
+                            rmCred.Add(rdr["resId"].ToString().Trim());
+
+
+                        }
+                        else
+                        {
+                            //approvers.Add(string.Empty);
+                            rmCred.Add(string.Empty);
+                            rmCred.Add(string.Empty);
+
+                        }
+                        con.Close();
+                        rdr.Close();
+                    }
+                }
+            }
+            return rmCred;
+        }
+        #endregion
+
+        #region REGIONAL AUDIT MANAGER
+        private List<string> GetRAManager(string zonecode, string class_04, string region, string areacode)
+        {
+            //var ramFullname = "";
+            var ramCred = new List<string>();
+
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
+            {
+                con.Open();
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    //GET REGIONAL AUDIT MANAGER
+                    //cmd.CommandText = "SELECT wa.fullname AS fullname FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@ram_zonecode AND wb.class_04 =@ram_class_04 AND wb.region=@ram_region AND wb.areacode=@ram_areacode AND wa.job_title = 'RAM'";
+                    cmd.CommandText = "SELECT TOP 1 wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.zonecode WHERE wa.zonecode=@ram_zonecode AND wb.class_03 =@ram_class_03 AND wb.class_04 =@ram_class_04 AND wb.region=@ram_region AND wb.areacode=@ram_areacode AND wa.job_title = 'RAM'";
+
+                    cmd.Parameters.AddWithValue("@ram_zonecode", zonecode);
+                    cmd.Parameters.AddWithValue("@ram_class_04", class_04);
+                    cmd.Parameters.AddWithValue("@ram_class_03", region);
+                    cmd.Parameters.AddWithValue("@ram_region", region);
+                    cmd.Parameters.AddWithValue("@ram_areacode", areacode);
+
+                    using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        if (rdr.HasRows)
+                        {
+                            rdr.Read();
+                            ramCred.Add(rdr["fullname"].ToString().Trim());
+                            ramCred.Add(rdr["resId"].ToString().Trim());
+
+
+                        }
+                        else
+                        {
+                            //approvers.Add(string.Empty);
+                            ramCred.Add(string.Empty);
+                            ramCred.Add(string.Empty);
+
+                        }
+                        con.Close();
+                        rdr.Close();
+                    }
+                }
+            }
+            return ramCred;
+        }
+        #endregion
+
+        #region ASST VPO
+        private List<string> GetGmoAstGenman(string zonecode)
+        {
+            //var asstGenManFullname = "";
+            var asstGenManCred = new List<string>();
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
+            {
+                con.Open();
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    //GET ASST GENMAN
+                    if (zonecode == "VISAYAS" || zonecode == "MINDANAO" || zonecode == "VISMIN")
+                    {
+
+                        //GET GMO-ASSTGENMAN || ASST.VPO
+                        var task = "GMO-HELPDESK";
+                        var zone = "VISMIN";
+                        var resId = "1013127";
+
+                        cmd.CommandText = "SELECT wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode=@zone AND wa.task = @task AND res_id=@resId";
+                        cmd.Parameters.AddWithValue("@task", task);
+                        cmd.Parameters.AddWithValue("@zone", zone);
+                        cmd.Parameters.AddWithValue("@resId", resId);
+
+                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            if (rdr.HasRows)
+                            {
+                                rdr.Read();
+
+                                asstGenManCred.Add(rdr["fullname"].ToString().Trim());
+                                asstGenManCred.Add(rdr["resId"].ToString().Trim());
+
+                            }
+                            else
+                            {
+                                asstGenManCred.Add(string.Empty);
+                                asstGenManCred.Add(string.Empty);
+
+                            }
+                            con.Close();
+                            rdr.Close();
+                        }
+                    }
+                    else
+                    {
+                        cmd.CommandText = "SELECT wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='LUZON' AND wa.job_title = 'GMO-ASTGENMAN' OR wa.task = 'GMO-ASTGENMAN' AND res_id='19930045'";
+
+                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            if (rdr.HasRows)
+                            {
+                                rdr.Read();
+                                asstGenManCred.Add(rdr["fullname"].ToString().Trim());
+                                asstGenManCred.Add(rdr["resId"].ToString().Trim());
+
+
+                            }
+                            else
+                            {
+                                asstGenManCred.Add(string.Empty);
+                                asstGenManCred.Add(string.Empty);
+
+                            }
+                            con.Close();
+                            rdr.Close();
+                        }
+                    }
+                }
+            }
+            return asstGenManCred;
+        }
+        #endregion
+
+        #region VPO
+        private List<string> GetGmoGenman(string zonecode)
+        {
+            //var GenManFullname = "";
+
+            var GenManCred = new List<string>();
+
+
+            using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["WebProject"].ToString()))
+            {
+                con.Open();
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+
+                    if (zonecode == "VISAYAS" || zonecode == "MINDANAO" || zonecode == "VISMIN")
+                    {
+                        //VISMIN
+                        //GET GMO-GENMAN || VPO
+
+                        cmd.CommandText = "SELECT wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='VISMIN' AND wa.job_title = 'GMO-GENMAN' OR wa.task = 'GMO-GENMAN' AND res_id='94002722'";
+
+                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            if (rdr.HasRows)
+                            {
+                                rdr.Read();
+                                //approvers.Add(rdr["fullname"].ToString().Trim());
+                                GenManCred.Add(rdr["fullname"].ToString().Trim());
+                                GenManCred.Add(rdr["resId"].ToString().Trim());
+
+                            }
+                            else
+                            {
+                                GenManCred.Add(string.Empty);
+                                GenManCred.Add(string.Empty);
+                            }
+                            con.Close();
+                            rdr.Close();
+                        }
+
+                    }
+                    else
+                    {
+
+                        //LUZON
+                        //GET GMO-GENMAN || VPO
+
+                        cmd.CommandText = "SELECT wa.fullname AS fullname, wa.res_id as resId FROM WebAccounts wa INNER JOIN WebBranches wb ON wa.comp=wb.bedrnr AND wa.zonecode=wb.Zonecode WHERE wa.zonecode='LUZON' AND wa.job_title = 'GMO-GENMAN' OR wa.task = 'GMO-GENMAN' AND res_id='19890004'";
+
+                        using (SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
+                        {
+                            if (rdr.HasRows)
+                            {
+                                rdr.Read();
+                                GenManCred.Add(rdr["fullname"].ToString().Trim());
+                                GenManCred.Add(rdr["resId"].ToString().Trim());
+
+                            }
+                            else
+                            {
+                                GenManCred.Add(string.Empty);
+                                GenManCred.Add(string.Empty);
+
+                            }
+                            con.Close();
+                            rdr.Close();
+                        }
+
+                    }
+
+                }
+            }
+            return GenManCred;
+        }
+        #endregion
+
     }
 }
