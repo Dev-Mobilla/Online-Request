@@ -1075,4 +1075,3 @@ E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.csproj.CopyComplete
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.dll
 E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.pdb
-E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\obj\Debug\OnlineRequestSystem.csprojAssemblyReference.cache

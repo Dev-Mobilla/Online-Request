@@ -244,6 +244,7 @@ namespace OnlineRequestWCF.Request.Models
         public string DivisionName { get; set;}
         public string CostCenter { get; set; }
     }
+
     #region CASH REQUEST
 
     [DataContract]
@@ -260,10 +261,15 @@ namespace OnlineRequestWCF.Request.Models
         #region Private Variables Cash Request
 
         private string _AmName;
+        private string _AmId;
         private string _RmName;
+        private string _RmId;
         private string _RamName;
+        private string _RamId;
         private string _GmoGenAsstName;
+        private string _GmoGenAsstId;
         private string _GmoGenName;
+        private string _GmoGenId;
 
         #endregion
 
@@ -274,11 +280,25 @@ namespace OnlineRequestWCF.Request.Models
             set { _AmName = value; }
         }
         [DataMember]
+        public string AmId
+        {
+            get { return _AmId; }
+            set { _AmId = value; }
+        }
+
+        [DataMember]
         public string RmName
         {
             get { return _RmName; }
             set { _RmName = value; }
         }
+        [DataMember]
+        public string RmId
+        {
+            get { return _RmId; }
+            set { _RmId = value; }
+        }
+
         [DataMember]
         public string RamName
         {
@@ -286,19 +306,41 @@ namespace OnlineRequestWCF.Request.Models
             set { _RamName = value; }
         }
         [DataMember]
+        public string RamId
+        {
+            get { return _RamId; }
+            set { _RamId = value; }
+        }
+
+        [DataMember]
         public string GmoGenAsstName
         {
             get { return _GmoGenAsstName; }
             set { _GmoGenAsstName = value; }
         }
         [DataMember]
+        public string GmoGenAsstId
+        {
+            get { return _GmoGenAsstId; }
+            set { _GmoGenAsstId = value; }
+        }
+
+        [DataMember]
         public string GmoGenName
         {
             get { return _GmoGenName; }
             set { _GmoGenName = value; }
         }
+        [DataMember]
+        public string GmoGenId
+        {
+            get { return _GmoGenId; }
+            set { _GmoGenId = value; }
+        }
     }
     #endregion
+
+
 
     //FOR ITEM PRICING
 

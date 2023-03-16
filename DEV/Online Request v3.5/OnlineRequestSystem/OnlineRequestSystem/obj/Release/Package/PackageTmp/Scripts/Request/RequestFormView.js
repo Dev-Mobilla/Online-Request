@@ -77,24 +77,39 @@ function itemNameChecking() {
     var isDuplicated = false;
 
     $elems.each(function () {
-        if (!this.value.trim()) return true;
+        if (!this.value.toLowerCase().trim()) return true;
 
-        if (values.indexOf(this.value.trim()) !== -1) {
+        if (values.indexOf(this.value.toLowerCase().trim()) !== -1) {
             isDuplicated = true;
             return false;
         }
 
-        values.push(this.value.trim());
+        values.push(this.value.toLowerCase().trim());
     });
 
     return isDuplicated;
 }
 
 
+function quantityChecking() {
+    var $elems = $('.UnitQty');
+    var isInvalid = false;
+
+    $elems.each(function () {
+        if (isNaN($(this).val()) || $(this).val() <= 0) {
+            isInvalid = true;
+            return false;
+        }
+    });
+
+    return isInvalid;
+}
+
 function onCreateBegin() {
     $(".loginloader").modal('show');
     var description = $("#requestDescription").val();
     var items = $('.itemDes').val();
+
     if (description.trim() === null || description.trim() === '') {
         $(".loginloader").modal('hide');
         bootbox.alert("Please put description!");
@@ -106,6 +121,10 @@ function onCreateBegin() {
     } else if (itemNameChecking()) {
         $(".loginloader").modal('hide');
         bootbox.alert("Duplicate item names!");
+        return false;
+    } else if (quantityChecking()) {
+        $(".loginloader").modal('hide');
+        bootbox.alert("Invalid quantity!");
         return false;
     }
 }

@@ -128,12 +128,39 @@
                             }
                         </ul>
                     </li>
-                    @if ((Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "TELLER" || (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "BM" || (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ABM" || (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "AREA MANAGER" || (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "RAM" || (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_task == "GMO-ASTGENMAN" || (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_task == "GMO-GENMAN")
+
+                    @if ((Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "TELLER" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "BM" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ABM" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "BM/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "LPTL/BM/LPT/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "LPT/BM-A/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ASST. BM" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "LPT/BM-R" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "LPT-A/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "BRANCH STAFF" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ABM/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "LPT/BM-R/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "LPT-A" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ABM/LPT-A/BOSMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ABM/LPT-A" ||
+
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "AREA MANAGER" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "RAM" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "ADM ASS SR" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "GMO-GENMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_job_title == "GM'S STAFF" ||
+
+
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_task == "GMO-ASTGENMAN" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_task == "GMO-HELPDESK" ||
+                                            (Session["UserSession"] as OnlineRequestSystem.Models.ORSession).s_task == "GMO-GENMAN")
                     {
                         <li>
                             <a style="color:black;" onclick="loadClick('Normal')" href="@Url.Action("CashRequest", "Request")">Cash Request</a>
                         </li>
                     }
+
                 </ul>
 
                 <ul class="nav navbar-nav"></ul>
