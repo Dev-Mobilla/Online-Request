@@ -9,7 +9,7 @@
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <ProjectView>ProjectFiles</ProjectView>
-    <NameOfLastUsedPublishProfile>E:\QuencyProject\ORS\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\Properties\PublishProfiles\FolderProfile10.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\alco20227684\Documents\GitHub\Online-Request\DEV\Online Request v3.5\OnlineRequestSystem\OnlineRequestSystem\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
     <WebStackScaffolding_AreaDialogWidth>600</WebStackScaffolding_AreaDialogWidth>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <UseIISExpress>true</UseIISExpress>
@@ -25,29 +25,5 @@
   <PropertyGroup>
     <ReferencePath>C:\Program Files (x86)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\;C:\Program Files\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\</ReferencePath>
   </PropertyGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <StartPageUrl>
-          </StartPageUrl>
-          <StartAction>CurrentPage</StartAction>
-          <AspNetDebugging>True</AspNetDebugging>
-          <SilverlightDebugging>False</SilverlightDebugging>
-          <NativeDebugging>False</NativeDebugging>
-          <SQLDebugging>False</SQLDebugging>
-          <ExternalProgram>
-          </ExternalProgram>
-          <StartExternalURL>
-          </StartExternalURL>
-          <StartCmdLineArguments>
-          </StartCmdLineArguments>
-          <StartWorkingDirectory>
-          </StartWorkingDirectory>
-          <EnableENC>True</EnableENC>
-          <AlwaysStartWebServerOnDebug>True</AlwaysStartWebServerOnDebug>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
 </Project>
