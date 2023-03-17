@@ -140,6 +140,8 @@ namespace OnlineRequestSystem.Controllers
                 rpt.SetParameterValue("selectedMonth", monthlyDate.ToString("MMMM", CultureInfo.InvariantCulture));
                 System.IO.Stream stream = rpt.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
 
+
+                log.Info("Status: Success" + " || Details: " + rep);
                 return File(stream, "application/pdf", "MONTHLY REPORT- ONLINE REQUEST " + DateTime.Now.ToString("yyyy/MM/dd") + ".pdf");
             }
             catch (Exception x)
@@ -249,7 +251,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.BranchCode = @Code " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -260,7 +262,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.DeptCode = @CostCenter " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -271,7 +273,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.Area = @Area " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -282,7 +284,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.region = @Region " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -395,7 +397,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.BranchCode = @Code " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -406,7 +408,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.DeptCode = @CostCenter " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -417,7 +419,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.Area = @Area " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -428,7 +430,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.region = @Region " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -641,7 +643,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.BranchCode = @Code " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -652,7 +654,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.DeptCode = @CostCenter " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -663,7 +665,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.Area = @Area " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -674,7 +676,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.region = @Region " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND MONTH(a.reqDate) = @Month AND YEAR(a.reqDate) = @mYear " +
                                     "ORDER BY a.reqDate";
 
@@ -836,7 +838,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.BranchCode = @Code " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -847,7 +849,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.DeptCode = @CostCenter " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -858,7 +860,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.Area = @Area " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 
@@ -869,7 +871,7 @@ namespace OnlineRequestSystem.Controllers
                             query = "SELECT a.* FROM OnlineRequest.onlineRequest_Open a " +
                                     "INNER JOIN requestApproverStatus b ON a.reqNumber = b.reqNumber " +
                                     "WHERE a.region = @Region " +
-                                    "AND (b.isPO_Approved = @isPO_Approved OR  OR b.isPO_Approved = @isPO_Approved2 ) " +
+                                    "AND (b.isPO_Approved = @isPO_Approved OR b.isPO_Approved = @isPO_Approved2 ) " +
                                     "AND a.reqDate BETWEEN @DateFrom AND @DateTo " +
                                     "ORDER BY a.reqDate";
 

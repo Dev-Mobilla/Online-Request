@@ -64,7 +64,6 @@ namespace OnlineRequestSystem.Controllers
             if (mySession == null)
                 return RedirectToAction("Logout", "Userlogin");
 
-
             if (mySession.s_isDivisionApprover == 1 && mySession.s_job_title != "GMO-GENMAN" && mySession.s_usr_id != "LHUI1011873")
             {
                 forPresident = 1;

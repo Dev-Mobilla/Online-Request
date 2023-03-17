@@ -171,7 +171,7 @@
                         var newItemDesc = "itemDesc" + count;
                         <tr>
                             <td style="vertical-align:middle"><center>@count</center></td>
-                            <td id="@newItemDesc" class="itemDesc" style="vertical-align:middle">@item.ItemDescription</td>
+                            <td id="@newItemDesc" class="itemDesc" style="vertical-align: middle; overflow: auto; max-width: 100px">@item.ItemDescription</td>
                             <td style="vertical-align:middle">
                                 <center> @item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
                                 <input type="hidden" id="@quantity" value="@item.ItemQty" />
