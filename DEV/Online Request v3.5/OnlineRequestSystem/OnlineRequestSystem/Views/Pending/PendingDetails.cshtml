@@ -114,7 +114,7 @@
                     @foreach (var item in Model.ReqItems)
                     {
                         <tr>
-                            <td id="itemDesc" style="vertical-align:middle">@item.ItemDescription</td>
+                            <td id="itemDesc" style="vertical-align:middle; overflow:auto; max-width:100px">@item.ItemDescription</td>
                             <td id="itemQty" style="vertical-align:middle">
                                 <center>@item.ItemQty&nbsp;&nbsp;<i>@item.ItemUnit</i></center>
                             </td>
