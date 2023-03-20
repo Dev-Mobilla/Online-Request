@@ -7,10 +7,10 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-
 using AESEncrypt;
 using System.Configuration;
 using Newtonsoft.Json.Linq;
+using System.Web.Script.Serialization;
 
 namespace OnlineRequestSystem.Controllers
 {
@@ -63,6 +63,20 @@ namespace OnlineRequestSystem.Controllers
             var mySession = (ORSession)Session["UserSession"];
             if (mySession == null)
                 return RedirectToAction("Logout", "Userlogin");
+
+            var data = CheckRequest(mySession.s_fullname).Data;
+            string resp = new JavaScriptSerializer().Serialize(data);
+            CheckRequestResponse checkData = new JavaScriptSerializer().Deserialize<CheckRequestResponse>(resp);
+
+            if (checkData.status == true)
+            {
+                return Json(new
+                {
+                    resCode = "002",
+                    status = false,
+                    msg = checkData.msg
+                }, JsonRequestBehavior.AllowGet);
+            }
 
             if (mySession.s_isDivisionApprover == 1 && mySession.s_job_title != "GMO-GENMAN" && mySession.s_usr_id != "LHUI1011873")
             {
@@ -542,13 +556,11 @@ namespace OnlineRequestSystem.Controllers
            );
         }
 
-
-        public ActionResult CheckRequest(string reqCreator)
+        public JsonResult CheckRequest(string reqCreator)
         {
             ORSession mySession = (ORSession)Session["UserSession"];
-            if (mySession == null) return RedirectToAction("Logout", "Userlogin");
-
             var db = new ORtoMySql();
+            CheckRequestResponse chkReqResp = new CheckRequestResponse();
 
             try
             {
@@ -592,6 +604,7 @@ namespace OnlineRequestSystem.Controllers
                             return Json(new
                             {
                                 status = true,
+                                error = false,
                                 msg = "Unable to create new request. Please advise to close your recent requests."
                             }, JsonRequestBehavior.AllowGet);
                         }
@@ -600,7 +613,8 @@ namespace OnlineRequestSystem.Controllers
                             return Json(new
                             {
                                 status = false,
-                                msg = "Able to create request."
+                                error = false,
+                                msg = "Able to create new request."
                             }, JsonRequestBehavior.AllowGet);
                         }
                     }
@@ -612,8 +626,9 @@ namespace OnlineRequestSystem.Controllers
 
                 return Json(new
                 {
-                    status = true,
-                    msg = "Unable to create new request. An error has occured."
+                    status = false,
+                    error = true,
+                    msg = "Unable to create new request. Please try again later."
                 }, JsonRequestBehavior.AllowGet);
             }
         }

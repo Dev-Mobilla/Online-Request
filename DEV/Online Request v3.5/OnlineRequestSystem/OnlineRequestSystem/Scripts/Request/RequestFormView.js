@@ -14,11 +14,26 @@
                         });
                         window.location.href = Url + '/open-requests';
                     }
-                })
+                });
             }
+            else {
+                if (result.error == true) {
+                    bootbox.alert({
+                        message: result.msg,
+                        callback: function () {
+                            var dialog = bootbox.dialog({
+                                message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Redirecting..</p>',
+                                closeButton: false
+                            });
+                            window.location.href = Url + '/open-requests';
+                        }
+                    });
+                }
+            }
+
         },
         error: function () {
-            console.log("something went wrong")
+            console.log("Something went wrong.")
         }
     })
 
@@ -146,10 +161,21 @@ function onCreateSuccess(result) {
         });
     }
     else {
-        if (result.resCode = "001") {
+        if (result.resCode == "001") {
             $(".loginloader").modal('hide');
             bootbox.alert({ title: 'Unable to process request.', message: result.msg });
-        } else {
+        }
+        else if (result.resCode == "002") {
+            $(".loginloader").modal('hide');
+            bootbox.alert(result.msg, function () {
+                var dialog = bootbox.dialog({
+                    message: '<p class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>&nbsp;&nbsp;Redirecting..</p>',
+                    closeButton: false
+                });
+                window.location.href = Url + '/open-requests';
+            });
+        }
+        else {
             $(".loginloader").modal('hide');
             bootbox.alert(result.msg);
         }

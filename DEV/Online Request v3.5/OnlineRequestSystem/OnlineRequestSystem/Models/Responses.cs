@@ -2,6 +2,12 @@
 
 namespace OnlineRequestSystem.Models
 {
+    public class CheckRequestResponse
+    {
+        public bool status { get; set; }
+        public bool error { get; set; }
+        public string msg { get; set; }
+    }
     public class LoginResponse : Resp
     {
         private ORSession _logdata;
