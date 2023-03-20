@@ -720,7 +720,7 @@ namespace OnlineRequestSystem.Controllers
                     {
                         a.Fill(data, "DataTable2");
                     }
-
+                    log.Info("Successfully fetched data || request no: " + ReqNo);
                     return data;
                 }
             }
@@ -815,6 +815,7 @@ namespace OnlineRequestSystem.Controllers
                 ViewBag.Error = x.ToString();
                 return View("Error");
             }
+            log.Info("Successfully updated the approval status || request no: " + ReqNo);
             return View(ReqNo);
         }
 
@@ -842,6 +843,7 @@ namespace OnlineRequestSystem.Controllers
                 log.Fatal(x.Message, x);
                 return Result;
             }
+            log.Info("Successfully fetched branch name || branch code: " + BranchCode + "|| region: " + Region + "|| zone code: " + ZoneCode);
             return Result;
         }
 
@@ -1066,6 +1068,7 @@ namespace OnlineRequestSystem.Controllers
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
+                    log.Info("Successfully updated the request type || request type ID: " + id4update);
                     return Json(new
                     {
                         status = true,
@@ -1384,6 +1387,7 @@ namespace OnlineRequestSystem.Controllers
 
             if (Resp == "success")
             {
+                log.Info("New Department Approver has been added || Approver: " + data);
                 return Json(new
                 {
                     status = true,
@@ -1419,6 +1423,7 @@ namespace OnlineRequestSystem.Controllers
 
             if (Resp == "success")
             {
+                log.Info("Department successfully updated || Approver: " + data.approver_resID);
                 return Json(new
                 {
                     status = true,

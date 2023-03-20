@@ -46,6 +46,7 @@ namespace OnlineRequestSystem.Controllers
 
                 cmd.ExecuteNonQuery();
                 cmd.Parameters.Clear();
+                log.Info("Successful file upload || request no: " + Data.RequestNo);
                 return "success";
             }
             catch (Exception c)
@@ -77,7 +78,7 @@ namespace OnlineRequestSystem.Controllers
                 }
                 con.Close();
             }
-
+            log.Info("Successful getting pdf from DB || request no: " + ReqNo);
             return bytes;
         }
     }
